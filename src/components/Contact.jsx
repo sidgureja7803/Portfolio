@@ -30,9 +30,9 @@ const Contact = () => {
         'template_id', // Replace with your EmailJS template ID
         {
           from_name: form.name,
-          to_name: 'Your Name',
+          to_name: 'Siddhant Gureja',
           from_email: form.email,
-          to_email: 'your.email@example.com',
+          to_email: 'siddhantgureja39@gmail.com',
           message: form.message,
         },
         'public_key' // Replace with your EmailJS public key
