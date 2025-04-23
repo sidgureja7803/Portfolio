@@ -1,7 +1,8 @@
 import { useState, useRef, Suspense, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Points, PointMaterial, Preload } from '@react-three/drei';
+import { Points, PointMaterial, Preload, OrbitControls } from '@react-three/drei';
 import * as random from 'maath/random/dist/maath-random.esm';
+import FloatingBackground from './FloatingBackground';
 
 const Particles = (props) => {
   const ref = useRef();
@@ -41,14 +42,24 @@ const ParticlesCanvas = ({ mousePosition }) => {
   }, [mousePosition]);
 
   return (
-    <div className="w-full h-auto absolute inset-0 z-[-1] pointer-events-none">
-      <Canvas camera={{ position: [0, 0, 1] }}>
+    <div className="absolute inset-0 z-[-1]">
+      <Canvas
+        camera={{ position: [0, 0, 5], fov: 75 }}
+        style={{ touchAction: 'none' }}
+        dpr={[1, 2]} // Optimize for mobile by limiting pixel ratio
+      >
         <Suspense fallback={null}>
+          <OrbitControls
+            enableZoom={false}
+            maxPolarAngle={Math.PI / 2}
+            minPolarAngle={Math.PI / 2}
+          />
+          <FloatingBackground mousePosition={mousePosition} />
+          <ambientLight intensity={0.5} />
           <group ref={groupRef}>
             <Particles />
           </group>
         </Suspense>
-        <Preload all />
       </Canvas>
     </div>
   );

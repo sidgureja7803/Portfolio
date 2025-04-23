@@ -6,8 +6,8 @@ import Tech from './Tech';
 import Experience from './Experience';
 import Works from './Works';
 import Contact from './Contact';
-import OpenSource from './OpenSource';
-import Coding from './Coding';
+import Education from './Education';
+import Blogs from './Blogs';
 
 export {
   Hero,
@@ -17,8 +17,8 @@ export {
   Experience,
   Works,
   Contact,
-  OpenSource,
-  Coding,
+  Education,
+  Blogs,
   EarthCanvas,
   BallCanvas,
   ComputersCanvas,

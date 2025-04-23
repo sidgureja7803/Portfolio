@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import Lenis from 'lenis';
-import { About, Contact, Experience, Hero, Navbar, Tech, Works, OpenSource, Coding, ParticlesCanvas } from './components';
+import Lenis from '@studio-freight/lenis';
+import { About, Contact, Experience, Hero, Navbar, Tech, Works, Education, Blogs, ParticlesCanvas } from './components';
 
 const App = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -59,11 +59,11 @@ const App = () => {
           <Hero />
         </div>
         <About />
+        <Education />
         <Experience />
-        <Tech />
         <Works />
-        <OpenSource />
-        <Coding />
+        <Tech />
+        <Blogs />
         <div className="relative z-0">
           <Contact />
         </div>

@@ -6,16 +6,24 @@ export const navLinks = [
     title: "About",
   },
   {
-    id: "work",
-    title: "Work",
+    id: "education",
+    title: "Education",
   },
   {
-    id: "opensource",
-    title: "Open Source",
+    id: "experience",
+    title: "Experience",
   },
   {
-    id: "coding",
-    title: "Coding",
+    id: "projects",
+    title: "Projects",
+  },
+  {
+    id: "tech",
+    title: "Tech Stack",
+  },
+  {
+    id: "blogs",
+    title: "Blogs",
   },
   {
     id: "contact",
@@ -44,12 +52,12 @@ export const services = [
 
 export const technologies = [
   {
-    name: "HTML 5",
-    icon: "html",
+    name: "React",
+    icon: "react",
   },
   {
-    name: "CSS 3",
-    icon: "css",
+    name: "Three.js",
+    icon: "threejs",
   },
   {
     name: "JavaScript",
@@ -60,19 +68,23 @@ export const technologies = [
     icon: "typescript",
   },
   {
-    name: "React JS",
-    icon: "reactjs",
+    name: "Java",
+    icon: "java",
   },
   {
-    name: "Redux Toolkit",
-    icon: "redux",
+    name: "C++",
+    icon: "cpp",
   },
   {
-    name: "Tailwind CSS",
-    icon: "tailwind",
+    name: "Docker",
+    icon: "docker",
   },
   {
-    name: "Node JS",
+    name: "Kubernetes",
+    icon: "kubernetes",
+  },
+  {
+    name: "Node.js",
     icon: "nodejs",
   },
   {
@@ -80,20 +92,12 @@ export const technologies = [
     icon: "mongodb",
   },
   {
-    name: "Three JS",
-    icon: "threejs",
-  },
-  {
-    name: "git",
+    name: "Git",
     icon: "git",
   },
   {
-    name: "figma",
-    icon: "figma",
-  },
-  {
-    name: "docker",
-    icon: "docker",
+    name: "Tailwind CSS",
+    icon: "tailwind",
   },
 ];
 

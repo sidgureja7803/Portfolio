@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { styles } from '../styles';
 import { navLinks } from '../constants';
@@ -7,6 +7,14 @@ import { FaBars, FaTimes, FaReact } from 'react-icons/fa';
 const Navbar = () => {
   const [active, setActive] = useState('');
   const [toggle, setToggle] = useState(false);
+
+  const handleScroll = (id) => {
+    setActive(id);
+    const element = document.getElementById(id);
+    if (element && window.lenis) {
+      window.lenis.scrollTo(element, { offset: -80 });
+    }
+  };
 
   return (
     <nav
@@ -34,17 +42,9 @@ const Navbar = () => {
               className={`${
                 active === link.title ? 'text-white' : 'text-secondary'
               } hover:text-white text-[18px] font-medium cursor-pointer`}
-              onClick={() => setActive(link.title)}
+              onClick={() => handleScroll(link.id)}
             >
-              <a
-                href={`#${link.id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.lenis?.scrollTo(`#${link.id}`, { offset: -80 });
-                }}
-              >
-                {link.title}
-              </a>
+              <span>{link.title}</span>
             </li>
           ))}
         </ul>
@@ -69,18 +69,10 @@ const Navbar = () => {
                   } font-poppins font-medium cursor-pointer text-[16px]`}
                   onClick={() => {
                     setToggle(!toggle);
-                    setActive(link.title);
+                    handleScroll(link.id);
                   }}
                 >
-                  <a
-                    href={`#${link.id}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.lenis?.scrollTo(`#${link.id}`, { offset: -80 });
-                    }}
-                  >
-                    {link.title}
-                  </a>
+                  <span>{link.title}</span>
                 </li>
               ))}
             </ul>
