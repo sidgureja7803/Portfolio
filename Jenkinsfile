@@ -1,12 +1,12 @@
 pipeline {
     agent any
 
-    environment {
-        NODE_ENV = 'development'
+    tools {
+        nodejs 'node18'  // use the name you gave in Global Tool Config
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Clone Repo') {
             steps {
                 git url: 'https://github.com/sidgureja7803/Portfolio.git', branch: 'main'
             }
@@ -20,10 +20,7 @@ pipeline {
 
         stage('Start Dev Server') {
             steps {
-                echo 'Starting the development server...'
                 sh 'npm run dev &'
-                // Optionally sleep if needed to let server start
-                // sh 'sleep 10'
             }
         }
     }
