@@ -1,29 +1,29 @@
 pipeline {
     agent any
 
+    environment {
+        NODE_ENV = 'development'
+    }
+
     stages {
-        stage('Clone') {
+        stage('Clone Repository') {
             steps {
-                git 'https://github.com/sidgureja7803/Portfolio.git'
+                git url: 'https://github.com/sidgureja7803/Portfolio.git', branch: 'main'
             }
         }
 
-        stage('Build') {
+        stage('Install Dependencies') {
             steps {
                 sh 'npm install'
             }
         }
 
-        stage('Test') {
+        stage('Start Dev Server') {
             steps {
-                sh 'npm test'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'
-                // Add deploy commands here
+                echo 'Starting the development server...'
+                sh 'npm run dev &'
+                // Optionally sleep if needed to let server start
+                // sh 'sleep 10'
             }
         }
     }
