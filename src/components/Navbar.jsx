@@ -18,7 +18,7 @@ const Navbar = () => {
           className="flex items-center gap-2"
           onClick={() => {
             setActive('');
-            window.scrollTo(0, 0);
+            window.lenis?.scrollTo(0, { offset: 0 });
           }}
         >
           <FaReact className="w-8 h-8 text-white" />
@@ -36,7 +36,15 @@ const Navbar = () => {
               } hover:text-white text-[18px] font-medium cursor-pointer`}
               onClick={() => setActive(link.title)}
             >
-              <a href={`#${link.id}`}>{link.title}</a>
+              <a
+                href={`#${link.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.lenis?.scrollTo(`#${link.id}`, { offset: -80 });
+                }}
+              >
+                {link.title}
+              </a>
             </li>
           ))}
         </ul>
@@ -64,7 +72,15 @@ const Navbar = () => {
                     setActive(link.title);
                   }}
                 >
-                  <a href={`#${link.id}`}>{link.title}</a>
+                  <a
+                    href={`#${link.id}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.lenis?.scrollTo(`#${link.id}`, { offset: -80 });
+                    }}
+                  >
+                    {link.title}
+                  </a>
                 </li>
               ))}
             </ul>

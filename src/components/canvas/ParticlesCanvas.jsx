@@ -41,7 +41,7 @@ const ParticlesCanvas = ({ mousePosition }) => {
   }, [mousePosition]);
 
   return (
-    <div className="w-full h-auto absolute inset-0 z-[-1]">
+    <div className="w-full h-auto absolute inset-0 z-[-1] pointer-events-none">
       <Canvas camera={{ position: [0, 0, 1] }}>
         <Suspense fallback={null}>
           <group ref={groupRef}>

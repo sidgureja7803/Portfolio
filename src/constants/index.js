@@ -1,3 +1,5 @@
+import thaparInnovate from './thapar_innovate.png';
+
 export const navLinks = [
   {
     id: "about",
@@ -97,16 +99,15 @@ export const technologies = [
 
 export const experiences = [
   {
-    title: "Software Engineer",
-    company_name: "Facebook",
-    icon: "facebook",
+    title: "Frontend Developer",
+    company_name: "Thapar Innovate",
+    icon: thaparInnovate,
     iconBg: "#383E56",
-    date: "March 2020 - Present",
+    date: "Oct 2020 - Present",
     points: [
-      "Developing and maintaining web applications using React.js and other related technologies.",
-      "Collaborating with cross-functional teams including designers, product managers, and other developers to create high-quality products.",
-      "Implementing responsive design and ensuring cross-browser compatibility.",
-      "Participating in code reviews and providing constructive feedback to other developers.",
+      "Designed a comprehensive platform for incubators to manage startups applying for incubation, monitor multiple programs, and oversee cohort-specific activities and progress.",
+      "Enabled detailed startup tracking by integrating functionalities to view funding status, team size, and mentorship under specific cohorts.",
+      "Streamlined API management by utilizing Context API to handle overlapping calls, enhancing performance and reducing redundancy across 110+ APIs.",
     ],
   },
   // Add more experiences here
