@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import Lenis from '@studio-freight/lenis';
+import scrollManager from './utils/scrollManager';
 import { About, Contact, Experience, Hero, Navbar, Tech, Works, Education, Blogs, ParticlesCanvas } from './components';
 
 const App = () => {
@@ -22,31 +22,35 @@ const App = () => {
     };
   }, []);
   
-  // Initialize Lenis smooth scrolling
+  // Initialize smooth scrolling with our ScrollManager
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: 'vertical',
-      gestureDirection: 'vertical',
-      smooth: true,
-      smoothTouch: false,
-      touchMultiplier: 2,
-    });
+    // Initialize our ScrollManager
+    scrollManager.init();
 
-    // Make lenis accessible globally for scrollTo
-    window.lenis = lenis;
+    // Fallback vanilla JS smooth scroll setup
+    const setupVanillaScroll = () => {
+      // Add click handlers to all navigation links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          const targetElement = document.querySelector(targetId);
+          
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    };
 
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
+    // Setup vanilla scroll as a backup
+    setTimeout(setupVanillaScroll, 1000);
     
     return () => {
-      lenis.destroy();
-      window.lenis = null;
+      scrollManager.destroy();
     };
   }, []);
   

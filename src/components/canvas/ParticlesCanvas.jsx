@@ -1,64 +1,58 @@
-import { useState, useRef, Suspense, useEffect } from 'react';
+import { useRef, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Points, PointMaterial, Preload, OrbitControls } from '@react-three/drei';
-import * as random from 'maath/random/dist/maath-random.esm';
-import FloatingBackground from './FloatingBackground';
+import { Points, PointMaterial } from '@react-three/drei';
+import * as THREE from 'three';
 
-const Particles = (props) => {
+// Simplified particles component with minimal particles
+const SimpleParticles = ({ count = 500 }) => {
   const ref = useRef();
-  const [sphere] = useState(() => 
-    random.inSphere(new Float32Array(5000), { radius: 1.2 })
-  );
-
-  useFrame((state, delta) => {
-    ref.current.rotation.x -= delta / 10;
-    ref.current.rotation.y -= delta / 15;
+  
+  // Create a simple static array of particles
+  const positions = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    positions[i * 3] = (Math.random() - 0.5) * 5;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 5;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 5;
+  }
+  
+  useFrame((state) => {
+    if (ref.current) {
+      ref.current.rotation.y = state.clock.elapsedTime * 0.05;
+    }
   });
-
+  
   return (
-    <group rotation={[0, 0, Math.PI / 4]}>
-      <Points ref={ref} positions={sphere} stride={3} frustumCulled {...props}>
-        <PointMaterial
-          transparent
-          color="#f272c8"
-          size={0.002}
-          sizeAttenuation={true}
-          depthWrite={false}
-        />
-      </Points>
-    </group>
+    <Points ref={ref} positions={positions} stride={3}>
+      <PointMaterial
+        transparent
+        color="#8d5eff"
+        size={0.01}
+        sizeAttenuation={true}
+        depthWrite={false}
+      />
+    </Points>
   );
 };
 
 const ParticlesCanvas = ({ mousePosition }) => {
-  const groupRef = useRef();
-  
-  useEffect(() => {
-    if (groupRef.current && mousePosition) {
-      // Add subtle movement based on mouse position for interactivity
-      groupRef.current.rotation.y = mousePosition.x * 0.01;
-      groupRef.current.rotation.x = mousePosition.y * 0.01;
-    }
-  }, [mousePosition]);
-
   return (
-    <div className="absolute inset-0 z-[-1]">
+    <div className="three-js-canvas">
       <Canvas
-        camera={{ position: [0, 0, 5], fov: 75 }}
+        camera={{ position: [0, 0, 5], fov: 50 }}
         style={{ touchAction: 'none' }}
-        dpr={[1, 2]} // Optimize for mobile by limiting pixel ratio
+        dpr={0.6} // Very low pixel ratio for better performance
+        gl={{ 
+          antialias: false,
+          alpha: true,
+          powerPreference: 'low-power',
+          depth: false,
+          stencil: false
+        }}
+        frameloop="demand" // Only render when needed
       >
         <Suspense fallback={null}>
-          <OrbitControls
-            enableZoom={false}
-            maxPolarAngle={Math.PI / 2}
-            minPolarAngle={Math.PI / 2}
-          />
-          <FloatingBackground mousePosition={mousePosition} />
+          <SimpleParticles />
           <ambientLight intensity={0.5} />
-          <group ref={groupRef}>
-            <Particles />
-          </group>
         </Suspense>
       </Canvas>
     </div>

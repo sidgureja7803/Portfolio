@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { styles } from '../styles';
 import { navLinks } from '../constants';
 import { FaBars, FaTimes, FaReact } from 'react-icons/fa';
+import scrollManager from '../utils/scrollManager';
 
 const Navbar = () => {
   const [active, setActive] = useState('');
@@ -10,9 +11,18 @@ const Navbar = () => {
 
   const handleScroll = (id) => {
     setActive(id);
-    const element = document.getElementById(id);
-    if (element && window.lenis) {
-      window.lenis.scrollTo(element, { offset: -80 });
+    
+    // Attempt to use the scrollManager first
+    try {
+      scrollManager.scrollTo(`#${id}`);
+    } catch (error) {
+      console.warn('ScrollManager failed, using native scroll:', error);
+      
+      // Fallback to native scroll behavior
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   };
 
@@ -26,7 +36,12 @@ const Navbar = () => {
           className="flex items-center gap-2"
           onClick={() => {
             setActive('');
-            window.lenis?.scrollTo(0, { offset: 0 });
+            // Try scrollManager and fallback to native scroll
+            try {
+              scrollManager.scrollTo(0);
+            } catch (error) {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
           }}
         >
           <FaReact className="w-8 h-8 text-white" />
@@ -42,9 +57,17 @@ const Navbar = () => {
               className={`${
                 active === link.title ? 'text-white' : 'text-secondary'
               } hover:text-white text-[18px] font-medium cursor-pointer`}
-              onClick={() => handleScroll(link.id)}
             >
-              <span>{link.title}</span>
+              {/* Use a regular anchor tag as fallback that will work even if JS fails */}
+              <a 
+                href={`#${link.id}`}
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent default only if JS is working
+                  handleScroll(link.id);
+                }}
+              >
+                {link.title}
+              </a>
             </li>
           ))}
         </ul>
@@ -67,12 +90,17 @@ const Navbar = () => {
                   className={`${
                     active === link.title ? 'text-white' : 'text-secondary'
                   } font-poppins font-medium cursor-pointer text-[16px]`}
-                  onClick={() => {
-                    setToggle(!toggle);
-                    handleScroll(link.id);
-                  }}
                 >
-                  <span>{link.title}</span>
+                  <a 
+                    href={`#${link.id}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setToggle(!toggle);
+                      handleScroll(link.id);
+                    }}
+                  >
+                    {link.title}
+                  </a>
                 </li>
               ))}
             </ul>

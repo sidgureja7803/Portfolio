@@ -15,14 +15,16 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  scroll-behavior: smooth;
   color-scheme: dark;
 }
 
 html {
   -webkit-tap-highlight-color: transparent;
+  /* Enable native smooth scrolling as backup */
+  scroll-behavior: smooth;
 }
 
+/* Lenis smooth scroll styles */
 html.lenis {
   height: auto;
 }
@@ -46,6 +48,15 @@ html.lenis {
 body {
   @apply bg-primary text-white;
   font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  /* Improve rendering performance */
+  backface-visibility: hidden;
+  perspective: 1000;
+  will-change: transform;
 }
 
 .hash-span {
@@ -54,73 +65,64 @@ body {
   display: block;
 }
 
+/* Canvas-related styles */
+.three-js-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+  /* Reduce GPU load */
+  opacity: 0.7;
+}
+
+canvas {
+  /* Help with NaN errors by forcing pixel ratio */
+  image-rendering: optimizeSpeed;
+}
+
+/* Remove unnecessary animation styles to improve performance */
 .black-gradient {
   background: #000000;
-  background: -webkit-linear-gradient(
-    to right,
-    #434343,
-    #000000
-  );
-  background: linear-gradient(
-    to right,
-    #434343,
-    #000000
-  );
+  background: linear-gradient(to right, #434343, #000000);
 }
 
 .violet-gradient {
   background: #804dee;
   background: linear-gradient(-90deg, #804dee 0%, rgba(60, 51, 80, 0) 100%);
-  background: -webkit-linear-gradient(
-    -90deg,
-    #804dee 0%,
-    rgba(60, 51, 80, 0) 100%
-  );
 }
 
 .green-pink-gradient {
   background: "#00cea8";
   background: linear-gradient(90.13deg, #00cea8 1.9%, #bf61ff 97.5%);
-  background: -webkit-linear-gradient(-90.13deg, #00cea8 1.9%, #bf61ff 97.5%);
 }
 
-.orange-text-gradient {
-  background: #f12711;
-  background: -webkit-linear-gradient(to top, #f12711, #f5af19);
-  background: linear-gradient(to top, #f12711, #f5af19);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.green-text-gradient {
-  background: #11998e;
-  background: -webkit-linear-gradient(to top, #11998e, #38ef7d);
-  background: linear-gradient(to top, #11998e, #38ef7d);
+/* Text gradient styles */
+.blue-text-gradient,
+.green-text-gradient,
+.orange-text-gradient,
+.pink-text-gradient {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .blue-text-gradient {
-  background: #56ccf2;
-  background: -webkit-linear-gradient(to top, #2f80ed, #56ccf2);
   background: linear-gradient(to top, #2f80ed, #56ccf2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+}
+
+.green-text-gradient {
+  background: linear-gradient(to top, #11998e, #38ef7d);
+}
+
+.orange-text-gradient {
+  background: linear-gradient(to top, #f12711, #f5af19);
 }
 
 .pink-text-gradient {
-  background: #ec008c;
-  background: -webkit-linear-gradient(to top, #ec008c, #fc6767);
   background: linear-gradient(to top, #ec008c, #fc6767);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Enable smooth scrolling for all elements */
-@media (prefers-reduced-motion: no-preference) {
-  :root {
-    scroll-behavior: smooth;
-  }
 }
 
 /* Mobile optimizations */
@@ -129,15 +131,26 @@ body {
     margin-top: -60px;
     padding-bottom: 60px;
   }
+  
+  /* Reduce visual effects on mobile */
+  .three-js-canvas {
+    opacity: 0.4;
+  }
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
+/* Hide scrollbar for clean UI */
 ::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
 * {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Enable smooth scrolling for all elements */
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    scroll-behavior: smooth;
+  }
 } 
