@@ -95,7 +95,7 @@ export const services = [
   {
     title: "Problem Solver",
     icon: "/icons/problem-solver.svg",
-    description: "Solved 450+ problems on LeetCode with a contest rating of 1850",
+    description: "Solved 700+ problems on LeetCode with a contest rating of 1850",
     link: LEETCODE_PROFILE_URL
   },
   {
@@ -230,7 +230,7 @@ export const experiences = [
     company_name: "Thapar Innovate",
     icon: thaparInnovate,
     iconBg: "#383E56",
-    date: "Oct 2020 - Present",
+    date: "Oct 2024 - Present",
     points: [
       "Designed a comprehensive platform for incubators to manage startups applying for incubation, monitor multiple programs, and oversee cohort-specific activities and progress.",
       "Enabled detailed startup tracking by integrating functionalities to view funding status, team size, and mentorship under specific cohorts.",
@@ -242,28 +242,91 @@ export const experiences = [
 
 export const projects = [
   {
-    name: "CIB on the Mobile",
+    name: "AI-Powered Code Reviewer",
     description:
-      "A web app for visualizing personalized Spotify data. View your top artists, top tracks, recently played tracks, and detailed audio information about each track. Create and save new playlists of recommended tracks based on your existing playlists and more.",
+      "AI-Powered Code Reviewer is an intelligent assistant that helps developers write cleaner, optimized, and more secure code by providing detailed feedback, best practices, and performance improvements.",
     tags: [
       {
-        name: "react",
+        name: "React Js",
         color: "blue-text-gradient",
       },
       {
-        name: "mongodb",
+        name: "Gemini API",
         color: "green-text-gradient",
       },
       {
-        name: "tailwind",
+        name: "Tailwind",
         color: "pink-text-gradient",
       },
     ],
     image: "project1",
-    source_code_link: "https://github.com/",
+    source_code_link: "https://code-review-wine.vercel.app/",
   },
-  // Add more projects here
+  {
+    name: "Dev-Tinder",
+    description:
+      "Dev-Tinder is a MERN-based platform that connects developers across the globe. Users can swipe through developer profiles, collaborate on open-source projects, and build meaningful tech connections.",
+    tags: [
+      {
+        name: "React Js",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "Express Js",
+        color: "green-text-gradient",
+      },
+      {
+        name: "MongoDB",
+        color: "pink-text-gradient",
+      },
+    ],
+    image: "project2",
+    source_code_link: "https://dev-tinder-frontend-nine.vercel.app/",
+  },
+  {
+    name: "IMDb Clone",
+    description:
+      "A movie discovery app that fetches and displays movies using the TMDb API. Users can search, filter, and explore movie details with a clean UI mimicking IMDb.",
+    tags: [
+      {
+        name: "React Js",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "TMDb API",
+        color: "green-text-gradient",
+      },
+      {
+        name: "Tailwind CSS",
+        color: "pink-text-gradient",
+      },
+    ],
+    image: "project3",
+    source_code_link: "https://movie-app-n8ci.vercel.app/"
+  },
+  {
+    name: "Netflix GPT",
+    description:
+      "Netflix GPT is an AI-powered movie recommendation app that integrates OpenAI with Firebase and TMDb APIs. Users get smart movie suggestions based on genres and watch history.",
+    tags: [
+      {
+        name: "React Js",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "OpenAI API",
+        color: "green-text-gradient",
+      },
+      {
+        name: "Firebase Auth",
+        color: "pink-text-gradient",
+      },
+    ],
+    image: "project4",
+    source_code_link: "https://netflix-gpt-frontend.vercel.app/",
+  },
 ];
+
 
 export const leetcodeStats = {
   rating: 1850,
