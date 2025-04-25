@@ -15,7 +15,19 @@ import {
   SiRedis,
   SiNginx,
   SiLeetcode,
+  SiExpress,
 } from 'react-icons/si';
+
+// LeetCode profile URL
+export const LEETCODE_PROFILE_URL = "https://leetcode.com/sidgureja/";
+
+// Social links
+export const socialLinks = {
+  github: "https://github.com/sidgureja7803",
+  linkedin: "https://linkedin.com/in/sidgureja",
+  twitter: "https://twitter.com/sidgureja",
+  leetcode: LEETCODE_PROFILE_URL
+};
 
 export const education = [
   {
@@ -82,19 +94,24 @@ export const navLinks = [
 export const services = [
   {
     title: "Problem Solver",
-    icon: "/web.png",
+    icon: "/icons/problem-solver.svg",
+    description: "Solved 450+ problems on LeetCode with a contest rating of 1850",
+    link: LEETCODE_PROFILE_URL
   },
   {
     title: "React Developer",
-    icon: "/react.png",
+    icon: "/icons/react-dev.svg",
+    description: "Building modern web applications with React and its ecosystem"
   },
   {
     title: "Backend Developer",
-    icon: "/backend.png",
+    icon: "/icons/backend-dev.svg",
+    description: "Creating scalable server-side applications with Node.js and Express"
   },
   {
-    title: "Devops Engineer",
-    icon: "/creator.png",
+    title: "DevOps Engineer",
+    icon: "/icons/devops.svg",
+    description: "Implementing CI/CD pipelines and managing cloud infrastructure"
   },
 ];
 
@@ -145,6 +162,11 @@ export const technologies = [
     color: "#339933"
   },
   {
+    name: "Express",
+    icon: SiExpress,
+    color: "#000000"
+  },
+  {
     name: "MongoDB",
     icon: SiMongodb,
     color: "#47A248"
@@ -193,6 +215,12 @@ export const technologies = [
     name: "Tailwind CSS",
     icon: SiTailwindcss,
     color: "#06B6D4"
+  },
+  {
+    name: "LeetCode",
+    icon: SiLeetcode,
+    color: "#FFA116",
+    link: LEETCODE_PROFILE_URL
   }
 ];
 
@@ -242,5 +270,27 @@ export const leetcodeStats = {
   problemsSolved: 450,
   contestRating: "Guardian",
   icon: SiLeetcode,
-  color: "#FFA116"
+  color: "#FFA116",
+  badges: [
+    {
+      name: "Dynamic Programming",
+      count: 120,
+      color: "#00B8D9"
+    },
+    {
+      name: "Graph Theory",
+      count: 85,
+      color: "#36B37E"
+    },
+    {
+      name: "Binary Search",
+      count: 65,
+      color: "#FF5630"
+    },
+    {
+      name: "Tree Algorithms",
+      count: 95,
+      color: "#6554C0"
+    }
+  ]
 }; 

@@ -1,81 +1,63 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { Suspense, useRef, useEffect, useState } from 'react';
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Preload } from "@react-three/drei";
 import * as THREE from 'three';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
+import CanvasLoader from "../Loader";
 
-const GurejaSvg = () => {
-  const mountRef = useRef(null);
-  const sceneRef = useRef(null);
-  const cameraRef = useRef(null);
-  const rendererRef = useRef(null);
+const GurejaSvgModel = () => {
   const groupRef = useRef(null);
-  const animationFrameRef = useRef(null);
-  const [isWebGLAvailable, setIsWebGLAvailable] = useState(true);
-  const [contextLost, setContextLost] = useState(false);
+  const particlesRef = useRef(null);
+  const [svgLoaded, setSvgLoaded] = useState(false);
+  const [hovered, setHovered] = useState(false);
+
+  // Animation
+  useFrame((state, delta) => {
+    if (groupRef.current && !hovered) {
+      groupRef.current.rotation.y += delta * 0.5;
+    }
+    
+    if (particlesRef.current) {
+      particlesRef.current.rotation.y += delta * 0.1;
+      particlesRef.current.rotation.x += delta * 0.05;
+    }
+  });
 
   useEffect(() => {
-    let mounted = true;
+    // Create particle system
+    const particleGeometry = new THREE.BufferGeometry();
+    const particleCount = 5000;
+    const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
 
-    // Check WebGL support
-    try {
-      const canvas = document.createElement('canvas');
-      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-      if (!gl) {
-        setIsWebGLAvailable(false);
-        return;
-      }
-    } catch (e) {
-      setIsWebGLAvailable(false);
-      return;
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 50;
+      positions[i + 1] = (Math.random() - 0.5) * 50;
+      positions[i + 2] = (Math.random() - 0.5) * 50;
+
+      colors[i] = Math.random() * 0.5 + 0.5;
+      colors[i + 1] = Math.random() * 0.5 + 0.5;
+      colors[i + 2] = Math.random() * 0.5 + 0.5;
     }
 
-    if (!mountRef.current) return;
+    particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-    // Scene setup
-    const scene = new THREE.Scene();
-    scene.background = null;
-    sceneRef.current = scene;
+    const particleMaterial = new THREE.PointsMaterial({
+      size: 0.1,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.6,
+    });
 
-    // Camera setup
-    const aspect = mountRef.current.clientWidth / mountRef.current.clientHeight;
-    const camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-    camera.position.z = 5;
-    cameraRef.current = camera;
+    const particles = new THREE.Points(particleGeometry, particleMaterial);
+    particlesRef.current.add(particles);
 
-    // Renderer setup with error handling
-    let renderer;
-    try {
-      renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true,
-        powerPreference: "high-performance",
-        canvas: mountRef.current,
-      });
-      
-      renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      rendererRef.current = renderer;
-
-      // Handle context loss
-      renderer.domElement.addEventListener('webglcontextlost', handleContextLost);
-      renderer.domElement.addEventListener('webglcontextrestored', handleContextRestored);
-    } catch (error) {
-      console.error('WebGL renderer creation failed:', error);
-      setIsWebGLAvailable(false);
-      return;
-    }
-
-    // Group for SVG paths
-    const group = new THREE.Group();
-    groupRef.current = group;
-    scene.add(group);
-
-    // Load SVG with error handling
+    // Load SVG
     const loader = new SVGLoader();
     loader.load(
-      '/Gureja.svg',
+      '/SIDDHANT.svg',
       (data) => {
-        if (!mounted) return;
-        
         const paths = data.paths;
         
         paths.forEach((path) => {
@@ -83,131 +65,51 @@ const GurejaSvg = () => {
           
           shapes.forEach((shape) => {
             const geometry = new THREE.ExtrudeGeometry(shape, {
-              depth: 0.2,
+              depth: 0.4,
               bevelEnabled: true,
-              bevelThickness: 0.1,
+              bevelThickness: 0.2,
               bevelSize: 0.1,
-              bevelSegments: 3
+              bevelSegments: 5
             });
             
-            const material = new THREE.MeshPhongMaterial({
+            const material = new THREE.MeshPhysicalMaterial({
               color: new THREE.Color(path.color),
-              emissive: new THREE.Color(0x000000),
-              specular: new THREE.Color(0x111111),
-              shininess: 30,
+              metalness: 0.5,
+              roughness: 0.2,
+              clearcoat: 1.0,
+              clearcoatRoughness: 0.2,
               side: THREE.DoubleSide
             });
             
             const mesh = new THREE.Mesh(geometry, material);
-            group.add(mesh);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            groupRef.current.add(mesh);
           });
         });
 
         // Center the SVG
-        const box = new THREE.Box3().setFromObject(group);
+        const box = new THREE.Box3().setFromObject(groupRef.current);
         const center = box.getCenter(new THREE.Vector3());
-        group.position.sub(center);
+        groupRef.current.position.sub(center);
 
-        // Scale based on container size
+        // Scale the SVG
         const boxSize = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(boxSize.x, boxSize.y);
-        const scale = Math.min(
-          mountRef.current.clientWidth / maxDim,
-          mountRef.current.clientHeight / maxDim
-        ) * 0.8;
-        group.scale.setScalar(scale);
+        groupRef.current.scale.setScalar(2 / maxDim);
+        
+        setSvgLoaded(true);
       },
       undefined,
       (error) => {
-        if (!mounted) return;
         console.error('SVG loading failed:', error);
-        setIsWebGLAvailable(false);
       }
     );
 
-    // Add lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
-
-    const pointLight = new THREE.PointLight(0xffffff, 1);
-    pointLight.position.set(5, 5, 5);
-    scene.add(pointLight);
-
-    // Animation
-    const animate = () => {
-      if (!mounted || contextLost) return;
-      
-      animationFrameRef.current = requestAnimationFrame(animate);
-
-      if (groupRef.current) {
-        groupRef.current.rotation.y += 0.005;
-      }
-
-      if (rendererRef.current && sceneRef.current && cameraRef.current) {
-        rendererRef.current.render(sceneRef.current, cameraRef.current);
-      }
-    };
-
-    // Handle context loss/restore
-    function handleContextLost(event) {
-      event.preventDefault();
-      setContextLost(true);
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    }
-
-    function handleContextRestored() {
-      setContextLost(false);
-      animate();
-    }
-
-    // Handle resize
-    const handleResize = () => {
-      if (!mountRef.current || !rendererRef.current || !cameraRef.current || contextLost) return;
-
-      const width = mountRef.current.clientWidth;
-      const height = mountRef.current.clientHeight;
-      const aspect = width / height;
-
-      cameraRef.current.aspect = aspect;
-      cameraRef.current.updateProjectionMatrix();
-
-      rendererRef.current.setSize(width, height);
-      rendererRef.current.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-      // Update scale if group exists
-      if (groupRef.current) {
-        const box = new THREE.Box3().setFromObject(groupRef.current);
-        const boxSize = box.getSize(new THREE.Vector3());
-        const maxDim = Math.max(boxSize.x, boxSize.y);
-        const scale = Math.min(width / maxDim, height / maxDim) * 0.8;
-        groupRef.current.scale.setScalar(scale);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    animate();
-
     return () => {
-      mounted = false;
-      window.removeEventListener('resize', handleResize);
-      
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-
-      if (rendererRef.current) {
-        rendererRef.current.domElement.removeEventListener('webglcontextlost', handleContextLost);
-        rendererRef.current.domElement.removeEventListener('webglcontextrestored', handleContextRestored);
-        rendererRef.current.dispose();
-      }
-      
-      if (groupRef.current) {
-        groupRef.current.traverse((object) => {
-          if (object.geometry) {
-            object.geometry.dispose();
-          }
+      if (particlesRef.current) {
+        particlesRef.current.traverse((object) => {
+          if (object.geometry) object.geometry.dispose();
           if (object.material) {
             if (Array.isArray(object.material)) {
               object.material.forEach(material => material.dispose());
@@ -216,49 +118,102 @@ const GurejaSvg = () => {
             }
           }
         });
-        scene.remove(groupRef.current);
       }
 
-      // Clean up scene
-      if (sceneRef.current) {
-        sceneRef.current.traverse((object) => {
-          if (object instanceof THREE.Mesh) {
-            object.geometry.dispose();
-            object.material.dispose();
+      if (groupRef.current) {
+        groupRef.current.traverse((object) => {
+          if (object.geometry) object.geometry.dispose();
+          if (object.material) {
+            if (Array.isArray(object.material)) {
+              object.material.forEach(material => material.dispose());
+            } else {
+              object.material.dispose();
+            }
           }
         });
       }
     };
   }, []);
 
-  if (!isWebGLAvailable) {
-    return (
-      <div className="flex items-center justify-center w-full h-full bg-tertiary rounded-lg p-4">
-        <p className="text-white text-center">
-          3D rendering is not available on your device.
-          Please try using a WebGL-supported browser.
-        </p>
-      </div>
-    );
-  }
-
-  if (contextLost) {
-    return (
-      <div className="flex items-center justify-center w-full h-full bg-tertiary rounded-lg p-4">
-        <p className="text-white text-center">
-          WebGL context was lost. Please refresh the page.
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <canvas 
-      ref={mountRef} 
-      className="w-full h-full min-h-[300px] rounded-lg"
-      style={{ touchAction: 'none' }}
-    />
+    <>
+      <group 
+        ref={particlesRef}
+        position={[0, 0, -10]}
+      />
+      
+      <group 
+        ref={groupRef}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+      >
+        <hemisphereLight intensity={0.15} groundColor='black' />
+        <pointLight intensity={1} position={[0, 0, 5]} />
+        <spotLight
+          position={[10, 10, 10]}
+          angle={0.15}
+          penumbra={1}
+          intensity={1.5}
+          castShadow
+          shadow-mapSize={[1024, 1024]}
+        />
+        <pointLight intensity={1} position={[-5, 0, 3]} color="#0000ff" />
+        <pointLight intensity={1} position={[5, 0, 3]} color="#ff0000" />
+      </group>
+    </>
   );
 };
 
-export default GurejaSvg; 
+const GurejaSvgCanvas = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 500px)");
+    setIsMobile(mediaQuery.matches);
+
+    const handleMediaQueryChange = (event) => {
+      setIsMobile(event.matches);
+    };
+
+    mediaQuery.addEventListener("change", handleMediaQueryChange);
+    setMounted(true);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleMediaQueryChange);
+      setMounted(false);
+    };
+  }, []);
+
+  if (!mounted) return null;
+
+  return (
+    <Canvas
+      frameloop="demand"
+      shadows
+      camera={{ position: [0, 0, 10], fov: 25 }}
+      gl={{ 
+        preserveDrawingBuffer: true,
+        powerPreference: "high-performance",
+        antialias: true,
+        alpha: true 
+      }}
+    >
+      <Suspense fallback={<CanvasLoader />}>
+        <OrbitControls
+          enableZoom={false}
+          maxPolarAngle={Math.PI}
+          minPolarAngle={0}
+          enablePan={false}
+          dampingFactor={0.05}
+          rotateSpeed={0.5}
+        />
+        <GurejaSvgModel />
+      </Suspense>
+
+      <Preload all />
+    </Canvas>
+  );
+};
+
+export default GurejaSvgCanvas; 

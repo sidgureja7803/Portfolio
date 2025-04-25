@@ -72,7 +72,7 @@ const OpenSourceCard = ({ title, description, link, stars, forks, tech }) => {
 const OpenSource = () => {
   const hacktoberfestData = [
     {
-      year: 2023,
+      year: 2024,
       badges: [
         {
           image: "path_to_badge_1.png",
