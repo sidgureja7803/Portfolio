@@ -10,13 +10,33 @@ const Navbar = () => {
 
   useEffect(() => {
     initSmoothScroll();
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+
+      for (const link of navLinks) {
+        const section = document.getElementById(link.id);
+        if (section) {
+          const offsetTop = section.offsetTop - 100;
+          const offsetBottom = offsetTop + section.offsetHeight;
+
+          if (scrollY >= offsetTop && scrollY < offsetBottom) {
+            setActive(link.id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleClick = (id) => {
     setActive(id);
     setToggle(false);
-    
-    // Add a small delay to ensure the menu is closed before scrolling
+
+    // Delay scroll to allow menu to close
     setTimeout(() => {
       scrollTo(`#${id}`);
     }, 100);
@@ -85,4 +105,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar; 
+export default Navbar;
