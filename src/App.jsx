@@ -1,15 +1,10 @@
-import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { initSmoothScroll, destroy } from './utils/scroll';
-import { About, Contact, Experience, Hero, Navbar, Tech, Works, Education, Blogs } from './components';
-import { Background } from './components/canvas';
-import BlogsPage from './pages/BlogsPage';
+import { BrowserRouter } from 'react-router-dom';
+import { Navbar, Hero, About, Experience, Tech, Works, OpenSource, Blogs, Contact, Education } from './components';
 
-const HomePage = () => {
+const App = () => {
   return (
-    <>
-      <Background />
-      <div className="relative z-10">
+    <BrowserRouter>
+      <div className="relative z-0 bg-primary">
         <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
           <Navbar />
           <Hero />
@@ -17,35 +12,11 @@ const HomePage = () => {
         <About />
         <Education />
         <Experience />
-        <Works />
         <Tech />
+        <Works />
+        <OpenSource />
         <Blogs />
-        <div className="relative z-0">
-          <Contact />
-        </div>
-      </div>
-    </>
-  );
-};
-
-const App = () => {
-  useEffect(() => {
-    // Initialize smooth scrolling
-    initSmoothScroll();
-    
-    return () => {
-      // Cleanup
-      destroy();
-    };
-  }, []);
-  
-  return (
-    <BrowserRouter>
-      <div className="relative bg-primary">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/blogs" element={<BlogsPage />} />
-        </Routes>
+        <Contact />
       </div>
     </BrowserRouter>
   );

@@ -2,30 +2,31 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { styles } from '../styles';
 import { navLinks } from '../constants';
-import { scrollTo, initSmoothScroll } from '../utils/scroll';
 
 const Navbar = () => {
   const [active, setActive] = useState('');
   const [toggle, setToggle] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    initSmoothScroll();
-
     const handleScroll = () => {
       const scrollY = window.scrollY;
+      setScrolled(scrollY > 50);
 
-      for (const link of navLinks) {
-        const section = document.getElementById(link.id);
+      // Find the current section
+      const sections = navLinks.map(link => document.getElementById(link.id));
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
+
+      sections.forEach((section, index) => {
         if (section) {
-          const offsetTop = section.offsetTop - 100;
-          const offsetBottom = offsetTop + section.offsetHeight;
+          const sectionTop = section.offsetTop;
+          const sectionBottom = sectionTop + section.offsetHeight;
 
-          if (scrollY >= offsetTop && scrollY < offsetBottom) {
-            setActive(link.id);
-            break;
+          if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            setActive(navLinks[index].id);
           }
         }
-      }
+      });
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -36,14 +37,25 @@ const Navbar = () => {
     setActive(id);
     setToggle(false);
 
-    // Delay scroll to allow menu to close
-    setTimeout(() => {
-      scrollTo(`#${id}`);
-    }, 100);
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 100; // Adjust this value based on your navbar height
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
   };
 
   return (
-    <nav className={`${styles.paddingX} w-full flex items-center py-5 fixed top-0 z-20 bg-primary`}>
+    <nav
+      className={`${styles.paddingX} w-full flex items-center py-5 fixed top-0 z-50 transition-all duration-300 ${
+        scrolled ? 'bg-primary/90 backdrop-blur-sm' : 'bg-transparent'
+      }`}
+    >
       <div className='w-full flex justify-between items-center max-w-7xl mx-auto'>
         <Link
           to='/'
@@ -53,15 +65,14 @@ const Navbar = () => {
             window.scrollTo(0, 0);
           }}
         >
-          <div className='w-9 h-9 rounded-full bg-white flex items-center justify-center text-primary font-bold text-lg'>
-            S
-          </div>
+          <img src="/Gureja.svg" alt="Gureja" className="w-9 h-9" />
           <p className='text-white text-[18px] font-bold cursor-pointer flex'>
-            Siddhant &nbsp;
+            Siddhant Gureja&nbsp;
             <span className='sm:block hidden'>| Portfolio</span>
           </p>
         </Link>
 
+        {/* Desktop Navigation */}
         <ul className='list-none hidden sm:flex flex-row gap-10'>
           {navLinks.map((link) => (
             <li
@@ -76,29 +87,43 @@ const Navbar = () => {
           ))}
         </ul>
 
+        {/* Mobile Navigation */}
         <div className='sm:hidden flex flex-1 justify-end items-center'>
           <button
-            className='w-[28px] h-[28px] flex items-center justify-center text-white cursor-pointer'
+            className='w-[28px] h-[28px] flex items-center justify-center text-white cursor-pointer z-50'
             onClick={() => setToggle(!toggle)}
+            aria-label="Toggle menu"
           >
-            {toggle ? '✕' : '☰'}
+            <div className={`relative w-6 h-4 transform transition-all duration-300 ${toggle ? 'rotate-180' : ''}`}>
+              <span className={`absolute h-0.5 w-full bg-white transform transition-all duration-300 ${
+                toggle ? 'rotate-45 translate-y-2' : '-translate-y-2'
+              }`} />
+              <span className={`absolute h-0.5 w-full bg-white transform transition-all duration-300 ${
+                toggle ? 'opacity-0' : 'opacity-100'
+              }`} />
+              <span className={`absolute h-0.5 w-full bg-white transform transition-all duration-300 ${
+                toggle ? '-rotate-45 translate-y-2' : 'translate-y-2'
+              }`} />
+            </div>
           </button>
 
-          <div className={`${!toggle ? 'hidden' : 'flex'} p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl`}>
-            <ul className='list-none flex justify-end items-start flex-col gap-4'>
-              {navLinks.map((nav) => (
-                <li
-                  key={nav.id}
-                  className={`${
-                    active === nav.id ? 'text-white' : 'text-secondary'
-                  } font-poppins font-medium cursor-pointer text-[16px] transition-colors duration-300`}
-                  onClick={() => handleClick(nav.id)}
-                >
-                  {nav.title}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {toggle && (
+            <div className='fixed top-0 right-0 bottom-0 w-[min(75vw,400px)] bg-primary/95 backdrop-blur-lg shadow-xl p-6 pt-24'>
+              <ul className='list-none flex flex-col gap-6'>
+                {navLinks.map((nav) => (
+                  <li
+                    key={nav.id}
+                    className={`${
+                      active === nav.id ? 'text-white' : 'text-secondary'
+                    } font-poppins font-medium cursor-pointer text-[16px] transition-colors duration-300`}
+                    onClick={() => handleClick(nav.id)}
+                  >
+                    {nav.title}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </nav>

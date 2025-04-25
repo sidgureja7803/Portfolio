@@ -1,3 +1,4 @@
+import React from 'react';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import { motion } from 'framer-motion';
 import 'react-vertical-timeline-component/style.min.css';
@@ -5,8 +6,8 @@ import { styles } from '../styles';
 import { experiences } from '../constants';
 import SectionWrapper from '../hoc/SectionWrapper';
 import { textVariant } from '../utils/motion';
-import { useState } from 'react';
 import { FaChevronDown, FaChevronUp, FaCode, FaExternalLinkAlt } from 'react-icons/fa';
+import { useState } from 'react';
 
 const ProjectCard = ({ project }) => (
   <div className="bg-tertiary p-4 rounded-lg mt-2 mb-4">
@@ -20,7 +21,7 @@ const ProjectCard = ({ project }) => (
             rel="noopener noreferrer"
             className="text-white p-2 hover:text-blue-400 transition-colors"
           >
-            <FaCode />
+            <FaCode />s
           </a>
         )}
         {project.demo && (
@@ -110,8 +111,12 @@ const Experience = () => {
   return (
     <>
       <motion.div variants={textVariant()}>
-        <p className={styles.sectionSubText}>What I have done so far</p>
-        <h2 className={styles.sectionHeadText}>Work Experience.</h2>
+        <p className={`${styles.sectionSubText} text-center`}>
+          What I have done so far
+        </p>
+        <h2 className={`${styles.sectionHeadText} text-center`}>
+          Work Experience.
+        </h2>
       </motion.div>
 
       <div className="mt-20 flex flex-col">
@@ -125,4 +130,4 @@ const Experience = () => {
   );
 };
 
-export default SectionWrapper(Experience, "experience"); 
+export default SectionWrapper(Experience, 'work'); 

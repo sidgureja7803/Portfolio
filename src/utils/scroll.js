@@ -24,9 +24,14 @@ export const scrollTo = (target) => {
     const elementPosition = element.getBoundingClientRect().top;
     const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
 
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth'
+    // Use GSAP for smoother scrolling with callback
+    gsap.to(window, {
+      duration: 1,
+      scrollTo: {
+        y: offsetPosition,
+        autoKill: false
+      },
+      ease: 'power2.inOut'
     });
   }
 };

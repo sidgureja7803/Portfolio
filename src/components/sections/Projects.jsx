@@ -1,49 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useInView, useAnimation } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt, FaTimes, FaPlus, FaImage, FaLink } from 'react-icons/fa';
-
-// Sample projects data
-const initialProjects = [
-  {
-    id: 1,
-    title: 'Devtube',
-    description: 'A YouTube clone with advanced video features and real-time chat. Users can upload, like, comment, and share videos. Built with React, Node.js, and MongoDB.',
-    tech: ['React', 'Node.js', 'MongoDB', 'WebRTC', 'Express'],
-    github: 'https://github.com/yourusername/devtube',
-    live: 'https://devtube.yourdomain.com',
-    image: '/images/projects/project1.jpg',
-    featured: true
-  },
-  {
-    id: 2,
-    title: 'Netflix GPT',
-    description: 'AI-powered movie recommendations using GPT-3. The app suggests movies based on conversational input and provides personalized watchlists.',
-    tech: ['React', 'OpenAI API', 'Node.js', 'Express', 'Firebase'],
-    github: 'https://github.com/yourusername/netflix-gpt',
-    live: 'https://netflix-gpt.yourdomain.com',
-    image: '/images/projects/project2.jpg',
-    featured: false
-  },
-  {
-    id: 3,
-    title: 'Code Collab',
-    description: 'Real-time collaborative code editor with video chat. Developers can code together, execute code, and communicate via video/audio.',
-    tech: ['React', 'Socket.io', 'WebRTC', 'MongoDB', 'Express'],
-    github: 'https://github.com/yourusername/code-collab',
-    live: 'https://code-collab.yourdomain.com',
-    image: '/images/projects/project3.jpg',
-    featured: false
-  },
-];
+import { styles } from '../../styles';
+import { projects as initialProjects } from '../../constants';
+import { fadeIn, textVariant } from '../../utils/motion';
 
 const cardVariants = {
-  hidden: { y: 20, opacity: 0 },
+  hidden: { 
+    opacity: 0,
+    y: 20
+  },
   visible: { 
-    y: 0, 
     opacity: 1,
-    transition: { 
-      type: "spring", 
-      stiffness: 100
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut"
     }
   },
   hover: { 
@@ -58,85 +30,107 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      when: "beforeChildren",
       staggerChildren: 0.1
     }
   }
 };
 
-const ProjectCard = ({ project, onClick }) => {
+const ProjectCard = ({ project }) => {
+  const cardRef = useRef(null);
+  const isInView = useInView(cardRef, { once: true });
   const [imageError, setImageError] = useState(false);
-  
-  const handleImageError = () => {
-    setImageError(true);
-  };
-  
+  const { title, description, image, github, demo, tech, featured } = project;
+
   return (
     <motion.div
+      ref={cardRef}
       variants={cardVariants}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
       whileHover="hover"
       whileTap="tap"
-      className="glass rounded-xl overflow-hidden cursor-pointer group border border-gray-700/30 hover:border-blue-500/30 transition-colors"
-      onClick={() => onClick(project)}
+      className="relative bg-tertiary rounded-2xl p-5 sm:w-[360px] w-full hover:shadow-card transition-all duration-300 ease-out"
     >
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative w-full h-[230px] rounded-2xl overflow-hidden group">
         {!imageError ? (
-          <img 
-            src={project.image} 
-            alt={project.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-            onError={handleImageError}
+          <img
+            src={image}
+            alt={`${title} project thumbnail`}
+            onError={() => setImageError(true)}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 ease-out"
           />
         ) : (
-          <div className="w-full h-full bg-gray-800 flex items-center justify-center text-gray-500">
-            <div className="text-center p-4">
-              <FaImage size={30} className="mx-auto mb-2" />
-              <p>{project.title}</p>
-            </div>
+          <div className="w-full h-full flex items-center justify-center bg-black/10">
+            <FaImage className="w-12 h-12 text-gray-400" aria-label="Image not available" />
           </div>
         )}
         
-        {project.featured && (
-          <div className="absolute top-3 right-3 bg-gradient px-3 py-1 rounded-full text-xs font-medium text-white">
-            Featured
-          </div>
-        )}
-      </div>
-      
-      <div className="p-6">
-        <h3 className="text-xl font-bold mb-2 group-hover:text-blue-400 transition-colors">
-          {project.title}
-        </h3>
-        
-        <p className="text-gray-400 text-sm mb-4 line-clamp-2">
-          {project.description}
-        </p>
-        
-        <div className="flex flex-wrap gap-2 mb-4">
-          {project.tech.slice(0, 3).map((tech, index) => (
-            <span 
-              key={index} 
-              className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full"
+        <div className="absolute inset-0 flex justify-end m-3 gap-2 card-img_hover opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          {github && (
+            <motion.a
+              href={github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View project on GitHub"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
             >
-              {tech}
-            </span>
-          ))}
-          {project.tech.length > 3 && (
-            <span className="text-xs bg-gray-700/50 text-gray-400 px-2 py-1 rounded-full">
-              +{project.tech.length - 3}
+              <FaGithub className="w-1/2 h-1/2 text-white" />
+            </motion.a>
+          )}
+          {demo && (
+            <motion.a
+              href={demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View live demo"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
+            >
+              <FaExternalLinkAlt className="w-1/2 h-1/2 text-white" />
+            </motion.a>
+          )}
+        </div>
+      </div>
+
+      <div className="mt-5">
+        <div className="flex items-center gap-2">
+          <h3 className="text-white font-bold text-[24px] group-hover:bg-gradient-to-r from-purple-400 to-pink-600 group-hover:text-transparent group-hover:bg-clip-text transition-all duration-300">
+            {title}
+          </h3>
+          {featured && (
+            <span className="px-2 py-1 text-xs font-medium bg-gradient-to-r from-purple-400 to-pink-600 rounded-full text-white" aria-label="Featured project">
+              Featured
             </span>
           )}
         </div>
-        
-        <div className="pt-4 border-t border-gray-700/30 flex justify-between items-center">
-          <span className="text-xs text-gray-400">View details</span>
-          <motion.div 
-            className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400"
-            whileHover={{ scale: 1.1, backgroundColor: "rgba(59, 130, 246, 0.3)" }}
+        <p className="mt-2 text-secondary text-[14px] line-clamp-3">{description}</p>
+      </div>
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        {tech.map((tag, index) => (
+          <motion.p
+            key={`${tag}-${index}`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className={`text-[14px] text-white-100 bg-black/20 px-3 py-1 rounded-full ${index >= 3 ? 'hidden sm:inline-block' : ''}`}
           >
-            <FaExternalLinkAlt size={12} />
+            #{tag}
+          </motion.p>
+        ))}
+        {tech.length > 3 && (
+          <motion.div
+            className="text-[14px] text-white-100 bg-black/20 px-3 py-1 rounded-full flex items-center gap-1 sm:hidden"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FaPlus className="w-3 h-3" />
+            <span>{tech.length - 3}</span>
           </motion.div>
-        </div>
+        )}
       </div>
     </motion.div>
   );
@@ -609,7 +603,7 @@ const Projects = () => {
   const [projectsList, setProjectsList] = useState(initialProjects);
   const [selectedProject, setSelectedProject] = useState(null);
   const [showForm, setShowForm] = useState(false);
-  const [filter, setFilter] = useState('all'); // 'all' or 'featured'
+  const [filter, setFilter] = useState('all');
   
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px 0px" });
@@ -637,28 +631,24 @@ const Projects = () => {
       <div className="blur-gradient-purple w-[400px] h-[400px] bottom-[20%] -left-[100px] opacity-30" />
       
       <div className="container mx-auto max-w-6xl">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.h2 
-            className="text-3xl md:text-4xl font-bold mb-4"
-            initial={{ opacity: 0, y: -20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            My <span className="text-gradient">Projects</span>
-          </motion.h2>
-          <div className="w-24 h-1 bg-gradient mx-auto rounded mb-6"></div>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            Explore my recent projects and applications. Click on any project to view more details.
-          </p>
+        <motion.div variants={textVariant()}>
+          <p className={styles.sectionSubText}>My work</p>
+          <h2 className={styles.sectionHeadText}>Projects.</h2>
         </motion.div>
+
+        <motion.p
+          variants={fadeIn('', '', 0.1, 1)}
+          className="mt-3 text-secondary text-[17px] max-w-3xl leading-[30px]"
+        >
+          Following projects showcase my skills and experience through
+          real-world examples of my work. Each project is briefly described with
+          links to code repositories and live demos. These projects reflect my
+          ability to solve complex problems, work with different technologies,
+          and manage projects effectively.
+        </motion.p>
         
         {/* Filter and Actions */}
-        <div className="flex flex-wrap justify-center mb-10 gap-3">
+        <div className="flex flex-wrap justify-center my-10 gap-3">
           <motion.button
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-full text-sm font-medium ${
@@ -707,9 +697,8 @@ const Projects = () => {
           >
             {filteredProjects.map((project) => (
               <ProjectCard
-                key={project.id}
+                key={project.id || project.name}
                 project={project}
-                onClick={setSelectedProject}
               />
             ))}
           </motion.div>

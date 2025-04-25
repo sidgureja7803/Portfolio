@@ -1,5 +1,5 @@
 import thaparInnovate from './thapar_innovate.png';
-import { FaReact, FaNodeJs, FaGitAlt, FaDocker } from 'react-icons/fa';
+import { FaReact, FaNodeJs, FaGitAlt, FaDocker, FaPython, FaAws, FaLinux } from 'react-icons/fa';
 
 import {
   SiTypescript,
@@ -9,7 +9,40 @@ import {
   SiMongodb,
   SiTailwindcss,
   SiThreedotjs,
+  SiRedux,
+  SiGraphql,
+  SiPostgresql,
+  SiRedis,
+  SiNginx,
+  SiLeetcode,
 } from 'react-icons/si';
+
+export const education = [
+  {
+    degree: "Bachelor of Technology in Electronics and Computer Engineering",
+    school: "Thapar Institute of Engineering & Technology",
+    location: "Patiala, Punjab",
+    date: "2020 - 2026",
+    iconBg: "#383E56",
+    points: [
+      "Maintained a CGPA of 8.8/10 throughout the academic program",
+      "Participated in various hackathons and coding competitions",
+      "Won 3rd prize at ACM TIET Intra Society Codesprint - Feb 2024",
+    ],
+  },
+  {
+    degree: "High School",
+    school: "Omkarananda Sarswati Nilyam",
+    location: "Rishikesh, Uttarakhand",
+    date: "2019-2021",
+    iconBg: "#383E56",
+    points: [
+      "Graduated with 95.75% in ICSE Board Examinations",
+      "Went to Lucknow, to participate in Odyessy 2016",
+      "Won 3rd prize in Group Discussion Competition - 2019"
+    ],
+  },
+];
 
 export const navLinks = [
   {
@@ -29,6 +62,10 @@ export const navLinks = [
     title: "Projects",
   },
   {
+    id: "opensource",
+    title: "Open Source",
+  },
+  {
     id: "tech",
     title: "Tech Stack",
   },
@@ -44,20 +81,20 @@ export const navLinks = [
 
 export const services = [
   {
-    title: "Web Developer",
-    icon: "web",
+    title: "Problem Solver",
+    icon: "/web.png",
   },
   {
     title: "React Developer",
-    icon: "mobile",
+    icon: "/react.png",
   },
   {
     title: "Backend Developer",
-    icon: "backend",
+    icon: "/backend.png",
   },
   {
-    title: "Content Creator",
-    icon: "creator",
+    title: "Devops Engineer",
+    icon: "/creator.png",
   },
 ];
 
@@ -88,6 +125,11 @@ export const technologies = [
     color: "#00599C"
   },
   {
+    name: "Python",
+    icon: FaPython,
+    color: "#3776AB"
+  },
+  {
     name: "Docker",
     icon: FaDocker,
     color: "#2496ED"
@@ -108,9 +150,44 @@ export const technologies = [
     color: "#47A248"
   },
   {
+    name: "PostgreSQL",
+    icon: SiPostgresql,
+    color: "#336791"
+  },
+  {
+    name: "Redis",
+    icon: SiRedis,
+    color: "#DC382D"
+  },
+  {
+    name: "GraphQL",
+    icon: SiGraphql,
+    color: "#E10098"
+  },
+  {
+    name: "Redux",
+    icon: SiRedux,
+    color: "#764ABC"
+  },
+  {
     name: "Git",
     icon: FaGitAlt,
     color: "#F05032"
+  },
+  {
+    name: "AWS",
+    icon: FaAws,
+    color: "#232F3E"
+  },
+  {
+    name: "Linux",
+    icon: FaLinux,
+    color: "#FCC624"
+  },
+  {
+    name: "Nginx",
+    icon: SiNginx,
+    color: "#009639"
   },
   {
     name: "Tailwind CSS",
@@ -158,4 +235,12 @@ export const projects = [
     source_code_link: "https://github.com/",
   },
   // Add more projects here
-]; 
+];
+
+export const leetcodeStats = {
+  rating: 1850,
+  problemsSolved: 450,
+  contestRating: "Guardian",
+  icon: SiLeetcode,
+  color: "#FFA116"
+}; 

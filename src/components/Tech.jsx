@@ -1,54 +1,46 @@
-import { Suspense, useState } from 'react';
-import { BallCanvas } from './canvas';
-import SectionWrapper from '../hoc/SectionWrapper';
-import { technologies } from '../constants';
 import { motion } from 'framer-motion';
 import { styles } from '../styles';
-import { textVariant, fadeIn } from '../utils/motion';
+import { technologies } from '../constants';
+import { fadeIn, textVariant } from '../utils/motion';
+import SectionWrapper from '../hoc/SectionWrapper';
 
-const TechCard = ({ technology, index }) => {
-  const [isHovered, setIsHovered] = useState(false);
+const TechCard = ({ icon: Icon, name, index }) => (
+  <motion.div
+    variants={fadeIn('up', 'spring', index * 0.1, 0.75)}
+    initial="hidden"
+    animate="show"
+    className="w-28 h-28 rounded-xl bg-tertiary flex items-center justify-center relative group cursor-pointer"
+  >
+    <div className="w-16 h-16 relative flex items-center justify-center">
+      <Icon className="w-12 h-12 text-white transition-transform duration-300 group-hover:scale-110" />
+      <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+    </div>
+    <span className="absolute -bottom-8 text-white text-[14px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+      {name}
+    </span>
+  </motion.div>
+);
 
+const Tech = () => {
   return (
-    <motion.div 
-      variants={fadeIn("up", "spring", index * 0.1, 0.75)}
-      className={`w-28 h-28 relative group ${isHovered ? 'scale-110' : ''} transition-all duration-300`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <Suspense fallback={<div className="w-full h-full bg-tertiary rounded-full animate-pulse" />}>
-        <BallCanvas icon={technology.icon} name={technology.name} />
-      </Suspense>
-      <div className={`
-        absolute -bottom-10 left-1/2 transform -translate-x-1/2 
-        bg-black bg-opacity-80 px-3 py-1 rounded-lg
-        transition-all duration-300
-        ${isHovered ? 'opacity-100' : 'opacity-0'}
-      `}>
-        <p className="text-white text-sm whitespace-nowrap">{technology.name}</p>
-      </div>
-    </motion.div>
-  );
-};
-
-const Tech = () => {  
-  return (
-    <>
+    <div className="min-h-screen flex flex-col items-center justify-center">
       <motion.div variants={textVariant()}>
         <p className={styles.sectionSubText}>My technical expertise</p>
         <h2 className={styles.sectionHeadText}>Technologies.</h2>
       </motion.div>
 
       <motion.div 
-        variants={fadeIn("", "", 0.1, 1)}
-        className="flex flex-row flex-wrap justify-center gap-10 mt-20"
+        className='mt-20 flex flex-wrap gap-12 justify-center max-w-5xl mx-auto px-4'
+        variants={fadeIn('', '', 0.1, 1)}
+        initial="hidden"
+        animate="show"
       >
         {technologies.map((technology, index) => (
-          <TechCard key={technology.name} technology={technology} index={index} />
+          <TechCard key={technology.name} index={index} {...technology} />
         ))}
       </motion.div>
-    </>
+    </div>
   );
 };
 
-export default SectionWrapper(Tech, 'tech'); 
+export default SectionWrapper(Tech, "tech"); 
