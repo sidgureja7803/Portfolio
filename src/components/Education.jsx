@@ -33,35 +33,22 @@ const Education = () => {
   const educationData = [
     {
       title: "Bachelor's Degree",
-      school: "Your University Name",
-      duration: "2020 - 2024",
+      school: "Thapar Institute of Engineering and Technology, Patiala",
+      duration: "2022 - 22026",
       icon: FaUniversity,
       description: [
-        "Computer Science and Engineering",
-        "CGPA: 8.5/10",
-        "Relevant coursework: Data Structures, Algorithms, Database Management, Web Development",
+        "Electronics and Computer Engineering",
+        "Relevant coursework: Data Structures, Algorithms, Devops, Analog and Digital Electronics, Computer Networks, Operating Systems, Object Oriented Programming, Computer Organization and Architecture, Database Management, Web Development",
       ],
     },
     {
       title: "Higher Secondary",
-      school: "Your School Name",
-      duration: "2018 - 2020",
+      school: "Omkarananda Saraswati Nilyam, Rishikesh",
+      duration: "2019 - 2021",
       icon: FaGraduationCap,
       description: [
         "Science Stream with Computer Science",
-        "Percentage: 95%",
-        "Board Rank: Top 1%",
-      ],
-    },
-    {
-      title: "Secondary Education",
-      school: "Your School Name",
-      duration: "2016 - 2018",
-      icon: FaSchool,
-      description: [
-        "CBSE Board",
-        "Percentage: 92%",
-        "Active participation in coding competitions and science exhibitions",
+        "Percentage: 95.75",
       ],
     },
   ];

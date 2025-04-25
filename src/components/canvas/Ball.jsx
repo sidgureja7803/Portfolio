@@ -4,17 +4,11 @@ import {
   Float,
   OrbitControls,
   Preload,
+  Html,
 } from '@react-three/drei';
 import CanvasLoader from '../Loader';
 
-const Ball = (props) => {
-  // Instead of loading a texture, use color to represent technology
-  const getColorFromName = (name) => {
-    // Simple hash function to get consistent color from name
-    const hash = props.name?.split('').reduce((acc, char) => char.charCodeAt(0) + acc, 0) || 0;
-    return `hsl(${hash % 360}, 70%, 60%)`;
-  };
-  
+const Ball = ({ icon: Icon, color, name }) => {
   return (
     <Float speed={1.75} rotationIntensity={1} floatIntensity={2}>
       <ambientLight intensity={0.25} />
@@ -22,22 +16,35 @@ const Ball = (props) => {
       <mesh castShadow receiveShadow scale={2.75}>
         <icosahedronGeometry args={[1, 1]} />
         <meshStandardMaterial
-          color={getColorFromName(props.name)}
+          color={color}
           polygonOffset
           polygonOffsetFactor={-5}
           flatShading
         />
+        <Html distanceFactor={10} center>
+          <div className="text-4xl" style={{ color }}>
+            <Icon />
+          </div>
+        </Html>
       </mesh>
     </Float>
   );
 };
 
-const BallCanvas = ({ icon, name }) => {
+const BallCanvas = ({ icon, name, color }) => {
   return (
-    <Canvas frameloop="demand" gl={{ preserveDrawingBuffer: true }}>
+    <Canvas
+      frameloop="demand"
+      gl={{ preserveDrawingBuffer: true }}
+      className="cursor-pointer"
+    >
       <Suspense fallback={<CanvasLoader />}>
-        <OrbitControls enableZoom={false} />
-        <Ball name={name} />
+        <OrbitControls 
+          enableZoom={false}
+          maxPolarAngle={Math.PI / 2}
+          minPolarAngle={Math.PI / 2}
+        />
+        <Ball icon={icon} color={color} name={name} />
       </Suspense>
       <Preload all />
     </Canvas>

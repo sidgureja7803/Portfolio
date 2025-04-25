@@ -7,7 +7,6 @@ const Computers = ({ isMobile }) => {
   return (
     <mesh>
       <hemisphereLight intensity={0.15} groundColor="black" />
-      <pointLight intensity={1} />
       <spotLight
         position={[-20, 50, 10]}
         angle={0.12}
@@ -16,19 +15,35 @@ const Computers = ({ isMobile }) => {
         castShadow
         shadow-mapSize={1024}
       />
-      <group position={[0, -2, 0]} rotation={[-0.01, -0.2, -0.1]} scale={isMobile ? 0.6 : 0.75}>
-        <mesh position={[0, 0, 0]} castShadow receiveShadow>
-          <boxGeometry args={[5, 0.5, 4]} />
+      <pointLight intensity={1} />
+      
+      {/* Simple laptop-like shape */}
+      <group 
+        scale={isMobile ? 0.6 : 0.75}
+        position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
+        rotation={[-0.01, -0.2, -0.1]}
+      >
+        {/* Base */}
+        <mesh castShadow receiveShadow>
+          <boxGeometry args={[3, 0.2, 2]} />
           <meshStandardMaterial color="#333333" />
         </mesh>
-        <group position={[0, 2, -1.8]} rotation={[0.5, 0, 0]}>
+        
+        {/* Screen */}
+        <group position={[0, 1.2, -0.8]} rotation={[0.3, 0, 0]}>
           <mesh castShadow receiveShadow>
-            <boxGeometry args={[5, 3, 0.2]} />
+            <boxGeometry args={[3, 2, 0.1]} />
             <meshStandardMaterial color="#111111" />
           </mesh>
-          <mesh position={[0, 0, 0.11]} castShadow receiveShadow>
-            <planeGeometry args={[4.5, 2.5]} />
-            <meshStandardMaterial color="#0066cc" emissive="#004488" emissiveIntensity={0.5} />
+          {/* Screen display */}
+          <mesh position={[0, 0, 0.06]}>
+            <planeGeometry args={[2.8, 1.8]} />
+            <meshStandardMaterial 
+              color="#0066cc" 
+              emissive="#004488"
+              emissiveIntensity={0.5}
+              toneMapped={false}
+            />
           </mesh>
         </group>
       </group>
@@ -64,6 +79,7 @@ const ComputersCanvas = () => {
     <Canvas
       frameloop="demand"
       shadows
+      dpr={[1, 2]}
       camera={{ position: [20, 3, 5], fov: 25 }}
       gl={{ preserveDrawingBuffer: true }}
     >

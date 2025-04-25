@@ -1,208 +1,96 @@
-import { useRef, useMemo, useEffect } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useRef, useEffect } from 'react';
 import * as THREE from 'three';
-import { gsap } from 'gsap';
 
 const Background = () => {
-  const points = useRef();
-  const galaxy = useRef();
-  const { mouse, viewport } = useThree();
-  
-  // Generate particles with reduced count for better performance
-  const particles = useMemo(() => {
-    const temp = [];
-    const particleCount = 150;
-    
-    // Main cluster
-    for (let i = 0; i < particleCount; i++) {
-      // Calculate position in spherical distribution
-      const radius = Math.random() * 25;
-      const theta = Math.random() * Math.PI * 2; // Random angle around y-axis
-      const phi = Math.acos(2 * Math.random() - 1); // Random angle from top to bottom
-      
-      const x = radius * Math.sin(phi) * Math.cos(theta);
-      const y = radius * Math.sin(phi) * Math.sin(theta);
-      const z = radius * Math.cos(phi);
-      
-      // Add some randomness to create a more natural look
-      const jitter = 5;
-      const jx = (Math.random() - 0.5) * jitter;
-      const jy = (Math.random() - 0.5) * jitter;
-      const jz = (Math.random() - 0.5) * jitter;
-      
-      temp.push(x + jx, y + jy, z + jz);
-    }
-    
-    // Create a few extra smaller clusters
-    for (let c = 0; c < 3; c++) {
-      // Random position for the center of this cluster
-      const centerX = (Math.random() - 0.5) * 30;
-      const centerY = (Math.random() - 0.5) * 30;
-      const centerZ = (Math.random() - 0.5) * 30;
-      
-      // Add particles to this cluster
-      for (let i = 0; i < 30; i++) {
-        const radius = Math.random() * 5;
-        const theta = Math.random() * Math.PI * 2;
-        const phi = Math.acos(2 * Math.random() - 1);
-        
-        const x = centerX + radius * Math.sin(phi) * Math.cos(theta);
-        const y = centerY + radius * Math.sin(phi) * Math.sin(theta);
-        const z = centerZ + radius * Math.cos(phi);
-        
-        temp.push(x, y, z);
-      }
-    }
-    
-    return new Float32Array(temp);
-  }, []);
+  const containerRef = useRef(null);
+  const mousePosition = useRef({ x: 0, y: 0 });
 
-  // Create colors array for particles
-  const colors = useMemo(() => {
-    const temp = [];
-    const count = particles.length / 3;
-    
-    const colorOptions = [
-      new THREE.Color('#4299e1'), // blue-500
-      new THREE.Color('#3182ce'), // blue-600
-      new THREE.Color('#2b6cb0'), // blue-700
-      new THREE.Color('#805ad5'), // purple-600
-      new THREE.Color('#6b46c1'), // purple-700
-      new THREE.Color('#ffffff'), // white
-    ];
-    
-    for (let i = 0; i < count; i++) {
-      const color = colorOptions[Math.floor(Math.random() * colorOptions.length)];
-      temp.push(color.r, color.g, color.b);
-    }
-    
-    return new Float32Array(temp);
-  }, [particles]);
-
-  // Create sizes array for particles
-  const sizes = useMemo(() => {
-    const temp = [];
-    const count = particles.length / 3;
-    
-    for (let i = 0; i < count; i++) {
-      temp.push(Math.random() * 2 + 0.1);
-    }
-    
-    return new Float32Array(temp);
-  }, [particles]);
-
-  // Add mouse interaction effect
-  useFrame((state) => {
-    const time = state.clock.getElapsedTime();
-    
-    // Rotate the entire system
-    if (galaxy.current) {
-      galaxy.current.rotation.y = time * 0.05;
-      galaxy.current.rotation.z = time * 0.025;
-    }
-    
-    // Mouse interaction
-    if (points.current && mouse) {
-      // Convert mouse coordinates to 3D space
-      const x = (mouse.x * viewport.width) / 2;
-      const y = (mouse.y * viewport.height) / 2;
-      
-      // Subtle rotation based on mouse position
-      points.current.rotation.x = y * 0.01;
-      points.current.rotation.y = x * 0.01;
-    }
-  });
-
-  // Initial animation
   useEffect(() => {
-    if (points.current) {
-      // Starting scale
-      points.current.scale.set(0.1, 0.1, 0.1);
-      
-      // Animate to full scale
-      gsap.to(points.current.scale, {
-        x: 1,
-        y: 1,
-        z: 1,
-        duration: 2,
-        ease: "power3.out",
-      });
-      
-      // Also animate opacity
-      gsap.fromTo(
-        points.current.material, 
-        { opacity: 0 },
-        { opacity: 0.8, duration: 2, ease: "power2.out" }
-      );
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    containerRef.current.appendChild(renderer.domElement);
+
+    // Create stars
+    const starsGeometry = new THREE.BufferGeometry();
+    const starsMaterial = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 0.1,
+      transparent: true,
+      opacity: 0.8,
+    });
+
+    const starsVertices = [];
+    for (let i = 0; i < 5000; i++) {
+      const x = (Math.random() - 0.5) * 2000;
+      const y = (Math.random() - 0.5) * 2000;
+      const z = -Math.random() * 2000;
+      starsVertices.push(x, y, z);
     }
+
+    starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
+    const stars = new THREE.Points(starsGeometry, starsMaterial);
+    scene.add(stars);
+
+    camera.position.z = 5;
+
+    // Handle mouse movement
+    const handleMouseMove = (event) => {
+      mousePosition.current = {
+        x: (event.clientX / window.innerWidth) * 2 - 1,
+        y: -(event.clientY / window.innerHeight) * 2 + 1,
+      };
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    // Handle window resize
+    const handleResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Animation loop
+    const animate = () => {
+      requestAnimationFrame(animate);
+
+      // Rotate stars based on mouse position
+      stars.rotation.x += 0.0001;
+      stars.rotation.y += 0.0001;
+      stars.rotation.x += (mousePosition.current.y * 0.00001);
+      stars.rotation.y += (mousePosition.current.x * 0.00001);
+
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('resize', handleResize);
+      containerRef.current?.removeChild(renderer.domElement);
+    };
   }, []);
 
   return (
-    <group ref={galaxy}>
-      <points ref={points}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            count={particles.length / 3}
-            array={particles}
-            itemSize={3}
-          />
-          <bufferAttribute
-            attach="attributes-color"
-            count={colors.length / 3}
-            array={colors}
-            itemSize={3}
-          />
-          <bufferAttribute
-            attach="attributes-size"
-            count={sizes.length}
-            array={sizes}
-            itemSize={1}
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          size={0.15}
-          sizeAttenuation={true}
-          vertexColors
-          transparent={true}
-          opacity={0.8}
-          fog={true}
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        >
-          {/* Custom vertex shader to make particles look more natural */}
-          <shaderMaterial
-            attach="customMaterial"
-            vertexShader={`
-              attribute float size;
-              varying vec3 vColor;
-              
-              void main() {
-                vColor = color;
-                vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-                gl_PointSize = size * (300.0 / -mvPosition.z);
-                gl_Position = projectionMatrix * mvPosition;
-              }
-            `}
-            fragmentShader={`
-              varying vec3 vColor;
-              
-              void main() {
-                // Create circular particles
-                float r = 0.5;
-                vec2 cxy = 2.0 * gl_PointCoord - 1.0;
-                float r2 = dot(cxy, cxy);
-                float opacity = 1.0 - smoothstep(r * (r - 0.1), r, r2);
-                
-                if (r2 > r * r) discard;
-                
-                gl_FragColor = vec4(vColor, opacity);
-              }
-            `}
-          />
-        </pointsMaterial>
-      </points>
-    </group>
+    <div 
+      ref={containerRef} 
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: -1,
+        opacity: 0.7,
+      }}
+    />
   );
 };
 

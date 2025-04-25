@@ -20,17 +20,17 @@ const SimpleParticles = ({ count = 500 }) => {
       ref.current.rotation.y = state.clock.elapsedTime * 0.05;
     }
   });
-  
+
   return (
     <Points ref={ref} positions={positions} stride={3}>
-      <PointMaterial
-        transparent
+        <PointMaterial
+          transparent
         color="#8d5eff"
         size={0.01}
-        sizeAttenuation={true}
-        depthWrite={false}
-      />
-    </Points>
+          sizeAttenuation={true}
+          depthWrite={false}
+        />
+      </Points>
   );
 };
 

@@ -1,4 +1,15 @@
 import thaparInnovate from './thapar_innovate.png';
+import { FaReact, FaNodeJs, FaGitAlt, FaDocker } from 'react-icons/fa';
+
+import {
+  SiTypescript,
+  SiJavascript,
+  SiCplusplus,
+  SiKubernetes,
+  SiMongodb,
+  SiTailwindcss,
+  SiThreedotjs,
+} from 'react-icons/si';
 
 export const navLinks = [
   {
@@ -53,52 +64,59 @@ export const services = [
 export const technologies = [
   {
     name: "React",
-    icon: "react",
+    icon: FaReact,
+    color: "#61DAFB"
   },
   {
     name: "Three.js",
-    icon: "threejs",
+    icon: SiThreedotjs,
+    color: "#000000"
   },
   {
     name: "JavaScript",
-    icon: "javascript",
+    icon: SiJavascript,
+    color: "#F7DF1E"
   },
   {
     name: "TypeScript",
-    icon: "typescript",
-  },
-  {
-    name: "Java",
-    icon: "java",
+    icon: SiTypescript,
+    color: "#3178C6"
   },
   {
     name: "C++",
-    icon: "cpp",
+    icon: SiCplusplus,
+    color: "#00599C"
   },
   {
     name: "Docker",
-    icon: "docker",
+    icon: FaDocker,
+    color: "#2496ED"
   },
   {
     name: "Kubernetes",
-    icon: "kubernetes",
+    icon: SiKubernetes,
+    color: "#326CE5"
   },
   {
     name: "Node.js",
-    icon: "nodejs",
+    icon: FaNodeJs,
+    color: "#339933"
   },
   {
     name: "MongoDB",
-    icon: "mongodb",
+    icon: SiMongodb,
+    color: "#47A248"
   },
   {
     name: "Git",
-    icon: "git",
+    icon: FaGitAlt,
+    color: "#F05032"
   },
   {
     name: "Tailwind CSS",
-    icon: "tailwind",
-  },
+    icon: SiTailwindcss,
+    color: "#06B6D4"
+  }
 ];
 
 export const experiences = [

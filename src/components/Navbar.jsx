@@ -1,106 +1,80 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { styles } from '../styles';
 import { navLinks } from '../constants';
-import { FaBars, FaTimes, FaReact } from 'react-icons/fa';
-import scrollManager from '../utils/scrollManager';
+import { scrollTo, initSmoothScroll } from '../utils/scroll';
 
 const Navbar = () => {
   const [active, setActive] = useState('');
   const [toggle, setToggle] = useState(false);
 
-  const handleScroll = (id) => {
+  useEffect(() => {
+    initSmoothScroll();
+  }, []);
+
+  const handleClick = (id) => {
     setActive(id);
+    setToggle(false);
     
-    // Attempt to use the scrollManager first
-    try {
-      scrollManager.scrollTo(`#${id}`);
-    } catch (error) {
-      console.warn('ScrollManager failed, using native scroll:', error);
-      
-      // Fallback to native scroll behavior
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
+    // Add a small delay to ensure the menu is closed before scrolling
+    setTimeout(() => {
+      scrollTo(`#${id}`);
+    }, 100);
   };
 
   return (
-    <nav
-      className={`${styles.paddingX} w-full flex items-center py-5 fixed top-0 z-20 bg-primary`}
-    >
-      <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
+    <nav className={`${styles.paddingX} w-full flex items-center py-5 fixed top-0 z-20 bg-primary`}>
+      <div className='w-full flex justify-between items-center max-w-7xl mx-auto'>
         <Link
-          to="/"
-          className="flex items-center gap-2"
+          to='/'
+          className='flex items-center gap-2'
           onClick={() => {
             setActive('');
-            // Try scrollManager and fallback to native scroll
-            try {
-              scrollManager.scrollTo(0);
-            } catch (error) {
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+            window.scrollTo(0, 0);
           }}
         >
-          <FaReact className="w-8 h-8 text-white" />
-          <p className="text-white text-[18px] font-bold cursor-pointer flex">
-            Siddhant Gureja &nbsp;
-            <span className="sm:block hidden">| Portfolio</span>
+          <div className='w-9 h-9 rounded-full bg-white flex items-center justify-center text-primary font-bold text-lg'>
+            S
+          </div>
+          <p className='text-white text-[18px] font-bold cursor-pointer flex'>
+            Siddhant &nbsp;
+            <span className='sm:block hidden'>| Portfolio</span>
           </p>
         </Link>
-        <ul className="list-none hidden sm:flex flex-row gap-10">
+
+        <ul className='list-none hidden sm:flex flex-row gap-10'>
           {navLinks.map((link) => (
             <li
               key={link.id}
               className={`${
-                active === link.title ? 'text-white' : 'text-secondary'
-              } hover:text-white text-[18px] font-medium cursor-pointer`}
+                active === link.id ? 'text-white' : 'text-secondary'
+              } hover:text-white text-[18px] font-medium cursor-pointer transition-colors duration-300`}
+              onClick={() => handleClick(link.id)}
             >
-              {/* Use a regular anchor tag as fallback that will work even if JS fails */}
-              <a 
-                href={`#${link.id}`}
-                onClick={(e) => {
-                  e.preventDefault(); // Prevent default only if JS is working
-                  handleScroll(link.id);
-                }}
-              >
-                {link.title}
-              </a>
+              {link.title}
             </li>
           ))}
         </ul>
 
-        <div className="sm:hidden flex flex-1 justify-end items-center">
-          {toggle ? (
-            <FaTimes className="w-6 h-6 text-white cursor-pointer" onClick={() => setToggle(false)} />
-          ) : (
-            <FaBars className="w-6 h-6 text-white cursor-pointer" onClick={() => setToggle(true)} />
-          )}
-          <div
-            className={`${
-              !toggle ? 'hidden' : 'flex'
-            } p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl`}
+        <div className='sm:hidden flex flex-1 justify-end items-center'>
+          <button
+            className='w-[28px] h-[28px] flex items-center justify-center text-white cursor-pointer'
+            onClick={() => setToggle(!toggle)}
           >
-            <ul className="list-none flex justify-end items-start flex-col gap-4">
-              {navLinks.map((link) => (
+            {toggle ? '✕' : '☰'}
+          </button>
+
+          <div className={`${!toggle ? 'hidden' : 'flex'} p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl`}>
+            <ul className='list-none flex justify-end items-start flex-col gap-4'>
+              {navLinks.map((nav) => (
                 <li
-                  key={link.id}
+                  key={nav.id}
                   className={`${
-                    active === link.title ? 'text-white' : 'text-secondary'
-                  } font-poppins font-medium cursor-pointer text-[16px]`}
+                    active === nav.id ? 'text-white' : 'text-secondary'
+                  } font-poppins font-medium cursor-pointer text-[16px] transition-colors duration-300`}
+                  onClick={() => handleClick(nav.id)}
                 >
-                  <a 
-                    href={`#${link.id}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setToggle(!toggle);
-                      handleScroll(link.id);
-                    }}
-                  >
-                    {link.title}
-                  </a>
+                  {nav.title}
                 </li>
               ))}
             </ul>

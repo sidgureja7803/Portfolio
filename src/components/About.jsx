@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Tilt } from 'react-tilt';
 import { motion } from 'framer-motion';
 import { styles } from '../styles';
@@ -7,7 +7,7 @@ import { fadeIn, textVariant } from '../utils/motion';
 import { fadeInUp, slideInLeft, slideInRight, staggerFadeInUp } from '../utils/animations';
 import SectionWrapper from '../hoc/SectionWrapper';
 import { useGSAP } from '@gsap/react';
-import profilePic from './image.png';
+import Profile from '../image.png';
 
 const ServiceCard = ({ index, title, icon }) => {
   const cardRef = useRef(null);
@@ -43,6 +43,8 @@ const About = () => {
   const contentRef = useRef(null);
   const imageRef = useRef(null);
   const servicesRef = useRef(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   useGSAP(() => {
     slideInLeft(contentRef.current);
@@ -50,6 +52,14 @@ const About = () => {
     const serviceCards = servicesRef.current.querySelectorAll('.service-card');
     staggerFadeInUp(serviceCards, 0.2);
   }, []);
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
 
   return (
     <>
@@ -77,14 +87,32 @@ const About = () => {
           variants={fadeIn('left', 'spring', 0.3, 0.75)}
           className="relative w-[280px] h-[280px] lg:w-[400px] lg:h-[400px] flex-shrink-0"
         >
-          <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
+          <div 
+            className={`absolute inset-0 bg-blue-500/20 rounded-full blur-3xl ${
+              imageLoaded ? 'animate-pulse' : 'animate-none'
+            }`}
+          ></div>
           
           <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-blue-500/30 transform hover:scale-105 transition-transform duration-300">
+            {!imageLoaded && !imageError && (
+              <div className="absolute inset-0 flex items-center justify-center bg-tertiary">
+                <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            )}
             <img
-              src={profilePic}
+              src={Profile}
               alt="Profile"
-              className="w-full h-full object-cover rounded-full"
+              className={`w-full h-full object-cover rounded-full transition-opacity duration-300 ${
+                imageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+              onLoad={handleImageLoad}
+              onError={handleImageError}
             />
+            {imageError && (
+              <div className="absolute inset-0 flex items-center justify-center bg-tertiary text-white text-center p-4">
+                <span>Failed to load profile image</span>
+              </div>
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
           </div>
         </motion.div>
