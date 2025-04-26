@@ -1,7 +1,7 @@
 import { Tilt } from 'react-tilt';
 import { motion } from 'framer-motion';
 import { styles } from '../styles';
-import { FaGithub } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import SectionWrapper from '../hoc/SectionWrapper';
 import { projects } from '../constants';
 import { fadeIn, textVariant } from '../utils/motion';
@@ -14,6 +14,12 @@ const ProjectCard = ({
   image,
   source_code_link,
 }) => {
+  // Fix for image paths - use .png extension
+  const imagePath = image.startsWith('/') ? image : `/images/${image}.png`;
+  
+  // Determine if link is GitHub or a live demo
+  const isGithub = source_code_link && source_code_link.includes('github');
+  
   return (
     <motion.div variants={fadeIn('up', 'spring', index * 0.5, 0.75)}>
       <Tilt
@@ -22,17 +28,29 @@ const ProjectCard = ({
       >
         <div className="relative w-full h-[230px]">
           <img
-            src={image}
+            src={imagePath}
             alt={name}
             className="w-full h-full object-cover rounded-2xl"
           />
           <div className="absolute inset-0 flex justify-end m-3 card-img_hover">
-            <div
-              onClick={() => window.open(source_code_link, '_blank')}
-              className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
-            >
-              <FaGithub className="text-white w-5 h-5" />
-            </div>
+            {isGithub && (
+              <div
+                onClick={() => window.open(source_code_link, '_blank')}
+                className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer mr-2"
+                title="View GitHub Repository"
+              >
+                <FaGithub className="text-white w-5 h-5" />
+              </div>
+            )}
+            {!isGithub && source_code_link && (
+              <div
+                onClick={() => window.open(source_code_link, '_blank')}
+                className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
+                title="View Live Demo"
+              >
+                <FaExternalLinkAlt className="text-white w-5 h-5" />
+              </div>
+            )}
           </div>
         </div>
 
@@ -42,7 +60,7 @@ const ProjectCard = ({
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
-          {tags.map((tag) => (
+          {tags && tags.map((tag) => (
             <p key={tag.name} className={`text-[14px] ${tag.color}`}>
               #{tag.name}
             </p>

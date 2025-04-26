@@ -3,7 +3,7 @@ import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeli
 import { motion } from 'framer-motion';
 import 'react-vertical-timeline-component/style.min.css';
 import { styles } from '../styles';
-import { experiences } from '../constants';
+import { experiences, incubatorCRM } from '../constants';
 import SectionWrapper from '../hoc/SectionWrapper';
 import { textVariant } from '../utils/motion';
 import { FaChevronDown, FaChevronUp, FaCode, FaExternalLinkAlt } from 'react-icons/fa';
@@ -14,14 +14,14 @@ const ProjectCard = ({ project }) => (
     <div className="flex justify-between items-center mb-2">
       <h4 className="text-white text-[18px] font-medium">{project.name}</h4>
       <div className="flex gap-2">
-        {project.github && (
+        {project.source_code_link && (
           <a 
-            href={project.github} 
+            href={project.source_code_link} 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-white p-2 hover:text-blue-400 transition-colors"
           >
-            <FaCode />s
+            <FaCode />
           </a>
         )}
         {project.demo && (
@@ -38,17 +38,33 @@ const ProjectCard = ({ project }) => (
     </div>
     <p className="text-secondary text-[14px]">{project.description}</p>
     <div className="flex flex-wrap gap-2 mt-2">
-      {project.technologies.map((tech, index) => (
-        <span key={index} className="text-xs bg-blue-900/30 text-blue-300 px-2 py-1 rounded-full">
-          {tech}
+      {project.tags && project.tags.map((tag, index) => (
+        <span key={index} className={`text-xs px-2 py-1 rounded-full ${tag.color}`}>
+          {tag.name}
         </span>
       ))}
     </div>
+    
+    {/* Show project image if it exists */}
+    {project.image && (
+      <div className="mt-3 w-full h-[120px] overflow-hidden rounded-lg">
+        <img
+          src={`/images/${project.image}.png`}
+          alt={project.name}
+          className="w-full h-full object-cover"
+        />
+      </div>
+    )}
   </div>
 );
 
 const ExperienceCard = ({ experience }) => {
   const [showProjects, setShowProjects] = useState(false);
+  
+  // Check if we need to add the incubatorCRM project to Thapar Innovate experience
+  const isInnovate = experience.company_name === "Thapar Innovate";
+  const projectsToShow = isInnovate ? [incubatorCRM] : experience.projects || [];
+  const hasProjects = isInnovate || (experience.projects && experience.projects.length > 0);
   
   return (
     <VerticalTimelineElement
@@ -84,7 +100,7 @@ const ExperienceCard = ({ experience }) => {
         ))}
       </ul>
       
-      {experience.projects && experience.projects.length > 0 && (
+      {hasProjects && (
         <>
           <button 
             className="mt-4 flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
@@ -96,7 +112,7 @@ const ExperienceCard = ({ experience }) => {
           
           {showProjects && (
             <div className="mt-2">
-              {experience.projects.map((project, index) => (
+              {projectsToShow.map((project, index) => (
                 <ProjectCard key={index} project={project} />
               ))}
             </div>

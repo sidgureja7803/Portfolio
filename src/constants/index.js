@@ -240,6 +240,33 @@ export const experiences = [
   // Add more experiences here
 ];
 
+
+export const incubatorCRM = {
+  name: "IncubatorCRM",
+  description: "A comprehensive CRM system for managing startup incubator operations, including member tracking, event management, and resource allocation.",
+  tags: [
+    {
+      name: "react",
+      color: "bg-blue-500/20 text-blue-300",
+    },
+    {
+      name: "mongodb",
+      color: "bg-green-500/20 text-green-300",
+    },
+    {
+      name: "express",
+      color: "bg-gray-500/20 text-gray-300",
+    },
+    {
+      name: "node.js",
+      color: "bg-emerald-500/20 text-emerald-300",
+    }
+  ],
+  image: "project5",
+  source_code_link: "https://github.com/siddhantgureja/incubator-crm",
+  demo: "https://incubator-crm.vercel.app",
+};
+
 export const projects = [
   {
     name: "AI-Powered Code Reviewer",
@@ -323,7 +350,7 @@ export const projects = [
       },
     ],
     image: "project4",
-    source_code_link: "https://netflix-gpt-frontend.vercel.app/",
+    source_code_link: "netflix-gpt-five-sandy.vercel.app",
   },
 ];
 
