@@ -1,5 +1,8 @@
 import { motion } from 'framer-motion';
 import { styles } from '../styles';
+import GurejaSvgCanvas from './canvas/GurejaSvg';
+import { Suspense } from 'react';
+import Loader from './Loader';
 
 const Hero = () => {
   return (
@@ -36,18 +39,25 @@ const Hero = () => {
           </motion.p>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="absolute right-20 top-0 w-[300px] h-[300px] rounded-full overflow-hidden border-4 border-purple-500/30"
-        >
-          <img 
-            src="/image.png" 
-            alt="Siddhant Gureja" 
-            className="w-full h-full object-cover"
-          />
-        </motion.div>
+        <div className="flex-1 relative">
+          {/* 3D Gureja Logo - positioned between text and image */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] z-10">
+            <GurejaSvgCanvas />
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="absolute right-0 top-0 w-[300px] h-[300px] rounded-full overflow-hidden border-4 border-purple-500/30"
+          >
+            <img 
+              src="/image.png" 
+              alt="Siddhant Gureja" 
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+        </div>
       </div>
 
       <motion.div

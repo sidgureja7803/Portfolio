@@ -1,3 +1,4 @@
+import React from 'react';
 import { Tilt } from 'react-tilt';
 import { motion } from 'framer-motion';
 import { styles } from '../styles';
@@ -13,18 +14,16 @@ const ProjectCard = ({
   tags,
   image,
   source_code_link,
+  github_link,
 }) => {
   // Fix for image paths - use .png extension
-  const imagePath = image.startsWith('/') ? image : `/images/${image}.png`;
-  
-  // Determine if link is GitHub or a live demo
-  const isGithub = source_code_link && source_code_link.includes('github');
+  const imagePath = `/images/${image}.png`;
   
   return (
     <motion.div variants={fadeIn('up', 'spring', index * 0.5, 0.75)}>
       <Tilt
         options={{ max: 45, scale: 1, speed: 450 }}
-        className="bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full"
+        className="bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full relative group"
       >
         <div className="relative w-full h-[230px]">
           <img
@@ -33,16 +32,17 @@ const ProjectCard = ({
             className="w-full h-full object-cover rounded-2xl"
           />
           <div className="absolute inset-0 flex justify-end m-3 card-img_hover">
-            {isGithub && (
+            {github_link && (
               <div
-                onClick={() => window.open(source_code_link, '_blank')}
+                onClick={() => window.open(github_link, '_blank')}
                 className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer mr-2"
                 title="View GitHub Repository"
               >
                 <FaGithub className="text-white w-5 h-5" />
               </div>
             )}
-            {!isGithub && source_code_link && (
+            
+            {source_code_link && (
               <div
                 onClick={() => window.open(source_code_link, '_blank')}
                 className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
@@ -56,16 +56,24 @@ const ProjectCard = ({
 
         <div className="mt-5">
           <h3 className="text-white font-bold text-[24px]">{name}</h3>
-          <p className="mt-2 text-secondary text-[14px]">{description}</p>
+          <p className="mt-2 text-secondary text-[14px] line-clamp-3">{description}</p>
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
-          {tags && tags.map((tag) => (
-            <p key={tag.name} className={`text-[14px] ${tag.color}`}>
-              #{tag.name}
-            </p>
-          ))}
+        {tags.map((tag, index) => {
+        const TagIcon = tag.icon;
+    
+          return (
+          <div 
+        key={`${tag.name}-${index}`} 
+        className="text-[14px] flex items-center gap-1 px-3 py-1 rounded-full bg-black bg-opacity-70 border border-opacity-20 border-white"
+          >
+        {TagIcon && <TagIcon className={`w-4 h-4 ${tag.color}`} />}
+        <span className="text-white">{tag.name}</span>
         </div>
+        );
+      })}
+      </div>
       </Tilt>
     </motion.div>
   );
@@ -101,4 +109,4 @@ const Works = () => {
   );
 };
 
-export default SectionWrapper(Works, 'projects'); 
+export default SectionWrapper(Works, 'projects');

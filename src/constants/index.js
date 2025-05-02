@@ -34,7 +34,7 @@ export const education = [
     degree: "Bachelor of Technology in Electronics and Computer Engineering",
     school: "Thapar Institute of Engineering & Technology",
     location: "Patiala, Punjab",
-    date: "2020 - 2026",
+    date: "2022 - 2026",
     iconBg: "#383E56",
     points: [
       "Maintained a CGPA of 8.8/10 throughout the academic program",
@@ -276,6 +276,7 @@ export const projects = [
       {
         name: "React Js",
         color: "blue-text-gradient",
+        icon: FaReact
       },
       {
         name: "Gemini API",
@@ -284,10 +285,12 @@ export const projects = [
       {
         name: "Tailwind",
         color: "pink-text-gradient",
+        icon: SiTailwindcss
       },
     ],
     image: "project1",
     source_code_link: "https://code-review-wine.vercel.app/",
+    github_link: "https://github.com/sidgureja7803/code-reviewer"
   },
   {
     name: "Dev-Tinder",
@@ -297,18 +300,22 @@ export const projects = [
       {
         name: "React Js",
         color: "blue-text-gradient",
+        icon: FaReact
       },
       {
         name: "Express Js",
         color: "green-text-gradient",
+        icon: SiExpress
       },
       {
         name: "MongoDB",
         color: "pink-text-gradient",
+        icon: SiMongodb
       },
     ],
     image: "project2",
-    source_code_link: "https://dev-tinder-frontend-nine.vercel.app/",
+    source_code_link: "https://dev-tinder-jet.vercel.app/",
+    github_link: "https://github.com/sidgureja7803/dev-tinder"
   },
   {
     name: "IMDb Clone",
@@ -318,6 +325,7 @@ export const projects = [
       {
         name: "React Js",
         color: "blue-text-gradient",
+        icon: FaReact
       },
       {
         name: "TMDb API",
@@ -326,10 +334,12 @@ export const projects = [
       {
         name: "Tailwind CSS",
         color: "pink-text-gradient",
+        icon: SiTailwindcss
       },
     ],
     image: "project3",
-    source_code_link: "https://movie-app-n8ci.vercel.app/"
+    source_code_link: "https://movie-app-n8ci.vercel.app/",
+    github_link: "https://github.com/sidgureja7803/imdb-clone"
   },
   {
     name: "Netflix GPT",
@@ -339,6 +349,7 @@ export const projects = [
       {
         name: "React Js",
         color: "blue-text-gradient",
+        icon: FaReact
       },
       {
         name: "OpenAI API",
@@ -350,7 +361,38 @@ export const projects = [
       },
     ],
     image: "project4",
-    source_code_link: "netflix-gpt-five-sandy.vercel.app",
+    source_code_link: "https://netflix-gpt-five-sandy.vercel.app",
+    github_link: "https://github.com/sidgureja7803/netflix-gpt"
+  },
+  {
+    name: "IncubatorCRM",
+    description:
+      "A comprehensive CRM system for managing startup incubator operations, including member tracking, event management, and resource allocation.",
+    tags: [
+      {
+        name: "React Js",
+        color: "blue-text-gradient",
+        icon: FaReact
+      },
+      {
+        name: "MongoDB",
+        color: "green-text-gradient",
+        icon: SiMongodb
+      },
+      {
+        name: "Express Js",
+        color: "pink-text-gradient",
+        icon: SiExpress
+      },
+      {
+        name: "Node.js",
+        color: "orange-text-gradient",
+        icon: FaNodeJs
+      },
+    ],
+    image: "project5",
+    source_code_link: "https://incubator-crm.vercel.app",
+    github_link: "https://github.com/siddhantgureja/incubator-crm"
   },
 ];
 

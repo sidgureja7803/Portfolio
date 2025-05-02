@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useAnimation, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaTwitter, FaArrowDown } from 'react-icons/fa';
+import { GurejaSvgCanvas } from '../canvas';
 
 // Animated typing effect component
 const TypedText = ({ phrases }) => {
@@ -190,7 +191,7 @@ const Home = () => {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
           {/* Left content - text */}
           <motion.div 
-            className="lg:w-7/12 text-center lg:text-left"
+            className="lg:w-4/12 text-center lg:text-left z-10"
             initial={{ opacity: 0, y: 20 }}
             animate={controls}
           >
@@ -211,7 +212,7 @@ const Home = () => {
                 perspective: "1000px",
               }}
             >
-              Hi, I'm <span className="text-gradient">Siddhant Gureja</span>
+              Hi, I'm <span className="text-gradient">Siddhant</span>
             </motion.h1>
             
             <motion.h2 
@@ -220,7 +221,7 @@ const Home = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              I'm a <TypedText phrases={["Web Developer", "Designer", "3D Enthusiast"]} />
+              I develop <TypedText phrases={["web applications", "user interfaces", "cloud solutions"]} />
             </motion.h2>
             
             <motion.p 
@@ -282,15 +283,25 @@ const Home = () => {
             </motion.div>
           </motion.div>
           
+          {/* Center - 3D Logo */}
+          <motion.div
+            className="lg:w-4/12 h-[300px] sm:h-[400px] relative z-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 1 }}
+          >
+            <GurejaSvgCanvas />
+          </motion.div>
+          
           {/* Right content - image */}
           <motion.div 
-            className="lg:w-5/12 flex justify-center"
+            className="lg:w-4/12 flex justify-center z-10"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={controls}
             transition={{ delay: 0.2 }}
           >
             <FloatingImage 
-              src="/images/profile.jpg"
+              src="/images/profile.png"
               alt="Siddhant Gureja"
               className="w-64 h-64 sm:w-80 sm:h-80"
             />

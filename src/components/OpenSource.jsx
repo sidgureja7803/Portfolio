@@ -4,7 +4,6 @@ import { styles } from '../styles';
 import SectionWrapper from '../hoc/SectionWrapper';
 import { fadeIn, textVariant } from '../utils/motion';
 import { FaGithub } from 'react-icons/fa';
-import GurejaSvg from './canvas/GurejaSvg';
 
 const HacktoberfestCard = ({ year, badges }) => {
   return (
@@ -107,9 +106,6 @@ const OpenSource = () => {
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mt-10">
-        <div className="w-full h-[400px]">
-          <GurejaSvg />
-        </div>
         
         <motion.div
           variants={fadeIn("", "", 0.1, 1)}
