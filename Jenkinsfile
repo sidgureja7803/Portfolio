@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'node18'
+        nodejs 'node18'  // Ensure this matches Global Tools
     }
 
     environment {
-        SONAR_SCANNER_HOME = tool 'Default'  // Matches the name in Jenkins global tool config
+        SCANNER_HOME = tool 'SonarScanner'  // Match name in Global Tool Config
     }
 
     stages {
@@ -25,7 +25,7 @@ pipeline {
         stage('Run SonarQube Scan') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner"
+                    sh "${env.SCANNER_HOME}/bin/sonar-scanner"
                 }
             }
         }
