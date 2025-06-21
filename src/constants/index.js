@@ -21,8 +21,8 @@ import {
   SiOpenai,
 } from 'react-icons/si';
 
-// LeetCode profile URL
-export const LEETCODE_PROFILE_URL = "https://leetcode.com/sidgureja/";
+// LeetCode profile URL - Fixed username
+export const LEETCODE_PROFILE_URL = "https://leetcode.com/sidgreja/";
 
 // Social links
 export const socialLinks = {
@@ -39,7 +39,6 @@ export const education = [
     location: "Patiala, Punjab",
     date: "2022 - 2026",
     iconBg: "#383E56",
-    image: "/images/thapar-college.jpg",
     points: [
       "Maintained a CGPA of 8.8/10 throughout the academic program",
       "Participated in various hackathons and coding competitions",
@@ -52,7 +51,6 @@ export const education = [
     location: "Rishikesh, Uttarakhand",
     date: "2019-2021",
     iconBg: "#383E56",
-    image: "/images/school.jpg",
     points: [
       "Graduated with 95.75% in ICSE Board Examinations",
       "Went to Lucknow, to participate in Odyessy 2016",
