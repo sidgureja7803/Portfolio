@@ -4,7 +4,7 @@
 
 ### ✅ Fixed Issues:
 1. **Education Layout Fixed**: College image now properly appears on the right side
-2. **LeetCode Integration**: Real data fetching from username "sidgreja" (not hardcoded)
+2. **LeetCode Integration**: Real data fetching from username "sidgureja" (not hardcoded)
 3. **Hero Section Redesigned**: Removed irritating Three.js background, created modern clean design
 4. **Better Projects UI**: Enhanced project cards with improved animations and layout
 5. **Professional Design**: Modern gradients, better typography, and smooth animations
@@ -22,7 +22,7 @@
 
 ## 🔧 LeetCode Configuration
 
-The LeetCode stats automatically fetch from username: **sidgreja**
+The LeetCode stats automatically fetch from username: **sidgureja**
 
 ### APIs Used:
 1. Primary: `leetcode-stats-api.herokuapp.com`

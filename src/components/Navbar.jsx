@@ -41,13 +41,13 @@ const Navbar = () => {
 
     const element = document.getElementById(id);
     if (element) {
-      const offset = 100; // Adjust this value based on your navbar height
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      const offset = 80; // Navbar height offset
+      const elementPosition = element.offsetTop - offset;
 
+      // Direct jump without smooth scrolling
       window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
+        top: elementPosition,
+        behavior: 'instant' // Changed from 'smooth' to 'instant'
       });
     }
   };
@@ -64,7 +64,7 @@ const Navbar = () => {
           className='flex items-center gap-2'
           onClick={() => {
             setActive('');
-            window.scrollTo(0, 0);
+            window.scrollTo({ top: 0, behavior: 'instant' });
           }}
         >
           <img src={Gureja} alt="Gureja" className="w-9 h-9" />

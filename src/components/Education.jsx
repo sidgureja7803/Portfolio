@@ -9,7 +9,8 @@ import { textVariant } from '../utils/motion';
 import { FaGraduationCap } from 'react-icons/fa';
 
 const EducationCard = ({ education, index }) => {
-  // Determine if this is college (index 0) or school (index 1)
+  // College (index 0): Description LEFT, Image RIGHT
+  // School (index 1): Description RIGHT, Image LEFT
   const isCollege = index === 0;
   
   return (
@@ -69,7 +70,7 @@ const EducationCard = ({ education, index }) => {
           )}
         </div>
 
-        {/* Image Section - College on right, School on left */}
+        {/* Image Section - College: Description LEFT, Image RIGHT; School: Description RIGHT, Image LEFT */}
         <div className={`flex-none w-full lg:w-80 ${isCollege ? 'lg:order-2' : 'lg:order-1'}`}>
           <div className="relative group">
             {/* Placeholder for user to add their own images */}
