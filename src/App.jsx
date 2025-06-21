@@ -1,32 +1,30 @@
-import { BrowserRouter, createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { 
   About, 
   Contact, 
   Experience, 
   Hero, 
   Navbar, 
-  Tech, 
   Works,
   OpenSource,
   Blogs,
   Education 
 } from './components';
-import BackgroundCanvas from './components/canvas/BackgroundCanvas';
+import LeetCodeStats from './components/LeetCodeStats';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Suspense } from 'react';
 
 // Main content component
 const MainContent = () => (
   <div className="relative z-0 bg-primary">
-    <BackgroundCanvas />
-    <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
+    <div>
       <Navbar />
       <Hero />
     </div>
     <About />
     <Education />
     <Experience />
-    <Tech />
+    <LeetCodeStats />
     <Works />
     <OpenSource />
     <Blogs />

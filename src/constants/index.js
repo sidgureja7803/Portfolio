@@ -22,7 +22,7 @@ import {
 } from 'react-icons/si';
 
 // LeetCode profile URL - Fixed username
-export const LEETCODE_PROFILE_URL = "https://leetcode.com/sidgreja/";
+export const LEETCODE_PROFILE_URL = "https://leetcode.com/sidgureja/";
 
 // Social links
 export const socialLinks = {
@@ -73,16 +73,16 @@ export const navLinks = [
     title: "Experience",
   },
   {
+    id: "leetcode",
+    title: "LeetCode",
+  },
+  {
     id: "projects",
     title: "Projects",
   },
   {
     id: "opensource",
     title: "Open Source",
-  },
-  {
-    id: "tech",
-    title: "Tech Stack",
   },
   {
     id: "blogs",
