@@ -16,6 +16,9 @@ import {
   SiNginx,
   SiLeetcode,
   SiExpress,
+  SiNextdotjs,
+  SiFirebase,
+  SiOpenai,
 } from 'react-icons/si';
 
 // LeetCode profile URL
@@ -36,6 +39,7 @@ export const education = [
     location: "Patiala, Punjab",
     date: "2022 - 2026",
     iconBg: "#383E56",
+    image: "/images/thapar-college.jpg",
     points: [
       "Maintained a CGPA of 8.8/10 throughout the academic program",
       "Participated in various hackathons and coding competitions",
@@ -48,6 +52,7 @@ export const education = [
     location: "Rishikesh, Uttarakhand",
     date: "2019-2021",
     iconBg: "#383E56",
+    image: "/images/school.jpg",
     points: [
       "Graduated with 95.75% in ICSE Board Examinations",
       "Went to Lucknow, to participate in Odyessy 2016",
@@ -269,12 +274,100 @@ export const incubatorCRM = {
 
 export const projects = [
   {
+    name: "CodeFusion",
+    description:
+      "A collaborative code editor platform that enables real-time collaboration, syntax highlighting, and integrated chat functionality. Built with modern web technologies for seamless developer experience.",
+    tags: [
+      {
+        name: "React",
+        color: "blue-text-gradient",
+        icon: FaReact
+      },
+      {
+        name: "Node.js",
+        color: "green-text-gradient",
+        icon: FaNodeJs
+      },
+      {
+        name: "Socket.io",
+        color: "pink-text-gradient",
+      },
+      {
+        name: "MongoDB",
+        color: "orange-text-gradient",
+        icon: SiMongodb
+      },
+    ],
+    image: "codefusion",
+    source_code_link: "https://codefusion-app.vercel.app/",
+    github_link: "https://github.com/sidgureja7803/codefusion"
+  },
+  {
+    name: "TwitPilot",
+    description:
+      "An advanced Twitter automation and analytics tool that helps users schedule tweets, track engagement metrics, and manage multiple accounts with intelligent content suggestions.",
+    tags: [
+      {
+        name: "Next.js",
+        color: "blue-text-gradient",
+        icon: SiNextdotjs
+      },
+      {
+        name: "TypeScript",
+        color: "green-text-gradient",
+        icon: SiTypescript
+      },
+      {
+        name: "Twitter API",
+        color: "pink-text-gradient",
+      },
+      {
+        name: "PostgreSQL",
+        color: "orange-text-gradient",
+        icon: SiPostgresql
+      },
+    ],
+    image: "twitpilot",
+    source_code_link: "https://twitpilot.vercel.app/",
+    github_link: "https://github.com/sidgureja7803/twitpilot"
+  },
+  {
+    name: "ResumeGenerator",
+    description:
+      "An AI-powered resume builder that creates professional resumes using customizable templates, real-time preview, and intelligent content suggestions based on job descriptions.",
+    tags: [
+      {
+        name: "React",
+        color: "blue-text-gradient",
+        icon: FaReact
+      },
+      {
+        name: "OpenAI API",
+        color: "green-text-gradient",
+        icon: SiOpenai
+      },
+      {
+        name: "Tailwind CSS",
+        color: "pink-text-gradient",
+        icon: SiTailwindcss
+      },
+      {
+        name: "Firebase",
+        color: "orange-text-gradient",
+        icon: SiFirebase
+      },
+    ],
+    image: "resumegen",
+    source_code_link: "https://resume-generator-ai.vercel.app/",
+    github_link: "https://github.com/sidgureja7803/resume-generator"
+  },
+  {
     name: "AI-Powered Code Reviewer",
     description:
       "AI-Powered Code Reviewer is an intelligent assistant that helps developers write cleaner, optimized, and more secure code by providing detailed feedback, best practices, and performance improvements.",
     tags: [
       {
-        name: "React Js",
+        name: "React",
         color: "blue-text-gradient",
         icon: FaReact
       },
@@ -283,7 +376,7 @@ export const projects = [
         color: "green-text-gradient",
       },
       {
-        name: "Tailwind",
+        name: "Tailwind CSS",
         color: "pink-text-gradient",
         icon: SiTailwindcss
       },
@@ -298,12 +391,12 @@ export const projects = [
       "Dev-Tinder is a MERN-based platform that connects developers across the globe. Users can swipe through developer profiles, collaborate on open-source projects, and build meaningful tech connections.",
     tags: [
       {
-        name: "React Js",
+        name: "React",
         color: "blue-text-gradient",
         icon: FaReact
       },
       {
-        name: "Express Js",
+        name: "Express",
         color: "green-text-gradient",
         icon: SiExpress
       },
@@ -323,7 +416,7 @@ export const projects = [
       "A movie discovery app that fetches and displays movies using the TMDb API. Users can search, filter, and explore movie details with a clean UI mimicking IMDb.",
     tags: [
       {
-        name: "React Js",
+        name: "React",
         color: "blue-text-gradient",
         icon: FaReact
       },
@@ -347,7 +440,7 @@ export const projects = [
       "Netflix GPT is an AI-powered movie recommendation app that integrates OpenAI with Firebase and TMDb APIs. Users get smart movie suggestions based on genres and watch history.",
     tags: [
       {
-        name: "React Js",
+        name: "React",
         color: "blue-text-gradient",
         icon: FaReact
       },
@@ -370,7 +463,7 @@ export const projects = [
       "A comprehensive CRM system for managing startup incubator operations, including member tracking, event management, and resource allocation.",
     tags: [
       {
-        name: "React Js",
+        name: "React",
         color: "blue-text-gradient",
         icon: FaReact
       },
@@ -380,7 +473,7 @@ export const projects = [
         icon: SiMongodb
       },
       {
-        name: "Express Js",
+        name: "Express",
         color: "pink-text-gradient",
         icon: SiExpress
       },
