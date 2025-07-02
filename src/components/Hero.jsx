@@ -1,102 +1,170 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform, useAnimation } from 'framer-motion';
 import { styles } from '../styles';
-import { FaGithub, FaLinkedin, FaTwitter, FaDownload, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaTwitter, FaDownload, FaMapMarkerAlt, FaArrowDown } from 'react-icons/fa';
 import { SiLeetcode } from 'react-icons/si';
 import { socialLinks } from '../constants';
+import SplitLayout from './layout/SplitLayout';
+import Button from './ui/Button';
 
 const Hero = () => {
+  // References for animations
+  const typeTextRef = useRef(null);
+  const cursorRef = useRef(null);
+  const containerRef = useRef(null);
+  
+  // Animation control for scroll-triggered animations
+  const controls = useAnimation();
+  
+  // Scroll position for parallax effects
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, 100]);
+  const y2 = useTransform(scrollY, [0, 500], [0, -100]);
+  
+  // Text for typing effect
+  const [typeText, setTypeText] = useState('');
+  const [typeIndex, setTypeIndex] = useState(0);
+  const phrases = ['Developer', 'Designer', 'Problem Solver', 'Open Source Contributor'];
+  
+  // Function to handle smooth scrolling
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
+  
+  // Typing animation effect
+  useEffect(() => {
+    let timeout;
+    
+    if (typeIndex < phrases.length) {
+      const currentPhrase = phrases[typeIndex];
+      let charIndex = 0;
+      const typingInterval = 100; // typing speed
+      const pauseDuration = 1000; // pause between phrases
+      
+      const type = () => {
+        if (charIndex < currentPhrase.length) {
+          setTypeText(prev => prev + currentPhrase[charIndex]);
+          charIndex++;
+          timeout = setTimeout(type, typingInterval);
+        } else {
+          // Pause at the end of typing a word
+          timeout = setTimeout(() => {
+            // Clear text letter by letter
+            const eraseText = () => {
+              if (typeText.length > 0) {
+                setTypeText(prev => prev.slice(0, -1));
+                timeout = setTimeout(eraseText, typingInterval / 2);
+              } else {
+                setTypeIndex(prevIndex => (prevIndex + 1) % phrases.length);
+              }
+            };
+            
+            timeout = setTimeout(eraseText, pauseDuration);
+          }, pauseDuration);
+        }
+      };
+      
+      if (typeText === '') {
+        timeout = setTimeout(type, typingInterval);
+      }
+    }
+    
+    return () => clearTimeout(timeout);
+  }, [typeIndex, typeText, phrases.length]);
+  
+  // Cursor blinking effect
+  useEffect(() => {
+    const blinkInterval = setInterval(() => {
+      if (cursorRef.current) {
+        cursorRef.current.style.opacity = cursorRef.current.style.opacity === '0' ? '1' : '0';
+      }
+    }, 500);
+    
+    return () => clearInterval(blinkInterval);
+  }, []);
 
   return (
-    <section className="relative w-full h-screen mx-auto overflow-hidden">
+    <section ref={containerRef} className="relative w-full h-screen mx-auto overflow-hidden">
       {/* Modern Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-purple-900/20 to-black"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-900 to-primary-800 dark:from-primary-950 dark:to-primary-900"></div>
       
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0">
-        {/* Floating orbs */}
+      {/* Grain texture overlay */}
+      <div className="absolute inset-0 bg-grain opacity-[0.03] mix-blend-soft-light"></div>
+      
+      {/* Subtle geometric shapes */}
+      <div className="absolute inset-0 overflow-hidden">
         <motion.div
-          animate={{
-            x: [0, 100, 0],
-            y: [0, -50, 0],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute top-20 left-20 w-72 h-72 bg-purple-500/10 rounded-full blur-xl"
+          style={{ y: y1 }}
+          className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-accent-500/5 blur-3xl"
         />
         <motion.div
-          animate={{
-            x: [0, -80, 0],
-            y: [0, 60, 0],
-            scale: [1, 0.8, 1],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute bottom-32 right-32 w-96 h-96 bg-blue-500/10 rounded-full blur-xl"
+          style={{ y: y2 }}
+          className="absolute -bottom-40 -left-20 w-[30rem] h-[30rem] rounded-full bg-accent-600/5 blur-3xl"
         />
-        <motion.div
-          animate={{
-            x: [0, 60, 0],
-            y: [0, -80, 0],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: 30,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute top-1/2 left-1/3 w-64 h-64 bg-green-500/10 rounded-full blur-xl"
-        />
+        <svg className="absolute top-0 right-0 w-full h-full text-accent-500/[0.01] dark:text-accent-400/[0.01]" 
+          xmlns="http://www.w3.org/2000/svg" 
+          viewBox="0 0 100 100" 
+          preserveAspectRatio="none">
+          <motion.path 
+            d="M0,0 L100,0 L100,100 L0,100 Z" 
+            fill="currentColor"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 3, ease: "easeInOut" }}
+          />
+        </svg>
       </div>
 
-      <div className={`${styles.paddingX} relative z-10 max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between h-full pt-20`}>
-        {/* Left Side - Text Content */}
-        <div className="flex-1 lg:max-w-2xl">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="mb-8"
-          >
+      <SplitLayout
+        fullHeight={true}
+        className="relative z-10 max-w-7xl mx-auto h-full px-6 md:px-8"
+        leftClassName="flex flex-col justify-center pt-20 md:pt-0"
+        rightClassName="flex items-center justify-center pt-6 md:pt-0"
+        leftContent={
+          <div className="pr-0 md:pr-10 lg:pr-16">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex items-center gap-2 mb-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="flex items-center gap-2 mb-4 text-accent-500"
             >
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-green-400 text-sm font-medium">Available for work</span>
+              <div className="w-2 h-2 bg-accent-500 rounded-full animate-pulse"></div>
+              <span className="text-sm font-medium">Available for work</span>
             </motion.div>
 
-            <h1 className={`${styles.heroHeadText} text-white mb-6`}>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-primary-50 dark:text-primary-50"
+            >
               Hi, I'm{' '}
-              <motion.span 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
-              >
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-600">
                 Siddhant
-              </motion.span>
-            </h1>
+              </span>
+            </motion.h1>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="mb-6 flex items-center"
+            >
+              <span className="text-xl md:text-2xl font-medium text-primary-200 dark:text-primary-200 mr-1">I'm a </span>
+              <span className="text-xl md:text-2xl font-bold text-accent-500 min-w-[180px]">
+                {typeText}
+                <span ref={cursorRef} className="opacity-100 animate-pulse">|</span>
+              </span>
+            </motion.div>
 
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className={`${styles.heroSubText} text-gray-300 mb-8 leading-relaxed`}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-base md:text-lg text-primary-300 dark:text-primary-300 mb-8 leading-relaxed max-w-lg"
             >
               Full-Stack Developer specializing in{' '}
               <span className="text-blue-400 font-semibold">React</span>,{' '}
