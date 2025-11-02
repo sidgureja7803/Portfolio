@@ -1,11 +1,9 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import { styles } from '../styles';
 import { education } from '../constants';
 import SectionWrapper from '../hoc/SectionWrapper';
-import { textVariant } from '../utils/motion';
 import { FaGraduationCap } from 'react-icons/fa';
 
 const EducationCard = ({ education, index }) => {
@@ -120,11 +118,11 @@ const EducationCard = ({ education, index }) => {
 
 const Education = () => {
   return (
-    <>
-      <motion.div variants={textVariant()}>
+    <div className="py-10">
+      <div>
         <p className={styles.sectionSubText}>My academic journey</p>
         <h2 className={styles.sectionHeadText}>Education.</h2>
-      </motion.div>
+      </div>
 
       <div className="mt-20 flex flex-col">
         <VerticalTimeline>
@@ -133,7 +131,7 @@ const Education = () => {
           ))}
         </VerticalTimeline>
       </div>
-    </>
+    </div>
   );
 };
 

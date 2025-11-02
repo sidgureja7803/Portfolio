@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import emailjs from 'emailjs-com';
 
 const ContactForm = () => {

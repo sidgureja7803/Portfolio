@@ -1,24 +1,20 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { styles } from '../styles';
-import { fadeIn, textVariant } from '../utils/motion';
 import SectionWrapper from '../hoc/SectionWrapper';
 import { FaCalendar, FaClock, FaArrowRight } from 'react-icons/fa';
 
-const BlogCard = ({ id, title, date, readTime, excerpt, tags, index }) => (
-  <motion.div
-    variants={fadeIn('up', 'spring', index * 0.5, 0.75)}
-    className="bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full cursor-pointer group"
+const BlogCard = ({ id, title, date, readTime, excerpt, tags }) => (
+  <div
+    className="bg-tertiary p-5 rounded-lg sm:w-[360px] w-full cursor-pointer group shadow-md hover:shadow-lg"
     onClick={() => window.open(`/blog/${id}`, '_blank')}
   >
     <div className="relative w-full h-[230px] mb-4">
       <img
         src={`https://source.unsplash.com/800x600/?${tags[0]}`}
         alt={title}
-        className="w-full h-full object-cover rounded-2xl"
+        className="w-full h-full object-cover rounded-lg"
       />
-      <div className="absolute inset-0 bg-black/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
         <span className="text-white flex items-center gap-2">
           Read More <FaArrowRight />
         </span>
@@ -54,7 +50,7 @@ const BlogCard = ({ id, title, date, readTime, excerpt, tags, index }) => (
         </span>
       ))}
     </div>
-  </motion.div>
+  </div>
 );
 
 // This would normally be in a separate file
@@ -114,15 +110,15 @@ const Blogs = () => {
   const displayedBlogs = blogs.slice(0, 3);
 
   return (
-    <>
-      <motion.div variants={textVariant()}>
+    <div className="py-10">
+      <div>
         <p className={styles.sectionSubText}>My thoughts and learnings</p>
         <h2 className={styles.sectionHeadText}>Blog Posts.</h2>
-      </motion.div>
+      </div>
 
-      <div className="mt-20 flex flex-wrap gap-7">
+      <div className="mt-20 flex flex-wrap gap-7 justify-center">
         {displayedBlogs.map((blog, index) => (
-          <BlogCard key={index} index={index} {...blog} />
+          <BlogCard key={index} {...blog} />
         ))}
       </div>
 
@@ -131,8 +127,8 @@ const Blogs = () => {
           View More Blogs <FaArrowRight />
         </Link>
       </div>
-    </>
+    </div>
   );
 };
 
-export default SectionWrapper(Blogs, "blogs"); 
+export default SectionWrapper(Blogs, "blogs");

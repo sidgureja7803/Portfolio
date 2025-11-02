@@ -20,43 +20,16 @@
 
 html {
   -webkit-tap-highlight-color: transparent;
-  /* Enable native smooth scrolling as backup */
   scroll-behavior: smooth;
-}
-
-/* Lenis smooth scroll styles */
-html.lenis {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
 }
 
 body {
   @apply bg-primary text-white;
   font-family: 'Poppins', sans-serif;
   min-height: 100vh;
-  transform: translateZ(0);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden; /* Prevent horizontal scroll */
-  /* Improve rendering performance */
-  backface-visibility: hidden;
-  perspective: 1000;
-  will-change: transform;
 }
 
 .hash-span {
@@ -65,26 +38,7 @@ body {
   display: block;
 }
 
-/* Canvas-related styles */
-.three-js-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: -1;
-  overflow: hidden;
-  /* Reduce GPU load */
-  opacity: 0.7;
-}
-
-canvas {
-  /* Help with NaN errors by forcing pixel ratio */
-  image-rendering: optimizeSpeed;
-}
-
-/* Remove unnecessary animation styles to improve performance */
+/* Gradient backgrounds */
 .black-gradient {
   background: #000000;
   background: linear-gradient(to right, #434343, #000000);
@@ -131,10 +85,16 @@ canvas {
     margin-top: -60px;
     padding-bottom: 60px;
   }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .flex-col-mobile {
+    flex-direction: column;
+  }
   
-  /* Reduce visual effects on mobile */
-  .three-js-canvas {
-    opacity: 0.4;
+  .text-center-mobile {
+    text-align: center;
   }
 }
 
@@ -153,4 +113,4 @@ canvas {
   :root {
     scroll-behavior: smooth;
   }
-} 
+}

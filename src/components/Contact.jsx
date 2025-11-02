@@ -1,26 +1,18 @@
-import { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
 import { styles } from '../styles';
 import SectionWrapper from '../hoc/SectionWrapper';
-import { slideIn } from '../utils/motion';
 import ContactForm from './ContactForm';
 
 const Contact = () => {
   return (
-    <div className="xl:mt-12 xl:flex-row flex-col-reverse flex gap-10 overflow-hidden">
-      <motion.div
-        variants={slideIn('left', 'tween', 0.2, 1)}
-        className="flex-[0.75] bg-black-100 p-8 rounded-2xl"
-      >
+    <div className="py-10 xl:mt-12 xl:flex-row flex-col-reverse flex gap-10 overflow-hidden">
+      <div className="flex-[0.75] bg-black-100 p-8 rounded-2xl shadow-md">
         <p className={styles.sectionSubText}>Get in touch</p>
         <h3 className={styles.sectionHeadText}>Contact.</h3>
         <ContactForm />
-      </motion.div>
+      </div>
 
-      <motion.div
-        variants={slideIn('right', 'tween', 0.2, 1)}
-        className="xl:flex-1 xl:h-auto md:h-[550px] h-[350px] bg-gradient-to-r from-purple-800/30 to-transparent rounded-2xl flex items-center justify-center p-8"
-      >
+      <div className="xl:flex-1 xl:h-auto md:h-[550px] h-[350px] bg-tertiary rounded-2xl flex items-center justify-center p-8 shadow-md">
         <div className="w-full h-full flex flex-col items-start justify-center">
           <h4 className="text-white font-bold text-2xl mb-4">Let's Connect</h4>
           <p className="text-secondary text-lg mb-6">
@@ -46,7 +38,7 @@ const Contact = () => {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };

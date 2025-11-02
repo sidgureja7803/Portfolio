@@ -1,27 +1,18 @@
-import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { styles } from '../styles';
-import { technologies, LEETCODE_PROFILE_URL } from '../constants';
-import { fadeIn, textVariant } from '../utils/motion';
+import { technologies } from '../constants';
 import SectionWrapper from '../hoc/SectionWrapper';
-import { SiLeetcode } from 'react-icons/si';
 
-const TechCard = ({ icon: Icon, name, index, link, color }) => {
+const TechCard = ({ icon: Icon, name, link, color }) => {
   const Card = (
-    <motion.div
-      variants={fadeIn('up', 'spring', index * 0.1, 0.75)}
-      initial="hidden"
-      animate="show"
-      className="w-28 h-28 rounded-xl bg-tertiary flex items-center justify-center relative group cursor-pointer"
-    >
+    <div className="w-28 h-28 rounded-lg bg-tertiary flex items-center justify-center relative group cursor-pointer shadow-md hover:shadow-lg transition-shadow">
       <div className="w-16 h-16 relative flex items-center justify-center">
-        <Icon className="w-12 h-12 text-white transition-transform duration-300 group-hover:scale-110" style={{ color }} />
-        <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+        <Icon className="w-12 h-12 text-white" style={{ color }} />
       </div>
-      <span className="absolute -bottom-8 text-white text-[14px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+      <span className="absolute -bottom-8 text-white text-[14px] whitespace-nowrap">
         {name}
       </span>
-    </motion.div>
+    </div>
   );
 
   return link ? (
@@ -138,10 +129,8 @@ const LeetCodeStats = () => {
   };
 
   return (
-    <motion.div 
-      variants={fadeIn('up', 'spring', 0.2, 0.75)}
-      className="mt-8 p-6 bg-tertiary rounded-xl max-w-3xl mx-auto"
-    >
+    <div className="mt-8 p-6 bg-tertiary rounded-xl max-w-3xl mx-auto shadow-lg">
+    
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center space-x-4">
           <div className="bg-gray-800 rounded-full p-2">
@@ -221,28 +210,23 @@ const LeetCodeStats = () => {
           <div className="text-xs text-gray-400">Contest Rating History</div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
 const Tech = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
-      <motion.div variants={textVariant()}>
+    <div className="py-10">
+      <div className="text-center">
         <p className={styles.sectionSubText}>My technical expertise</p>
         <h2 className={styles.sectionHeadText}>Technologies.</h2>
-      </motion.div>
+      </div>
 
-      <motion.div 
-        className='mt-20 flex flex-wrap gap-12 justify-center max-w-5xl mx-auto px-4'
-        variants={fadeIn('', '', 0.1, 1)}
-        initial="hidden"
-        animate="show"
-      >
+      <div className='mt-20 flex flex-wrap gap-12 justify-center max-w-5xl mx-auto px-4'>
         {technologies.map((technology, index) => (
-          <TechCard key={technology.name} index={index} {...technology} />
+          <TechCard key={technology.name} {...technology} />
         ))}
-      </motion.div>
+      </div>
 
       <LeetCodeStats />
     </div>

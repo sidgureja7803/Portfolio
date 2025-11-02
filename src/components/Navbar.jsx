@@ -44,19 +44,16 @@ const Navbar = () => {
       const offset = 80; // Navbar height offset
       const elementPosition = element.offsetTop - offset;
 
-      // Direct jump without smooth scrolling
       window.scrollTo({
         top: elementPosition,
-        behavior: 'instant' // Changed from 'smooth' to 'instant'
+        behavior: 'smooth'
       });
     }
   };
 
   return (
     <nav
-      className={`${styles.paddingX} w-full flex items-center py-5 fixed top-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-primary/90 backdrop-blur-sm' : 'bg-transparent'
-      }`}
+      className={`${styles.paddingX} w-full flex items-center py-4 fixed top-0 z-50 ${scrolled ? 'bg-primary shadow-md' : 'bg-transparent'}`}
     >
       <div className='w-full flex justify-between items-center max-w-7xl mx-auto'>
         <Link
@@ -64,7 +61,7 @@ const Navbar = () => {
           className='flex items-center gap-2'
           onClick={() => {
             setActive('');
-            window.scrollTo({ top: 0, behavior: 'instant' });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         >
           <img src={Gureja} alt="Gureja" className="w-9 h-9" />
@@ -75,13 +72,11 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <ul className='list-none hidden sm:flex flex-row gap-10'>
+        <ul className='list-none hidden sm:flex flex-row gap-8'>
           {navLinks.map((link) => (
             <li
               key={link.id}
-              className={`${
-                active === link.id ? 'text-white' : 'text-secondary'
-              } hover:text-white text-[18px] font-medium cursor-pointer transition-colors duration-300`}
+              className={`${active === link.id ? 'text-white' : 'text-secondary'} hover:text-white text-[16px] font-medium cursor-pointer`}
               onClick={() => handleClick(link.id)}
             >
               {link.title}
@@ -92,32 +87,24 @@ const Navbar = () => {
         {/* Mobile Navigation */}
         <div className='sm:hidden flex flex-1 justify-end items-center'>
           <button
-            className='w-[28px] h-[28px] flex items-center justify-center text-white cursor-pointer z-50'
+            className='w-[28px] h-[28px] flex items-center justify-center text-white cursor-pointer'
             onClick={() => setToggle(!toggle)}
             aria-label="Toggle menu"
           >
-            <div className={`relative w-6 h-4 transform transition-all duration-300 ${toggle ? 'rotate-180' : ''}`}>
-              <span className={`absolute h-0.5 w-full bg-white transform transition-all duration-300 ${
-                toggle ? 'rotate-45 translate-y-2' : '-translate-y-2'
-              }`} />
-              <span className={`absolute h-0.5 w-full bg-white transform transition-all duration-300 ${
-                toggle ? 'opacity-0' : 'opacity-100'
-              }`} />
-              <span className={`absolute h-0.5 w-full bg-white transform transition-all duration-300 ${
-                toggle ? '-rotate-45 translate-y-2' : 'translate-y-2'
-              }`} />
+            <div className="relative w-6 h-4">
+              <span className={`absolute h-0.5 w-full bg-white ${toggle ? 'rotate-45 translate-y-1.5' : '-translate-y-2'}`} />
+              <span className={`absolute h-0.5 w-full bg-white ${toggle ? 'opacity-0' : 'opacity-100'}`} />
+              <span className={`absolute h-0.5 w-full bg-white ${toggle ? '-rotate-45 translate-y-1.5' : 'translate-y-2'}`} />
             </div>
           </button>
 
           {toggle && (
-            <div className='fixed top-0 right-0 bottom-0 w-[min(75vw,400px)] bg-primary/95 backdrop-blur-lg shadow-xl p-6 pt-24'>
-              <ul className='list-none flex flex-col gap-6'>
+            <div className='fixed top-0 right-0 bottom-0 w-[min(75vw,300px)] bg-primary shadow-lg p-6 pt-20'>
+              <ul className='list-none flex flex-col gap-5'>
                 {navLinks.map((nav) => (
                   <li
                     key={nav.id}
-                    className={`${
-                      active === nav.id ? 'text-white' : 'text-secondary'
-                    } font-poppins font-medium cursor-pointer text-[16px] transition-colors duration-300`}
+                    className={`${active === nav.id ? 'text-white' : 'text-secondary'} font-medium cursor-pointer text-[16px]`}
                     onClick={() => handleClick(nav.id)}
                   >
                     {nav.title}
