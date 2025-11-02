@@ -35,7 +35,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>
 
-      <div className="relative z-0 bg-primary">
+      <div className="relative z-0 bg-primary-900">
         <ParticlesCanvas mousePosition={mousePosition} />
         <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
           <Navbar />

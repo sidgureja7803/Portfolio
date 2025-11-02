@@ -17,10 +17,10 @@ import { Suspense } from 'react';
 
 const App = () => {
   return (
-    <ErrorBoundary fallback={<div className="flex items-center justify-center min-h-screen bg-primary text-white">Something went wrong</div>}>
-      <Suspense fallback={<div className="flex items-center justify-center min-h-screen bg-primary text-white">Loading...</div>}>
+    <ErrorBoundary fallback={<div className="flex items-center justify-center min-h-screen bg-primary-900 text-white">Something went wrong</div>}>
+      <Suspense fallback={<div className="flex items-center justify-center min-h-screen bg-primary-900 text-white">Loading...</div>}>
         <BrowserRouter>
-          <div className="bg-primary min-h-screen">
+          <div className="bg-primary-900 min-h-screen">
             <Navbar />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <Hero />

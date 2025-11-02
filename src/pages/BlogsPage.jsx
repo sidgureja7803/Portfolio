@@ -110,7 +110,7 @@ const BlogCard = ({ id, title, date, readTime, excerpt, tags }) => (
 
 const BlogsPage = () => {
   return (
-    <div className="bg-primary">
+    <div className="bg-primary-900">
       <div className={`${styles.paddingX} max-w-7xl mx-auto`}>
         <div className="py-10">
           <Link to="/" className="inline-flex items-center text-blue-400 hover:text-blue-300 mb-8">

@@ -53,7 +53,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`${styles.paddingX} w-full flex items-center py-4 fixed top-0 z-50 ${scrolled ? 'bg-primary shadow-md' : 'bg-transparent'}`}
+      className={`${styles.paddingX} w-full flex items-center py-4 fixed top-0 z-50 ${scrolled ? 'bg-primary-900 shadow-md' : 'bg-transparent'}`}
     >
       <div className='w-full flex justify-between items-center max-w-7xl mx-auto'>
         <Link
@@ -99,7 +99,7 @@ const Navbar = () => {
           </button>
 
           {toggle && (
-            <div className='fixed top-0 right-0 bottom-0 w-[min(75vw,300px)] bg-primary shadow-lg p-6 pt-20'>
+            <div className='fixed top-0 right-0 bottom-0 w-[min(75vw,300px)] bg-primary-900 shadow-lg p-6 pt-20'>
               <ul className='list-none flex flex-col gap-5'>
                 {navLinks.map((nav) => (
                   <li

@@ -24,7 +24,7 @@ html {
 }
 
 body {
-  @apply bg-primary text-white;
+  @apply bg-primary-900 text-white;
   font-family: 'Poppins', sans-serif;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -60,6 +60,7 @@ body {
 .orange-text-gradient,
 .pink-text-gradient {
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
