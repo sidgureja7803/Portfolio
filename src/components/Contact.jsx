@@ -1,14 +1,12 @@
 import React from 'react';
-import { styles } from '../styles';
-import SectionWrapper from '../hoc/SectionWrapper';
 import ContactForm from './ContactForm';
 
 const Contact = () => {
   return (
     <div className="py-10 xl:mt-12 xl:flex-row flex-col-reverse flex gap-10 overflow-hidden">
       <div className="flex-[0.75] bg-black-100 p-8 rounded-2xl shadow-md">
-        <p className={styles.sectionSubText}>Get in touch</p>
-        <h3 className={styles.sectionHeadText}>Contact.</h3>
+        <p className="text-sm text-secondary uppercase tracking-wider">Get in touch</p>
+        <h3 className="text-white font-black text-4xl md:text-5xl">Contact.</h3>
         <ContactForm />
       </div>
 
@@ -43,4 +41,4 @@ const Contact = () => {
   );
 };
 
-export default SectionWrapper(Contact, 'contact'); 
+export default Contact; 

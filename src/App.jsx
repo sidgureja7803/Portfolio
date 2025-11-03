@@ -17,7 +17,7 @@ const App = () => {
     <BrowserRouter>
       <div className="bg-black min-h-screen">
         <Navbar />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <main className="container mx-auto">
           <Hero />
           <About />
           <Tech />
@@ -28,7 +28,7 @@ const App = () => {
           <OpenSource />
           <Blogs />
           <Contact />
-        </div>
+        </main>
       </div>
     </BrowserRouter>
   );

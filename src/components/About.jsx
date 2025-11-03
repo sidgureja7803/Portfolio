@@ -1,7 +1,5 @@
 import React from 'react';
-import { styles } from '../styles';
 import { services } from '../constants';
-import SectionWrapper from '../hoc/SectionWrapper';
 
 const ServiceCard = ({ title, icon, description, link }) => {
   const CardContent = () => (
@@ -40,8 +38,8 @@ const About = () => {
   return (
     <div className="py-10">
       <div>
-        <p className={`${styles.sectionSubText} text-center`}>Introduction</p>
-        <h2 className={`${styles.sectionHeadText} text-center`}>Overview.</h2>
+        <p className="text-sm text-secondary uppercase tracking-wider text-center">Introduction</p>
+        <h2 className="text-white font-black text-4xl md:text-5xl text-center">Overview.</h2>
       </div>
 
       <p className='mt-4 text-secondary text-[17px] max-w-3xl leading-[30px] mx-auto'>
@@ -64,4 +62,4 @@ const About = () => {
   );
 };
 
-export default SectionWrapper(About, 'about'); 
+export default About; 

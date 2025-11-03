@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import { styles } from '../styles';
-import SectionWrapper from '../hoc/SectionWrapper';
 import { SiLeetcode } from 'react-icons/si';
 import { FaTrophy, FaFire, FaCode, FaChartLine } from 'react-icons/fa';
 
@@ -120,4 +118,4 @@ const LeetCodeStats = () => {
   );
 };
 
-export default SectionWrapper(LeetCodeStats, "leetcode");
+export default LeetCodeStats;

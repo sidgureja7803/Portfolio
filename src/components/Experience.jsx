@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
-import { styles } from '../styles';
 import { experiences, incubatorCRM } from '../constants';
-import SectionWrapper from '../hoc/SectionWrapper';
 import { FaChevronDown, FaChevronUp, FaCode, FaExternalLinkAlt } from 'react-icons/fa';
 
 const ProjectCard = ({ project }) => (
@@ -124,10 +122,10 @@ const Experience = () => {
   return (
     <div className="py-10">
       <div className="text-center">
-        <p className={`${styles.sectionSubText}`}>
+        <p className="text-sm text-secondary uppercase tracking-wider">
           What I have done so far
         </p>
-        <h2 className={`${styles.sectionHeadText}`}>
+        <h2 className="text-white font-black text-4xl md:text-5xl">
           Work Experience.
         </h2>
       </div>
@@ -143,4 +141,4 @@ const Experience = () => {
   );
 };
 
-export default SectionWrapper(Experience, 'work'); 
+export default Experience; 

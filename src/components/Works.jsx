@@ -1,7 +1,5 @@
 import React from 'react';
-import { styles } from '../styles';
 import { FaGithub, FaExternalLinkAlt, FaStar, FaCode, FaEye } from 'react-icons/fa';
-import SectionWrapper from '../hoc/SectionWrapper';
 import { projects } from '../constants';
 
 const ProjectCard = ({
@@ -137,8 +135,8 @@ const Works = () => {
   return (
     <div className="py-10">
       <div>
-        <p className={styles.sectionSubText}>My work</p>
-        <h2 className={styles.sectionHeadText}>Projects.</h2>
+        <p className="text-sm text-secondary uppercase tracking-wider">My work</p>
+        <h2 className="text-white font-black text-4xl md:text-5xl">Projects.</h2>
       </div>
 
       <div className="w-full">
@@ -188,4 +186,4 @@ const Works = () => {
   );
 };
 
-export default SectionWrapper(Works, 'projects');
+export default Works;

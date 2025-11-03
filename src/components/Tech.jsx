@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
-import { styles } from '../styles';
 import { technologies } from '../constants';
-import SectionWrapper from '../hoc/SectionWrapper';
 
 const TechCard = ({ icon: Icon, name, link, color }) => {
   const Card = (
@@ -218,8 +216,8 @@ const Tech = () => {
   return (
     <div className="py-10">
       <div className="text-center">
-        <p className={styles.sectionSubText}>My technical expertise</p>
-        <h2 className={styles.sectionHeadText}>Technologies.</h2>
+        <p className="text-sm text-secondary uppercase tracking-wider">My technical expertise</p>
+        <h2 className="text-white font-black text-4xl md:text-5xl">Technologies.</h2>
       </div>
 
       <div className='mt-20 flex flex-wrap gap-12 justify-center max-w-5xl mx-auto px-4'>
@@ -233,4 +231,4 @@ const Tech = () => {
   );
 };
 
-export default SectionWrapper(Tech, "tech"); 
+export default Tech; 

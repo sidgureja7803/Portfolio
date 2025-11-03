@@ -1,6 +1,4 @@
 import { Link } from 'react-router-dom';
-import { styles } from '../styles';
-import SectionWrapper from '../hoc/SectionWrapper';
 import { FaCalendar, FaClock, FaArrowRight } from 'react-icons/fa';
 
 const BlogCard = ({ id, title, date, readTime, excerpt, tags }) => (
@@ -112,8 +110,8 @@ const Blogs = () => {
   return (
     <div className="py-10">
       <div>
-        <p className={styles.sectionSubText}>My thoughts and learnings</p>
-        <h2 className={styles.sectionHeadText}>Blog Posts.</h2>
+        <p className="text-sm text-secondary uppercase tracking-wider">My thoughts and learnings</p>
+        <h2 className="text-white font-black text-4xl md:text-5xl">Blog Posts.</h2>
       </div>
 
       <div className="mt-20 flex flex-wrap gap-7 justify-center">
@@ -131,4 +129,4 @@ const Blogs = () => {
   );
 };
 
-export default SectionWrapper(Blogs, "blogs");
+export default Blogs;

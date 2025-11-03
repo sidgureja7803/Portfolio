@@ -1,2 +1,3 @@
 # Portfolio
-My Portfolio website built using -> Three js and React js.
+My Portfolio website built using React and Tailwind CSS.
+

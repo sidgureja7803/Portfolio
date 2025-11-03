@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { styles } from '../styles';
 import { navLinks } from '../constants';
 import Gureja from './Gureja.svg';
 
@@ -53,7 +52,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`${styles.paddingX} w-full flex items-center py-4 fixed top-0 z-50 ${scrolled ? 'bg-primary-900 shadow-md' : 'bg-transparent'}`}
+      className={`px-6 sm:px-16 w-full flex items-center py-4 fixed top-0 z-50 ${scrolled ? 'bg-black shadow-md' : 'bg-transparent'}`}
     >
       <div className='w-full flex justify-between items-center max-w-7xl mx-auto'>
         <Link

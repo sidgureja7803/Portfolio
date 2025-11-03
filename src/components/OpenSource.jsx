@@ -1,6 +1,4 @@
 import React from 'react';
-import { styles } from '../styles';
-import SectionWrapper from '../hoc/SectionWrapper';
 import { FaGithub } from 'react-icons/fa';
 
 const ContributionCard = ({ title, description, type, link }) => {
@@ -123,8 +121,8 @@ const OpenSource = () => {
   return (
     <div className="py-10">
       <div>
-        <p className={styles.sectionSubText}>My Contributions</p>
-        <h2 className={styles.sectionHeadText}>Open Source.</h2>
+        <p className="text-sm text-secondary uppercase tracking-wider">My Contributions</p>
+        <h2 className="text-white font-black text-4xl md:text-5xl">Open Source.</h2>
       </div>
 
       <p className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]">
@@ -176,4 +174,4 @@ const OpenSource = () => {
   );
 };
 
-export default SectionWrapper(OpenSource, "opensource");
+export default OpenSource;
