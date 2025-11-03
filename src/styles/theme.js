@@ -1,37 +1,37 @@
 export const colors = {
-  // Base colors
+  // Black theme colors
   primary: {
-    50: "#f9fafb",
-    100: "#f3f4f6",
-    200: "#e5e7eb",
-    300: "#d1d5db",
-    400: "#9ca3af",
-    500: "#6b7280",
-    600: "#4b5563",
-    700: "#374151",
-    800: "#1f2937",
-    900: "#111827",
+    50: "#ffffff",
+    100: "#f5f5f5",
+    200: "#e5e5e5",
+    300: "#d4d4d4",
+    400: "#a3a3a3",
+    500: "#737373",
+    600: "#525252",
+    700: "#404040",
+    800: "#262626",
+    900: "#000000",
   },
   
-  // Accent color - subtle blue
+  // Accent color - minimal white/grey for contrast
   accent: {
-    50: "#eff6ff",
-    100: "#dbeafe",
-    200: "#bfdbfe",
-    300: "#93c5fd",
-    400: "#60a5fa",
-    500: "#3b82f6",
-    600: "#2563eb",
-    700: "#1d4ed8",
-    800: "#1e40af",
-    900: "#1e3a8a",
+    50: "#ffffff",
+    100: "#fafafa",
+    200: "#f5f5f5",
+    300: "#e5e5e5",
+    400: "#d4d4d4",
+    500: "#a3a3a3",
+    600: "#737373",
+    700: "#525252",
+    800: "#404040",
+    900: "#262626",
   },
 
   // Additional utility colors
-  success: "#10b981",
+  success: "#22c55e",
   warning: "#f59e0b",
   error: "#ef4444",
-  info: "#3b82f6",
+  info: "#ffffff",
 };
 
 export const typography = {

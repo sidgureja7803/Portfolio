@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { styles } from '../styles';
 import { FaGithub, FaLinkedin, FaTwitter, FaDownload, FaMapMarkerAlt } from 'react-icons/fa';
 import { SiLeetcode } from 'react-icons/si';
 import { socialLinks } from '../constants';
