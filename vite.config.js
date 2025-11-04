@@ -28,10 +28,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
-          'three-vendor': ['three'],
-          'three-extras': ['@react-three/fiber', '@react-three/drei'],
-          'animation': ['framer-motion'],
-          'utils': ['three/examples/jsm/loaders/SVGLoader', 'three/examples/jsm/loaders/GLTFLoader'],
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
@@ -42,7 +38,7 @@ export default defineConfig({
     sourcemap: false, // Disable sourcemaps in production for better performance
   },
   optimizeDeps: {
-    include: ['@react-three/fiber', '@react-three/drei', 'three', 'framer-motion', 'react-router-dom'],
+    include: ['react-router-dom'],
     esbuildOptions: {
       target: 'esnext',
     },
