@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { FaGithub, FaExternalLinkAlt, FaStar, FaCode, FaEye } from 'react-icons/fa';
 import { projects } from '../constants';
 
@@ -11,12 +11,53 @@ const ProjectCard = ({
   source_code_link,
   github_link,
 }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef(null);
+  
   // Fix for image paths - use .png extension
   const imagePath = `/images/${image}.png`;
   
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    
+    const rotateX = (y - 0.5) * 15;
+    const rotateY = (x - 0.5) * -15;
+    
+    cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${isHovered ? '20px' : '0px'})`;
+  };
+  
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+  
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    if (cardRef.current) {
+      cardRef.current.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+    }
+  };
+  
   return (
-    <div className="w-full">
-      <div className="bg-gradient-to-br from-gray-900 to-gray-900 p-6 rounded-xl w-full relative group shadow-md hover:shadow-lg transition-all duration-300 border border-purple-500/10 hover:border-purple-500/30">
+    <div className="w-full h-full perspective-1000">
+      <div 
+        ref={cardRef}
+        className="bg-gradient-to-br from-black via-gray-900 to-black p-6 rounded-xl w-full h-full relative group transition-all duration-500 ease-out transform-gpu preserve-3d floating-card"
+        style={{
+          transformStyle: 'preserve-3d',
+          boxShadow: isHovered 
+            ? '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(99, 102, 241, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)' 
+            : '0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(99, 102, 241, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+          border: isHovered 
+            ? '1px solid rgba(99, 102, 241, 0.4)' 
+            : '1px solid rgba(99, 102, 241, 0.1)',
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       
         {/* Featured badge for top projects */}
         {index < 3 && (
@@ -27,22 +68,22 @@ const ProjectCard = ({
         )}
 
         {/* Project Image */}
-        <div className="relative w-full h-64 overflow-hidden rounded-lg mb-6">
+        <div className="relative w-full h-64 overflow-hidden rounded-lg mb-6 card-image">
           <img
             src={imagePath}
             alt={name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-transform duration-500"
           />
           
           {/* Dark overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 depth-layer-1"></div>
           
           {/* Action buttons overlay */}
-          <div className="absolute inset-0 flex items-center justify-center gap-4">
+          <div className="absolute inset-0 flex items-center justify-center gap-4 depth-layer-2">
             {github_link && (
               <button
                 onClick={() => window.open(github_link, '_blank')}
-                className="bg-gray-800/90 hover:bg-purple-600 text-white p-3 rounded-full transition-colors duration-300 shadow-md"
+                className="btn-magnetic bg-black/90 hover:bg-purple-600 text-white p-3 rounded-full transition-all duration-300 shadow-lg ripple"
                 title="View Source Code"
               >
                 <FaGithub className="w-5 h-5" />
@@ -52,7 +93,7 @@ const ProjectCard = ({
             {source_code_link && (
               <button
                 onClick={() => window.open(source_code_link, '_blank')}
-                className="bg-gray-800/90 hover:bg-green-600 text-white p-3 rounded-full transition-colors duration-300 shadow-md"
+                className="btn-magnetic bg-black/90 hover:bg-green-600 text-white p-3 rounded-full transition-all duration-300 shadow-lg ripple"
                 title="Live Demo"
               >
                 <FaExternalLinkAlt className="w-4 h-4" />
@@ -176,9 +217,11 @@ const Works = () => {
 
       {/* Projects Grid */}
       <div className="mt-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div className="projects-grid max-w-7xl mx-auto">
           {projects.map((project, index) => (
-            <ProjectCard key={`project-${index}`} index={index} {...project} />
+            <div key={`project-${index}`} className="card-3d-container">
+              <ProjectCard index={index} {...project} />
+            </div>
           ))}
         </div>
       </div>

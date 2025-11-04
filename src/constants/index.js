@@ -272,220 +272,82 @@ export const incubatorCRM = {
 
 export const projects = [
   {
+    name: "IncubatorCRM",
+    description:
+      "A web platform for TIET Venture Labs to manage startup applications, multiple incubation programs, and cohort-specific workflows.",
+    tags: [
+      { name: "React", color: "blue-text-gradient", icon: FaReact },
+      { name: "Express", color: "pink-text-gradient", icon: SiExpress },
+      { name: "MongoDB", color: "green-text-gradient", icon: SiMongodb },
+      { name: "Node.js", color: "orange-text-gradient", icon: FaNodeJs },
+    ],
+    image: "incubatorcrm",
+    source_code_link: "https://incubator-crm.vercel.app", // live
+    github_link: "https://github.com/sidgureja7803/Incubator-CRM.git"
+  },
+  {
     name: "CodeFusion",
     description:
-      "A collaborative code editor platform that enables real-time collaboration, syntax highlighting, and integrated chat functionality. Built with modern web technologies for seamless developer experience.",
+      "Real-time collaborative coding platform with Liveblocks, Dockerized Judge0 for multi-language execution, and LLaMA-powered AI debugging; scaled to 100+ concurrent sessions.",
     tags: [
-      {
-        name: "React",
-        color: "blue-text-gradient",
-        icon: FaReact
-      },
-      {
-        name: "Node.js",
-        color: "green-text-gradient",
-        icon: FaNodeJs
-      },
-  {
-        name: "Socket.io",
-        color: "pink-text-gradient",
-      },
-      {
-        name: "MongoDB",
-        color: "orange-text-gradient",
-        icon: SiMongodb
-      },
+      { name: "React", color: "blue-text-gradient", icon: FaReact },
+      { name: "Docker", color: "green-text-gradient" },
+      { name: "Liveblocks", color: "pink-text-gradient" },
+      { name: "Judge0", color: "orange-text-gradient" },
+      { name: "LLaMA API", color: "purple-text-gradient" },
     ],
     image: "codefusion",
-    source_code_link: "https://code-fusion.live/",
+    source_code_link: "https://www.code-fusion.live/",
     github_link: "https://github.com/sidgureja7803/codefusion"
   },
   {
-    name: "TwitPilot",
+    name: "LiveCV",
     description:
-      "An advanced Twitter automation and analytics tool that helps users schedule tweets, track engagement metrics, and manage multiple accounts with intelligent content suggestions.",
+      "AI-powered resume builder with real-time editing, template switching, Appwrite-backed auth/storage, and instant PDF export.",
     tags: [
-      {
-        name: "Next.js",
-        color: "blue-text-gradient",
-        icon: SiNextdotjs
-      },
-      {
-        name: "TypeScript",
-        color: "green-text-gradient",
-        icon: SiTypescript
-      },
-      {
-        name: "Twitter API",
-        color: "pink-text-gradient",
-      },
-      {
-        name: "PostgreSQL",
-        color: "orange-text-gradient",
-        icon: SiPostgresql
-      },
+      { name: "React", color: "blue-text-gradient", icon: FaReact },
+      { name: "Node.js", color: "green-text-gradient", icon: FaNodeJs },
+      { name: "Express", color: "pink-text-gradient", icon: SiExpress },
+      { name: "MongoDB", color: "orange-text-gradient", icon: SiMongodb },
+      { name: "Appwrite", color: "purple-text-gradient" },
+      { name: "Tailwind CSS", color: "teal-text-gradient", icon: SiTailwindcss },
     ],
-    image: "twitpilot",
-    source_code_link: "https://twitpilot.vercel.app/",
-    github_link: "https://github.com/sidgureja7803/twitpilot"
+    image: "livecv",
+    source_code_link: "https://livecv.online/",
+    github_link: "https://github.com/sidgureja7803/LiveCV"
   },
   {
-    name: "ResumeGenerator",
+    name: "IdeaHub",
     description:
-      "An AI-powered resume builder that creates professional resumes using customizable templates, real-time preview, and intelligent content suggestions based on job descriptions.",
+      "Collaborative platform to share, refine, and pitch ideas with a GenAI assistant that suggests titles, tech stacks, and improved descriptions.",
     tags: [
-      {
-        name: "React",
-        color: "blue-text-gradient",
-        icon: FaReact
-      },
-      {
-        name: "OpenAI API",
-        color: "green-text-gradient",
-        icon: SiOpenai
-      },
-      {
-        name: "Tailwind CSS",
-        color: "pink-text-gradient",
-        icon: SiTailwindcss
-      },
-      {
-        name: "Firebase",
-        color: "orange-text-gradient",
-        icon: SiFirebase
-      },
+      { name: "Next.js", color: "blue-text-gradient", icon: SiNextdotjs },
+      { name: "Node.js", color: "green-text-gradient", icon: FaNodeJs },
+      { name: "Express", color: "pink-text-gradient", icon: SiExpress },
+      { name: "MongoDB", color: "orange-text-gradient", icon: SiMongodb },
+      { name: "GenAI APIs", color: "purple-text-gradient" },
     ],
-    image: "resumegen",
-    source_code_link: "https://resume-generator-ai.vercel.app/",
-    github_link: "https://github.com/sidgureja7803/resume-generator"
+    image: "ideahub",
+    source_code_link: "",
+    github_link: "https://github.com/sidgureja7803/FutureStack_GenAI.git"
   },
   {
-    name: "AI-Powered Code Reviewer",
+    name: "MergeMates",
     description:
-      "AI-Powered Code Reviewer is an intelligent assistant that helps developers write cleaner, optimized, and more secure code by providing detailed feedback, best practices, and performance improvements.",
+      "“Tinder for Developers” matching collaborators via GitHub data, tech stack, and interests; real-time matching & chat with WebSockets and scheduled email workflows.",
     tags: [
-      {
-        name: "React",
-        color: "blue-text-gradient",
-        icon: FaReact
-      },
-      {
-        name: "Gemini API",
-        color: "green-text-gradient",
-      },
-      {
-        name: "Tailwind CSS",
-        color: "pink-text-gradient",
-        icon: SiTailwindcss
-      },
+      { name: "React", color: "blue-text-gradient", icon: FaReact },
+      { name: "MongoDB", color: "green-text-gradient", icon: SiMongodb },
+      { name: "WebSockets", color: "pink-text-gradient" },
+      { name: "AWS", color: "orange-text-gradient" },
+      { name: "Cron Jobs", color: "purple-text-gradient" },
     ],
-    image: "project1",
-    source_code_link: "https://code-review-wine.vercel.app/",
-    github_link: "https://github.com/sidgureja7803/code-reviewer"
-  },
-  {
-    name: "Dev-Tinder",
-    description:
-      "Dev-Tinder is a MERN-based platform that connects developers across the globe. Users can swipe through developer profiles, collaborate on open-source projects, and build meaningful tech connections.",
-    tags: [
-      {
-        name: "React",
-        color: "blue-text-gradient",
-        icon: FaReact
-      },
-      {
-        name: "Express",
-        color: "green-text-gradient",
-        icon: SiExpress
-      },
-      {
-        name: "MongoDB",
-        color: "pink-text-gradient",
-        icon: SiMongodb
-      },
-    ],
-    image: "project2",
-    source_code_link: "https://dev-tinder-jet.vercel.app/",
-    github_link: "https://github.com/sidgureja7803/dev-tinder"
-  },
-  {
-    name: "IMDb Clone",
-    description:
-      "A movie discovery app that fetches and displays movies using the TMDb API. Users can search, filter, and explore movie details with a clean UI mimicking IMDb.",
-    tags: [
-      {
-        name: "React",
-        color: "blue-text-gradient",
-        icon: FaReact
-      },
-      {
-        name: "TMDb API",
-        color: "green-text-gradient",
-      },
-      {
-        name: "Tailwind CSS",
-        color: "pink-text-gradient",
-        icon: SiTailwindcss
-      },
-    ],
-    image: "project3",
-    source_code_link: "https://movie-app-n8ci.vercel.app/",
-    github_link: "https://github.com/sidgureja7803/imdb-clone"
-  },
-  {
-    name: "Netflix GPT",
-    description:
-      "Netflix GPT is an AI-powered movie recommendation app that integrates OpenAI with Firebase and TMDb APIs. Users get smart movie suggestions based on genres and watch history.",
-    tags: [
-      {
-        name: "React",
-        color: "blue-text-gradient",
-        icon: FaReact
-      },
-      {
-        name: "OpenAI API",
-        color: "green-text-gradient",
-      },
-      {
-        name: "Firebase Auth",
-        color: "pink-text-gradient",
-      },
-    ],
-    image: "project4",
-    source_code_link: "https://netflix-gpt-five-sandy.vercel.app",
-    github_link: "https://github.com/sidgureja7803/netflix-gpt"
-  },
-  {
-    name: "IncubatorCRM",
-    description:
-      "A comprehensive CRM system for managing startup incubator operations, including member tracking, event management, and resource allocation.",
-    tags: [
-      {
-        name: "React",
-        color: "blue-text-gradient",
-        icon: FaReact
-      },
-      {
-        name: "MongoDB",
-        color: "green-text-gradient",
-        icon: SiMongodb
-      },
-      {
-        name: "Express",
-        color: "pink-text-gradient",
-        icon: SiExpress
-      },
-      {
-        name: "Node.js",
-        color: "orange-text-gradient",
-        icon: FaNodeJs
-      },
-    ],
-    image: "project5",
-    source_code_link: "https://incubator-crm.vercel.app",
-    github_link: "https://github.com/siddhantgureja/incubator-crm"
+    image: "mergemates",
+    source_code_link: "https://www.mergemates.site/",
+    github_link: "https://github.com/sidgureja7803/MergeMates_client.git"
   },
 ];
+
 
 
 // LeetCode stats are now fetched dynamically in the LeetCodeStats component
