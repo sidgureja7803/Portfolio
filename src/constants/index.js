@@ -98,7 +98,7 @@ export const services = [
   {
     title: "Problem Solver",
     icon: "/icons/problem-solver.svg",
-    description: "Solved 700+ problems on LeetCode with a contest rating of 1850",
+    description: "Active competitive programmer with live LeetCode stats and contest participation",
     link: LEETCODE_PROFILE_URL
   },
   {
@@ -286,7 +286,7 @@ export const projects = [
         color: "green-text-gradient",
         icon: FaNodeJs
       },
-      {
+  {
         name: "Socket.io",
         color: "pink-text-gradient",
       },
@@ -297,7 +297,7 @@ export const projects = [
       },
     ],
     image: "codefusion",
-    source_code_link: "https://codefusion-app.vercel.app/",
+    source_code_link: "https://code-fusion.live/",
     github_link: "https://github.com/sidgureja7803/codefusion"
   },
   {
@@ -488,32 +488,38 @@ export const projects = [
 ];
 
 
-export const leetcodeStats = {
-  rating: 1850,
-  problemsSolved: 450,
-  contestRating: "Guardian",
+// LeetCode stats are now fetched dynamically in the LeetCodeStats component
+// This ensures real-time data similar to GitHub README.md badges
+export const leetcodeConfig = {
+  username: "sidgureja",
+  profileUrl: LEETCODE_PROFILE_URL,
   icon: SiLeetcode,
   color: "#FFA116",
-  badges: [
+  // These are the problem categories we track
+  categories: [
     {
       name: "Dynamic Programming",
-      count: 120,
       color: "#00B8D9"
     },
     {
-      name: "Graph Theory",
-      count: 85,
+      name: "Graph Theory", 
       color: "#36B37E"
     },
     {
       name: "Binary Search",
-      count: 65,
       color: "#FF5630"
     },
     {
       name: "Tree Algorithms",
-      count: 95,
       color: "#6554C0"
+    },
+    {
+      name: "Array & String",
+      color: "#9C27B0"
+    },
+    {
+      name: "Linked List",
+      color: "#FF9800"
     }
   ]
 }; 

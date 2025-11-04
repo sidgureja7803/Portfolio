@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { technologies } from '../constants';
+import { fetchLeetCodeStats, getFallbackStats, formatRanking } from '../utils/leetcodeApi';
 
 const TechCard = ({ icon: Icon, name, link, color }) => {
   const Card = (
@@ -33,180 +34,226 @@ const LeetCodeStats = () => {
   const LEETCODE_PROFILE_URL = `https://leetcode.com/${username}`;
 
   useEffect(() => {
-    const fetchLeetCodeData = async () => {
+    const loadLeetCodeData = async () => {
       try {
-        // Using the unofficial API endpoint
-        const response = await fetch(`https://leetcode-stats-api.herokuapp.com/${username}`);
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch LeetCode data');
-        }
-        
-        const data = await response.json();
-        
-        // Validate data and ensure all values are properly formatted
-        const validatedData = {
-          username: username,
-          totalSolved: data.totalSolved || 0,
-          easySolved: data.easySolved || 0,
-          totalEasy: data.totalEasy || 100,
-          mediumSolved: data.mediumSolved || 0,
-          totalMedium: data.totalMedium || 100,
-          hardSolved: data.hardSolved || 0,
-          totalHard: data.totalHard || 100,
-          contestRating: data.contestRating || 1500,
-          highestRating: data.highestRating || 1500,
-          ranking: typeof data.ranking === 'string' ? data.ranking : 
-                  typeof data.ranking === 'number' ? data.ranking.toString() : "N/A",
-          rankingPercentage: data.rankingPercentage || "Top 10%",
-        };
-        
-        setLeetCodeData(validatedData);
+        const data = await fetchLeetCodeStats(username);
+        setLeetCodeData(data);
       } catch (err) {
         console.error("Error fetching LeetCode data:", err);
         setError(err.message);
         
-        // Fallback data in case of error
-        setLeetCodeData({
-          username: username,
-          totalSolved: 450,
-          easySolved: 200,
-          totalEasy: 600,
-          mediumSolved: 180,
-          totalMedium: 1200,
-          hardSolved: 70,
-          totalHard: 500,
-          contestRating: 1850,
-          highestRating: 1920,
-          ranking: "10000",
-          rankingPercentage: "Top 7%",
-        });
+        // Use fallback data
+        setLeetCodeData(getFallbackStats(username));
       } finally {
         setLoading(false);
       }
     };
 
-    fetchLeetCodeData();
+    loadLeetCodeData();
+    
+    // Refresh data every 5 minutes
+    const interval = setInterval(loadLeetCodeData, 5 * 60 * 1000);
+    return () => clearInterval(interval);
   }, [username]);
 
   if (loading) {
-    return <div className="text-center py-10">Loading LeetCode stats...</div>;
+    return (
+      <div className="mt-12 p-8 bg-gradient-to-br from-gray-900 to-black rounded-2xl max-w-4xl mx-auto shadow-2xl border border-gray-800">
+        <div className="flex items-center justify-center space-x-4 py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+          <span className="text-white text-lg">Loading LeetCode stats...</span>
+        </div>
+      </div>
+    );
   }
 
   if (error && !leetCodeData) {
     return (
-      <div className="text-center py-10 text-red-500">
-        Error loading LeetCode stats: {error}
+      <div className="mt-12 p-8 bg-gradient-to-br from-gray-900 to-black rounded-2xl max-w-4xl mx-auto shadow-2xl border border-red-800">
+        <div className="text-center py-12">
+          <div className="text-red-400 text-lg mb-2">⚠️ Error loading LeetCode stats</div>
+          <div className="text-gray-400 text-sm">{error}</div>
+          <div className="text-gray-500 text-xs mt-2">Using fallback data...</div>
+        </div>
       </div>
     );
   }
 
   if (!leetCodeData) {
-    return <div className="text-center py-10">No LeetCode data available</div>;
+    return (
+      <div className="mt-12 p-8 bg-gradient-to-br from-gray-900 to-black rounded-2xl max-w-4xl mx-auto shadow-2xl border border-gray-800">
+        <div className="text-center py-12 text-gray-400">
+          No LeetCode data available
+        </div>
+      </div>
+    );
   }
 
-  // Get ranking display safely
+  // Get ranking display safely using utility function
   const getRankingDisplay = () => {
-    try {
-      if (!leetCodeData || !leetCodeData.ranking || leetCodeData.ranking === "N/A") {
-        return "N/A";
-      }
-      
-      // Check if ranking is a string and contains a slash (indicating format like "10000 / 100000")
-      if (typeof leetCodeData.ranking === 'string' && leetCodeData.ranking.includes('/')) {
-        const parts = leetCodeData.ranking.split('/');
-        return parts[0].trim();
-      }
-      
-      // If it's just a number as string, return it directly
-      return leetCodeData.ranking;
-    } catch (error) {
-      console.error("Error parsing ranking:", error);
-      return "N/A";
-    }
+    return formatRanking(leetCodeData?.ranking);
   };
 
   return (
-    <div className="mt-8 p-6 bg-tertiary rounded-xl max-w-3xl mx-auto shadow-lg">
-    
-      <div className="flex justify-between items-center mb-6">
+    <div className="mt-12 p-8 bg-gradient-to-br from-gray-900 to-black rounded-2xl max-w-4xl mx-auto shadow-2xl border border-gray-800">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
         <div className="flex items-center space-x-4">
-          <div className="bg-gray-800 rounded-full p-2">
-            <img 
-              src="https://assets.leetcode.com/users/avatars/avatar_1628467120.png" 
-              alt="LeetCode Avatar" 
-              className="w-10 h-10 rounded-full"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = "https://leetcode.com/static/images/LeetCode_logo.png";
-              }}
-            />
+          <div className="relative">
+            <div className="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full p-3">
+              <img 
+                src="https://leetcode.com/static/images/LeetCode_logo_rvs.png" 
+                alt="LeetCode Logo" 
+                className="w-8 h-8"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "https://upload.wikimedia.org/wikipedia/commons/1/19/LeetCode_logo_black.png";
+                }}
+              />
+            </div>
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full animate-pulse"></div>
           </div>
           <div>
-            <h3 className="text-xl font-bold text-white">{username}</h3>
-            <p className="text-gray-400 text-sm">#{getRankingDisplay()}</p>
-          </div>
-        </div>
-        <div className="text-right">
-          <span className="text-gray-400 text-sm">Easy</span>
-          <div className="bg-gray-700 h-2 w-48 rounded-full mt-1 mb-3">
-            <div 
-              className="bg-green-500 h-full rounded-full" 
-              style={{width: `${(leetCodeData.easySolved / leetCodeData.totalEasy) * 100}%`}} 
-            />
-          </div>
-          
-          <span className="text-gray-400 text-sm">Medium</span>
-          <div className="bg-gray-700 h-2 w-48 rounded-full mt-1 mb-3">
-            <div 
-              className="bg-yellow-500 h-full rounded-full" 
-              style={{width: `${(leetCodeData.mediumSolved / leetCodeData.totalMedium) * 100}%`}} 
-            />
-          </div>
-          
-          <span className="text-gray-400 text-sm">Hard</span>
-          <div className="bg-gray-700 h-2 w-48 rounded-full mt-1">
-            <div 
-              className="bg-red-500 h-full rounded-full" 
-              style={{width: `${(leetCodeData.hardSolved / leetCodeData.totalHard) * 100}%`}} 
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-8">
-        <div>
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-400">Contest Rating</span>
-            <span className="text-white text-4xl font-bold">{leetCodeData.contestRating}</span>
-          </div>
-          
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-400">Highest Rating</span>
-            <span className="text-white text-4xl font-bold">{leetCodeData.highestRating}</span>
+            <h3 className="text-2xl font-bold text-white flex items-center">
+              {username}
+              <span className="ml-2 text-sm bg-gradient-to-r from-blue-500 to-purple-500 text-white px-2 py-1 rounded-full">
+                Live Stats
+              </span>
+            </h3>
+            <p className="text-gray-400">Global Ranking: #{getRankingDisplay()}</p>
           </div>
         </div>
         
-        <div className="flex flex-col items-center justify-center">
-          <div className="w-24 h-24 rounded-full bg-gray-800 flex items-center justify-center border-4 border-gray-700">
-            <span className="text-4xl font-bold text-white">{leetCodeData.totalSolved}</span>
+        <div className="flex space-x-3">
+          <button
+            onClick={() => {
+              setLoading(true);
+              setError(null);
+              // Trigger a manual refresh
+              const loadData = async () => {
+                try {
+                  const data = await fetchLeetCodeStats(username);
+                  setLeetCodeData(data);
+                } catch (err) {
+                  setError(err.message);
+                  setLeetCodeData(getFallbackStats(username));
+                } finally {
+                  setLoading(false);
+                }
+              };
+              loadData();
+            }}
+            disabled={loading}
+            className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-lg font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Refresh stats"
+          >
+            {loading ? '⟳' : '↻'}
+          </button>
+          
+          <a 
+            href={LEETCODE_PROFILE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-4 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105"
+          >
+            View Profile
+          </a>
+        </div>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {/* Total Problems Solved */}
+        <div className="bg-gray-800 rounded-xl p-6 text-center border border-gray-700">
+          <div className="text-4xl font-bold text-white mb-2">{leetCodeData.totalSolved}</div>
+          <div className="text-gray-400 text-sm">Problems Solved</div>
+          <div className="text-green-400 text-xs mt-1">{leetCodeData.rankingPercentage}</div>
+        </div>
+
+        {/* Contest Rating */}
+        <div className="bg-gray-800 rounded-xl p-6 text-center border border-gray-700">
+          <div className="text-4xl font-bold text-yellow-400 mb-2">{leetCodeData.contestRating}</div>
+          <div className="text-gray-400 text-sm">Contest Rating</div>
+          <div className="text-blue-400 text-xs mt-1">Max: {leetCodeData.highestRating}</div>
+        </div>
+
+        {/* Acceptance Rate */}
+        <div className="bg-gray-800 rounded-xl p-6 text-center border border-gray-700">
+          <div className="text-4xl font-bold text-purple-400 mb-2">{leetCodeData.acceptanceRate}</div>
+          <div className="text-gray-400 text-sm">Acceptance Rate</div>
+          <div className="text-green-400 text-xs mt-1">+{leetCodeData.contributionPoints} points</div>
+        </div>
+      </div>
+
+      {/* Problem Difficulty Breakdown */}
+      <div className="space-y-4">
+        <h4 className="text-lg font-semibold text-white mb-4">Problem Difficulty Breakdown</h4>
+        
+        {/* Easy Problems */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+            <span className="text-white font-medium">Easy</span>
           </div>
-          <div className="mt-2 flex items-center">
-            <img 
-              src="https://leetcode.com/static/images/badges/2023/gif/2023-12.gif" 
-              alt="Badge" 
-              className="w-8 h-8 mr-2"
-            />
-            <span className="text-white">{leetCodeData.rankingPercentage}</span>
+          <div className="flex items-center space-x-4 flex-1 mx-4">
+            <div className="bg-gray-700 h-3 flex-1 rounded-full overflow-hidden">
+              <div 
+                className="bg-gradient-to-r from-green-400 to-green-600 h-full rounded-full transition-all duration-1000 ease-out" 
+                style={{width: `${Math.min((leetCodeData.easySolved / leetCodeData.totalEasy) * 100, 100)}%`}} 
+              />
+            </div>
+            <span className="text-gray-300 text-sm min-w-[80px]">
+              {leetCodeData.easySolved}/{leetCodeData.totalEasy}
+            </span>
+          </div>
+        </div>
+        
+        {/* Medium Problems */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+            <span className="text-white font-medium">Medium</span>
+          </div>
+          <div className="flex items-center space-x-4 flex-1 mx-4">
+            <div className="bg-gray-700 h-3 flex-1 rounded-full overflow-hidden">
+              <div 
+                className="bg-gradient-to-r from-yellow-400 to-yellow-600 h-full rounded-full transition-all duration-1000 ease-out" 
+                style={{width: `${Math.min((leetCodeData.mediumSolved / leetCodeData.totalMedium) * 100, 100)}%`}} 
+              />
+            </div>
+            <span className="text-gray-300 text-sm min-w-[80px]">
+              {leetCodeData.mediumSolved}/{leetCodeData.totalMedium}
+            </span>
+          </div>
+        </div>
+        
+        {/* Hard Problems */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+            <span className="text-white font-medium">Hard</span>
+          </div>
+          <div className="flex items-center space-x-4 flex-1 mx-4">
+            <div className="bg-gray-700 h-3 flex-1 rounded-full overflow-hidden">
+              <div 
+                className="bg-gradient-to-r from-red-400 to-red-600 h-full rounded-full transition-all duration-1000 ease-out" 
+                style={{width: `${Math.min((leetCodeData.hardSolved / leetCodeData.totalHard) * 100, 100)}%`}} 
+              />
+            </div>
+            <span className="text-gray-300 text-sm min-w-[80px]">
+              {leetCodeData.hardSolved}/{leetCodeData.totalHard}
+            </span>
           </div>
         </div>
       </div>
 
-      <div className="mt-4">
-        <div className="bg-gray-800 h-32 rounded-lg p-4">
-          {/* Rating graph - You could implement an actual chart here using a library like recharts */}
-          <div className="text-xs text-gray-400">Contest Rating History</div>
-        </div>
+      {/* Footer */}
+      <div className="mt-6 pt-6 border-t border-gray-700 flex justify-between items-center text-sm text-gray-400">
+        <span>Last updated: {leetCodeData.lastUpdated ? new Date(leetCodeData.lastUpdated).toLocaleTimeString() : new Date().toLocaleTimeString()}</span>
+        <span className="flex items-center">
+          <div className={`w-2 h-2 rounded-full mr-2 animate-pulse ${leetCodeData.isFallback ? 'bg-yellow-500' : 'bg-green-500'}`}></div>
+          {leetCodeData.isFallback ? 'Fallback data (API unavailable)' : 'Live data from LeetCode API'}
+        </span>
       </div>
     </div>
   );
