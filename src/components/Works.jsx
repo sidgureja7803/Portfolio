@@ -58,7 +58,7 @@ const ProjectCard = ({
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-      
+      >
         {/* Featured badge for top projects */}
         {index < 3 && (
           <div className="absolute -top-3 -right-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 z-10 shadow-lg">
