@@ -1,4 +1,8 @@
 // Mock data for Siddhant Gureja's Portfolio
+import CodeFusionImg from './assets/CodeFusion.png';
+import MergeMatesImg from './assets/MergeMates.png';
+import LiveCVImg from './assets/LiveCV.png';
+import IdeaHubImg from './assets/IdeaHub.png';
 
 export const personalInfo = {
   name: "SIDDHANT GUREJA",
@@ -77,7 +81,7 @@ export const projects = [
     description: "A real-time collaborative coding platform for solving DSA problems together.",
     longDescription:
       "Built using React, Docker, Liveblocks, and Judge0 for multi-language execution. Integrated LLaMA API for AI-driven debugging and scaled to 100+ concurrent sessions.",
-    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&h=400&fit=crop&auto=format",
+    image: CodeFusionImg,
     technologies: ["React.js", "Docker", "Liveblocks", "Judge0", "LLaMA API"],
     liveUrl: "https://www.code-fusion.live/",
     githubUrl: "https://github.com/sidgureja7803/CollabCode.git",
@@ -89,7 +93,7 @@ export const projects = [
     description: "A 'Tinder for Developers' that matches collaborators based on GitHub data and tech interests.",
     longDescription:
       "Implemented real-time matching and chat using WebSockets with event-driven architecture. Deployed on AWS EC2 + Route 53 with automated workflows using Cron Jobs.",
-    image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?w=600&h=400&fit=crop&auto=format",
+    image: MergeMatesImg,
     technologies: ["React.js", "MongoDB", "WebSockets", "AWS", "Cron Jobs"],
     liveUrl: "https://www.mergemates.site/",
     githubUrl: "https://github.com/sidgureja7803/MergeMates_client.git",
@@ -101,7 +105,7 @@ export const projects = [
     description: "An AI-powered resume builder that dynamically updates resumes in real time.",
     longDescription:
       "Developed with React.js, Node.js, and Appwrite for secure authentication and data handling. Supports real-time editing, PDF export, and template switching.",
-    image: "https://images.unsplash.com/photo-1587614382346-ac5ce068fe85?w=600&h=400&fit=crop&auto=format",
+    image: LiveCVImg,
     technologies: ["React.js", "Appwrite", "Node.js", "MongoDB", "Tailwind CSS"],
     liveUrl: "https://livecv.online/",
     githubUrl: "https://github.com/sidgureja7803/LiveCV"
@@ -112,7 +116,7 @@ export const projects = [
     description: "A collaborative GenAI-powered platform to share and enhance project ideas.",
     longDescription:
       "Implemented AI-powered idea suggestions, scalable backend, and interactive UX for idea submission, refinement, and collaboration.",
-    image: "https://images.unsplash.com/photo-1556155092-490a1ba16284?w=600&h=400&fit=crop&auto=format",
+    image: IdeaHubImg,
     technologies: ["Next.js", "Node.js", "Express.js", "MongoDB", "GenAI APIs"],
     githubUrl: "https://github.com/sidgureja7803/FutureStack_GenAI.git"
   }

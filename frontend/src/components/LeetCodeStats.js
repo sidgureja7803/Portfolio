@@ -17,113 +17,57 @@ const LeetCodeStats = () => {
       try {
         setLoading(true);
         
-        // Fetch user profile data
-        const profileQuery = `
-          query userPublicProfile($username: String!) {
-            matchedUser(username: $username) {
-              contestBadge {
-                name
-              }
-              profile {
-                ranking
-                reputation
-              }
-              submitStats {
-                acSubmissionNum {
-                  difficulty
-                  count
-                }
-              }
-            }
-          }
-        `;
-
-        // Fetch contest ranking data
-        const contestQuery = `
-          query userContestRankingInfo($username: String!) {
-            userContestRanking(username: $username) {
-              attendedContestsCount
-              rating
-              globalRanking
-              topPercentage
-            }
-          }
-        `;
-
-        const [profileResponse, contestResponse] = await Promise.all([
-          fetch('https://leetcode.com/graphql', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              query: profileQuery,
-              variables: { username: leetcodeUsername }
-            })
-          }),
-          fetch('https://leetcode.com/graphql', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              query: contestQuery,
-              variables: { username: leetcodeUsername }
-            })
-          })
-        ]);
-
-        const profileData = await profileResponse.json();
-        const contestData = await contestResponse.json();
-
-        if (profileData.errors || contestData.errors) {
+        // Use LeetCode API through a CORS proxy
+        const API_URL = `https://leetcode-stats-api.herokuapp.com/${leetcodeUsername}`;
+        
+        const response = await fetch(API_URL);
+        
+        if (!response.ok) {
           throw new Error('Failed to fetch LeetCode data');
         }
-
-        const matchedUser = profileData.data?.matchedUser;
-        const contestRanking = contestData.data?.userContestRanking;
         
-        // Calculate total problems solved
-        const totalSolved = matchedUser?.submitStats?.acSubmissionNum?.reduce(
-          (acc, curr) => acc + curr.count, 0
-        ) || 0;
+        const data = await response.json();
 
-        // Get badge name
-        const badgeName = matchedUser?.contestBadge?.name || 'Participant';
+        // Parse the API response
+        const totalSolved = data.totalSolved || 0;
+        const ranking = data.ranking || 'N/A';
+        const contributionPoints = data.contributionPoints || 0;
         
         // Create achievements based on real data
         const achievements = [];
-        if (badgeName && badgeName !== 'Participant') {
+        if (totalSolved >= 100) {
           achievements.push({
-            title: `${badgeName} Badge`,
-            description: 'Earned through consistent contest performance'
+            title: `${totalSolved} Problems Solved`,
+            description: 'Great progress on problem solving!'
           });
         }
-        if (contestRanking?.rating) {
+        if (ranking && ranking !== 'N/A') {
           achievements.push({
-            title: `${Math.round(contestRanking.rating)} Rating`,
-            description: 'Contest Rating Achievement'
+            title: `Rank: ${ranking.toLocaleString()}`,
+            description: 'Global LeetCode Ranking'
           });
         }
-        if (contestRanking?.topPercentage) {
+        if (contributionPoints > 0) {
           achievements.push({
-            title: `Top ${contestRanking.topPercentage.toFixed(1)}%`,
-            description: 'Global Contest Ranking'
+            title: `${contributionPoints} Contribution Points`,
+            description: 'Active community contributor'
           });
         }
 
         // Get badges
-        const badges = [badgeName];
+        const badges = [];
+        if (totalSolved >= 50) badges.push('50+ Problems');
         if (totalSolved >= 100) badges.push('100+ Problems');
         if (totalSolved >= 200) badges.push('200+ Problems');
-        if (contestRanking?.attendedContestsCount >= 10) badges.push('Contest Regular');
+        if (totalSolved >= 300) badges.push('300+ Problems');
+        if (data.acceptanceRate >= 50) badges.push('High Acceptance Rate');
 
         setStats({
-          contestRating: Math.round(contestRanking?.rating || 0),
-          contestsParticipated: contestRanking?.attendedContestsCount || 0,
+          contestRating: 0, // This API doesn't provide contest rating
+          contestsParticipated: 0, // This API doesn't provide contest count
           problemsSolved: totalSolved,
-          ranking: badgeName,
-          badges: badges.filter(Boolean),
+          ranking: ranking,
+          badges: badges.length > 0 ? badges : ['Getting Started'],
           recentAchievements: achievements.length > 0 ? achievements : [
             { title: 'Getting Started', description: 'Continue solving problems!' }
           ]
@@ -227,28 +171,28 @@ const LeetCodeStats = () => {
                 <div className="space-y-2">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/20 border border-orange-500/30">
                     <Award className="w-4 h-4 text-orange-500" />
-                    <span className="text-sm font-semibold text-orange-500">{stats.ranking} Badge</span>
+                    <span className="text-sm font-semibold text-orange-500">LeetCode Stats</span>
                   </div>
                   <h3 className="text-4xl md:text-5xl font-bold text-foreground">
-                    {stats.contestRating}
+                    {stats.problemsSolved}+
                   </h3>
-                  <p className="text-muted-foreground text-lg">Contest Rating</p>
+                  <p className="text-muted-foreground text-lg">Problems Solved</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-4 rounded-lg bg-background/50 backdrop-blur-sm border border-border/50">
                     <div className="flex items-center gap-2 mb-2">
                       <Target className="w-4 h-4 text-primary" />
-                      <span className="text-sm text-muted-foreground">Problems</span>
+                      <span className="text-sm text-muted-foreground">Global Rank</span>
                     </div>
-                    <p className="text-2xl font-bold text-foreground">{stats.problemsSolved}+</p>
+                    <p className="text-2xl font-bold text-foreground">{typeof stats.ranking === 'number' ? stats.ranking.toLocaleString() : stats.ranking}</p>
                   </div>
                   <div className="p-4 rounded-lg bg-background/50 backdrop-blur-sm border border-border/50">
                     <div className="flex items-center gap-2 mb-2">
                       <Trophy className="w-4 h-4 text-orange-500" />
-                      <span className="text-sm text-muted-foreground">Contests</span>
+                      <span className="text-sm text-muted-foreground">Status</span>
                     </div>
-                    <p className="text-2xl font-bold text-foreground">{stats.contestsParticipated}+</p>
+                    <p className="text-xl font-bold text-foreground">Active</p>
                   </div>
                 </div>
 
