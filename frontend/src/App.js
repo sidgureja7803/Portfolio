@@ -18,17 +18,19 @@ import './App.css';
 
 const HomePage = () => {
   useEffect(() => {
-    // Initialize Lenis for smooth scrolling
+    // Initialize Lenis with optimized settings for buttery smooth scrolling
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1,
+      wheelMultiplier: 0.8,
       smoothTouch: false,
       touchMultiplier: 2,
       infinite: false,
+      syncTouch: true,
+      syncTouchLerp: 0.1,
     });
 
     function raf(time) {
