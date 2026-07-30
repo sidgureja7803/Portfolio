@@ -1,24 +1,44 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Card } from './ui/card';
 import { Badge } from './ui/badge';
 import { personalInfo, education } from '../mock';
 import { GraduationCap, MapPin, Mail, Phone } from 'lucide-react';
+import ScrollRevealText from './ScrollRevealText';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
 
 const About = () => {
   return (
     <section id="about" className="px-6">
       <div className="max-w-4xl mx-auto">
         {/* Section Header */}
-        <div className="mb-16">
-          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight mb-4">
+        <motion.div
+          className="mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={fadeUp}
+        >
+          <h2 className="font-display text-4xl md:text-5xl font-semibold tracking-tight mb-4">
             About
           </h2>
-          <p className="text-muted-foreground max-w-2xl text-lg leading-relaxed">
-            {personalInfo.bio}
-          </p>
-        </div>
+          <ScrollRevealText
+            text={personalInfo.bio}
+            className="text-muted-foreground max-w-2xl text-lg leading-relaxed"
+          />
+        </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-start">
+        <motion.div
+          className="grid md:grid-cols-2 gap-12 items-start"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={fadeUp}
+        >
           {/* Contact Info */}
           <div className="space-y-6">
             <h3 className="text-xl font-semibold mb-6">Contact</h3>
@@ -63,7 +83,7 @@ const About = () => {
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

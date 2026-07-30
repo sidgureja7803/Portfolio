@@ -1,33 +1,58 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Card } from './ui/card';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 import { achievements } from '../mock';
+import ScrollRevealText from './ScrollRevealText';
 import { Trophy, Award, ExternalLink, FileText, Star } from 'lucide-react';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+};
 
 const Achievements = () => {
   return (
     <section id="achievements" className="py-24 px-6 bg-gradient-to-b from-background to-accent/5">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-16 space-y-4">
+        <motion.div
+          className="text-center mb-16 space-y-4"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={fadeUp}
+        >
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20">
             <Trophy className="w-4 h-4 mr-2 text-yellow-500" />
             <span className="text-sm font-medium text-foreground">Recognition</span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-light tracking-tight">
+          <h2 className="font-display text-3xl md:text-4xl font-light tracking-tight">
             Awards & <span className="font-normal">Achievements</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            Recognition for technical excellence and competitive achievements
-          </p>
-        </div>
+          <ScrollRevealText
+            text="Recognition for technical excellence and competitive achievements"
+            className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed justify-center"
+          />
+        </motion.div>
 
         {/* Achievements Grid */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <motion.div
+          className="grid md:grid-cols-2 gap-6"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          variants={staggerContainer}
+        >
           {achievements.map((achievement) => (
-            <Card 
-              key={achievement.id} 
+            <motion.div key={achievement.id} variants={fadeUp}>
+            <Card
               className="group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-card/90 to-card/50 backdrop-blur-sm relative"
             >
               {/* Decorative elements */}
@@ -95,8 +120,9 @@ const Achievements = () => {
                 </div>
               </div>
             </Card>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Stats Summary */}
         <Card className="mt-12 p-8 border-0 shadow-lg bg-gradient-to-br from-yellow-500/5 via-orange-500/5 to-red-500/5 backdrop-blur-sm">
