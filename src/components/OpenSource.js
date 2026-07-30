@@ -1,33 +1,58 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Card } from './ui/card';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 import { openSource } from '../mock';
+import ScrollRevealText from './ScrollRevealText';
 import { Github, GitBranch, Star, Calendar, ExternalLink } from 'lucide-react';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+};
 
 const OpenSource = () => {
   return (
     <section id="opensource" className="py-24 px-6 bg-accent/5">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-16 space-y-4">
+        <motion.div
+          className="text-center mb-16 space-y-4"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={fadeUp}
+        >
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-green-500/10 to-blue-500/10 border border-green-500/20">
             <GitBranch className="w-4 h-4 mr-2 text-green-500" />
             <span className="text-sm font-medium text-foreground">Open Source</span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-light tracking-tight">
+          <h2 className="font-display text-3xl md:text-4xl font-light tracking-tight">
             Open Source <span className="font-normal">Contributions</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            Contributing to the developer community and building in public
-          </p>
-        </div>
+          <ScrollRevealText
+            text="Contributing to the developer community and building in public"
+            className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed justify-center"
+          />
+        </motion.div>
 
         {/* Contributions Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
+        <motion.div
+          className="grid md:grid-cols-2 gap-8 mb-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          variants={staggerContainer}
+        >
           {openSource.map((contribution) => (
-            <Card 
-              key={contribution.id} 
+            <motion.div key={contribution.id} variants={fadeUp}>
+            <Card
               className="group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-card/80 to-card/50 backdrop-blur-sm relative"
             >
               {/* Decorative corner accent */}
@@ -95,8 +120,9 @@ const OpenSource = () => {
                 </div>
               </div>
             </Card>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Stats Overview */}
         <Card className="p-8 border-0 shadow-lg bg-gradient-to-br from-green-500/5 via-blue-500/5 to-purple-500/5 backdrop-blur-sm">
