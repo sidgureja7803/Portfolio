@@ -11,8 +11,9 @@ export const personalInfo = {
   email: "siddhantgureja39@gmail.com",
   phone: "+91 8193006167",
   location: "India",
-  bio: "Full Stack Developer specializing in JavaScript, React.js, and Node.js with a passion for building AI-driven, scalable, and real-time web applications. Experienced in full-stack product development, open-source contributions, and cloud deployment using AWS, Docker, and Render."
+  bio: " Full-Stack Developer passionate about building intelligent, scalable, and high-performance web products using TypeScript, React.js, and FastAPI. Experienced in generative AI, real-time systems, cloud deployment, and open-source development, with a strong focus on transforming ideas into production-ready applications using AWS, Docker, and Render."
 };
+
 
 export const socialLinks = [
   { name: "LinkedIn", url: "https://linkedin.com/in/sidgureja", icon: "linkedin" },
