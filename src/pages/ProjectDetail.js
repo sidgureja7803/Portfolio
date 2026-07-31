@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Contact from '../components/Contact';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import { projects } from '../mock';
@@ -29,7 +29,7 @@ const ProjectDetail = () => {
             Back to projects
           </Button>
         </main>
-        <Footer />
+        <Contact />
       </div>
     );
   }
@@ -131,7 +131,7 @@ const ProjectDetail = () => {
           </motion.div>
         </div>
       </main>
-      <Footer />
+      <Contact />
     </div>
   );
 };
