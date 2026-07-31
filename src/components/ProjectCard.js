@@ -1,6 +1,5 @@
 import React, { useRef, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card } from './ui/card';
 import { Button } from './ui/button';
 import { getSkillIcon } from '../lib/skillIcons';
 import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
@@ -10,7 +9,7 @@ const MAX_TILT = 6;
 const TechPill = ({ label }) => {
   const { icon: Icon, color } = getSkillIcon(label);
   return (
-    <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border border-border/70 bg-background/50">
+    <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border border-border">
       <Icon className="w-3.5 h-3.5" style={{ color }} aria-hidden="true" />
       {label}
     </span>
@@ -38,7 +37,7 @@ const ProjectCard = ({ project, featured = false }) => {
   const hiddenCount = project.technologies.length - visibleTechs.length;
 
   return (
-    <Card
+    <div
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={resetTilt}
@@ -46,7 +45,7 @@ const ProjectCard = ({ project, featured = false }) => {
         transform: `perspective(1200px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         transition: 'transform 0.15s ease-out',
       }}
-      className={`group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-card/60 backdrop-blur-sm ${
+      className={`group overflow-hidden rounded-2xl border border-border hover:border-foreground/30 transition-colors ${
         featured ? 'md:grid md:grid-cols-2' : ''
       }`}
     >
@@ -65,9 +64,8 @@ const ProjectCard = ({ project, featured = false }) => {
           loading="lazy"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent md:bg-gradient-to-r" />
         {featured && (
-          <span className="absolute top-4 left-4 rounded-full bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 tracking-wide">
+          <span className="absolute top-4 left-4 text-xs font-semibold text-background bg-foreground px-3 py-1 rounded-full tracking-wide">
             FEATURED
           </span>
         )}
@@ -78,14 +76,13 @@ const ProjectCard = ({ project, featured = false }) => {
 
       {/* Project Content */}
       <div className={`p-6 md:p-8 flex flex-col ${featured ? 'justify-center' : ''}`}>
-        <h3 className={`font-semibold group-hover:text-primary transition-colors mb-2 ${featured ? 'text-2xl' : 'text-xl'}`}>
+        <h3 className={`font-display font-medium tracking-tight group-hover:text-primary transition-colors mb-2 ${featured ? 'text-2xl md:text-3xl' : 'text-xl'}`}>
           {project.title}
         </h3>
         <p className={`text-muted-foreground leading-relaxed mb-4 ${featured ? 'text-base' : 'text-sm'}`}>
           {project.description}
         </p>
 
-        {/* Top metric, if available — gives the featured card immediate credibility */}
         {featured && project.metrics?.[0] && (
           <div className="flex items-center gap-2 mb-4 text-sm font-medium text-primary">
             <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden="true" />
@@ -93,27 +90,26 @@ const ProjectCard = ({ project, featured = false }) => {
           </div>
         )}
 
-        {/* Technologies */}
         <div className="flex flex-wrap gap-2 mb-6">
           {visibleTechs.map((tech) => (
             <TechPill key={tech} label={tech} />
           ))}
           {hiddenCount > 0 && (
-            <span className="inline-flex items-center text-xs font-medium px-2.5 py-1 rounded-full border border-border/70 text-muted-foreground">
+            <span className="inline-flex items-center text-xs font-medium px-2.5 py-1 rounded-full border border-border text-muted-foreground">
               +{hiddenCount}
             </span>
           )}
         </div>
 
-        {/* Action Buttons */}
         <div className="flex gap-3 mt-auto">
-          <Button size="sm" className="flex-1" onClick={goToDetail}>
+          <Button size="sm" variant="outline" className="flex-1 rounded-full" onClick={goToDetail}>
             View details
           </Button>
           {project.liveUrl && (
             <Button
               size="sm"
               variant="outline"
+              className="rounded-full"
               onClick={(e) => {
                 e.stopPropagation();
                 window.open(project.liveUrl, '_blank', 'noopener,noreferrer');
@@ -127,6 +123,7 @@ const ProjectCard = ({ project, featured = false }) => {
             <Button
               size="sm"
               variant="outline"
+              className="rounded-full"
               onClick={(e) => {
                 e.stopPropagation();
                 window.open(project.githubUrl, '_blank', 'noopener,noreferrer');
@@ -138,7 +135,7 @@ const ProjectCard = ({ project, featured = false }) => {
           )}
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
 

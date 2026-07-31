@@ -3,11 +3,11 @@ import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Button } from './ui/button';
-import { ArrowRight, Download } from 'lucide-react';
+import { ArrowRight, Download, ChevronDown } from 'lucide-react';
 import { personalInfo, socialLinks } from '../mock';
 import ResumePDF from '../assets/siddhant_tiet.pdf';
 import HeroScene from './HeroScene';
-import AnimatedName from './AnimatedName';
+import MarqueeName from './MarqueeName';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -21,6 +21,17 @@ const fadeUp = {
     // is the page's LCP element, and any animation delay on it directly
     // inflates measured LCP under throttled/low-end conditions.
     transition: { duration: 0.4, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] },
+  }),
+};
+
+// Cinematic slide-in-from-right entrance for the title/tagline — each is
+// wrapped in an overflow-hidden mask so it looks like the text is being
+// pulled in from off-screen rather than just translating.
+const slideInRight = {
+  hidden: { x: '110%' },
+  visible: (i = 0) => ({
+    x: '0%',
+    transition: { duration: 0.9, delay: 0.15 + i * 0.12, ease: [0.16, 1, 0.3, 1] },
   }),
 };
 
@@ -97,46 +108,50 @@ const Hero = () => {
 
   return (
     <section
+      id="hero"
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center pt-32 pb-24 px-6 overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-between pt-28 pb-10 md:pb-14 px-6 md:px-10 overflow-hidden"
     >
       <div ref={sceneWrapperRef} className="absolute inset-0 z-0">
         <HeroScene />
       </div>
-      <div ref={contentRef} className="relative z-10 max-w-4xl mx-auto w-full">
-        {/* Main Content */}
-        <div className="space-y-12">
-          {/* Name & Title */}
-          <div className="space-y-6">
-            <h1 className="font-display text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight">
-              <AnimatedName text={personalInfo.name} />
-            </h1>
 
-            <div className="space-y-4">
-              <motion.p
-                className="text-xl md:text-2xl text-muted-foreground font-medium"
-                initial="hidden"
-                animate="visible"
-                custom={1}
-                variants={fadeUp}
-              >
-                {personalInfo.title}
-              </motion.p>
-              <motion.p
-                className="text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed"
-                initial="hidden"
-                animate="visible"
-                custom={2}
-                variants={fadeUp}
-              >
-                {personalInfo.tagline}
-              </motion.p>
-            </div>
+      {/* Aurora glow — fills the otherwise flat black canvas with slow,
+          drifting color so the hero doesn't read as an empty void. */}
+      <div className="absolute inset-0 z-[1] overflow-hidden pointer-events-none" aria-hidden="true">
+        <div className="absolute -top-1/4 -left-1/4 w-[60vw] h-[60vw] max-w-[700px] max-h-[700px] rounded-full bg-indigo-500/25 blur-[120px] animate-aurora-1" />
+        <div className="absolute top-1/3 -right-1/4 w-[55vw] h-[55vw] max-w-[650px] max-h-[650px] rounded-full bg-fuchsia-500/20 blur-[120px] animate-aurora-2" />
+        <div className="absolute -bottom-1/4 left-1/4 w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full bg-cyan-400/15 blur-[120px] animate-aurora-3" />
+      </div>
+
+      <div ref={contentRef} className="relative z-10 flex-1 flex flex-col justify-between">
+        {/* Top: role, tagline, CTAs — right-aligned on desktop, editorial style */}
+        <div className="flex flex-col items-start md:items-end md:ml-auto md:max-w-2xl md:text-right space-y-6 mt-6">
+          <div className="overflow-hidden">
+            <motion.p
+              className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight leading-[1.05] bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground to-indigo-400"
+              initial="hidden"
+              animate="visible"
+              custom={0}
+              variants={slideInRight}
+            >
+              {personalInfo.title}
+            </motion.p>
+          </div>
+          <div className="overflow-hidden">
+            <motion.p
+              className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-lg"
+              initial="hidden"
+              animate="visible"
+              custom={1}
+              variants={slideInRight}
+            >
+              {personalInfo.tagline}
+            </motion.p>
           </div>
 
-          {/* CTA Buttons */}
           <motion.div
-            className="flex flex-wrap items-center gap-4"
+            className="flex flex-wrap items-center gap-4 md:justify-end"
             initial="hidden"
             animate="visible"
             custom={3}
@@ -144,18 +159,13 @@ const Hero = () => {
           >
             <Button
               size="lg"
-              className="group px-6 py-3 font-medium"
+              className="group rounded-full px-7 font-medium shadow-[0_0_30px_-5px] shadow-indigo-500/50 hover:shadow-indigo-500/70 transition-shadow"
               onClick={scrollToContact}
             >
               Get in touch
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="group px-6 py-3 font-medium"
-              asChild
-            >
+            <Button variant="outline" size="lg" className="group rounded-full px-7 font-medium" asChild>
               <a href={ResumePDF} download="Siddhant_Gureja_Resume.pdf">
                 Download CV
                 <Download className="ml-2 h-4 w-4" />
@@ -163,9 +173,8 @@ const Hero = () => {
             </Button>
           </motion.div>
 
-          {/* Social Links */}
           <motion.div
-            className="flex items-center gap-4 pt-4"
+            className="flex items-center gap-5 md:justify-end"
             initial="hidden"
             animate="visible"
             custom={4}
@@ -183,6 +192,31 @@ const Hero = () => {
                 {getSocialIcon(link.icon)}
               </a>
             ))}
+          </motion.div>
+        </div>
+
+        {/* Bottom: name scrolls continuously, edge to edge */}
+        <div>
+          <h1 className="-mx-6 md:-mx-10">
+            <MarqueeName
+              text={personalInfo.name}
+              className="font-display leading-[0.85] tracking-tight font-semibold select-none text-[15vw] md:text-[10.5vw] whitespace-nowrap"
+            />
+          </h1>
+
+          <motion.div
+            className="flex items-center gap-2 mt-6 text-xs text-muted-foreground tracking-[0.2em] uppercase"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 0.6 }}
+          >
+            <motion.span
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <ChevronDown className="w-4 h-4" />
+            </motion.span>
+            Scroll
           </motion.div>
         </div>
       </div>

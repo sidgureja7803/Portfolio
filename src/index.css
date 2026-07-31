@@ -31,7 +31,7 @@ code {
 }
 
 .font-display {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* Minimal Scrollbar */
@@ -102,72 +102,6 @@ code {
     --ring: 0 0% 95%;
   }
 
-  /* Keep other themes for flexibility but simplified */
-  .ocean {
-    --background: 210 60% 8%;
-    --foreground: 210 20% 95%;
-    --card: 210 50% 12%;
-    --card-foreground: 210 20% 95%;
-    --popover: 210 60% 8%;
-    --popover-foreground: 210 20% 95%;
-    --primary: 210 20% 95%;
-    --primary-foreground: 210 60% 8%;
-    --secondary: 210 40% 15%;
-    --secondary-foreground: 210 20% 95%;
-    --muted: 210 40% 15%;
-    --muted-foreground: 210 20% 60%;
-    --accent: 210 40% 15%;
-    --accent-foreground: 210 20% 95%;
-    --destructive: 0 80% 60%;
-    --destructive-foreground: 210 20% 95%;
-    --border: 210 40% 18%;
-    --input: 210 40% 18%;
-    --ring: 210 20% 95%;
-  }
-
-  .sunset {
-    --background: 20 40% 10%;
-    --foreground: 20 20% 95%;
-    --card: 20 35% 14%;
-    --card-foreground: 20 20% 95%;
-    --popover: 20 40% 10%;
-    --popover-foreground: 20 20% 95%;
-    --primary: 20 20% 95%;
-    --primary-foreground: 20 40% 10%;
-    --secondary: 20 30% 18%;
-    --secondary-foreground: 20 20% 95%;
-    --muted: 20 30% 18%;
-    --muted-foreground: 20 20% 60%;
-    --accent: 20 30% 18%;
-    --accent-foreground: 20 20% 95%;
-    --destructive: 0 80% 60%;
-    --destructive-foreground: 20 20% 95%;
-    --border: 20 30% 20%;
-    --input: 20 30% 20%;
-    --ring: 20 20% 95%;
-  }
-
-  .forest {
-    --background: 140 40% 10%;
-    --foreground: 140 20% 95%;
-    --card: 140 35% 14%;
-    --card-foreground: 140 20% 95%;
-    --popover: 140 40% 10%;
-    --popover-foreground: 140 20% 95%;
-    --primary: 140 20% 95%;
-    --primary-foreground: 140 40% 10%;
-    --secondary: 140 30% 18%;
-    --secondary-foreground: 140 20% 95%;
-    --muted: 140 30% 18%;
-    --muted-foreground: 140 20% 60%;
-    --accent: 140 30% 18%;
-    --accent-foreground: 140 20% 95%;
-    --destructive: 0 80% 60%;
-    --destructive-foreground: 140 20% 95%;
-    --border: 140 30% 20%;
-    --input: 140 30% 20%;
-    --ring: 140 20% 95%;
-  }
 }
 
 @layer base {
@@ -216,6 +150,56 @@ code {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 22s linear infinite;
+}
+
+@keyframes aurora-drift-1 {
+  0%, 100% { transform: translate(-10%, -10%) scale(1); }
+  50% { transform: translate(10%, 8%) scale(1.15); }
+}
+
+@keyframes aurora-drift-2 {
+  0%, 100% { transform: translate(8%, 5%) scale(1.1); }
+  50% { transform: translate(-12%, -8%) scale(1); }
+}
+
+@keyframes aurora-drift-3 {
+  0%, 100% { transform: translate(0%, 10%) scale(1); }
+  50% { transform: translate(-6%, -12%) scale(1.2); }
+}
+
+.animate-aurora-1 {
+  animation: aurora-drift-1 18s ease-in-out infinite;
+}
+
+.animate-aurora-2 {
+  animation: aurora-drift-2 22s ease-in-out infinite;
+}
+
+.animate-aurora-3 {
+  animation: aurora-drift-3 26s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-aurora-1,
+  .animate-aurora-2,
+  .animate-aurora-3 {
+    animation: none;
   }
 }
 

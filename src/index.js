@@ -8,6 +8,13 @@ import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
+// Display font (headings, big editorial type) — kept distinct from Inter
+// (body copy) for typographic contrast. Previously the config referenced
+// "Clash Display" without ever loading it, so every "font-display" element
+// silently fell back to Inter.
+import "@fontsource/space-grotesk/500.css";
+import "@fontsource/space-grotesk/600.css";
+import "@fontsource/space-grotesk/700.css";
 import "@fontsource/jetbrains-mono/400.css";
 import "@fontsource/jetbrains-mono/500.css";
 import "./index.css";

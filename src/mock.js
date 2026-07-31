@@ -37,7 +37,7 @@ export const experience = [
     id: 1,
     company: "Zscaler",
     position: "Software Engineer Intern",
-    duration: "2025",
+    duration: "Jan 2026 – Present",
     summary:
       "Built backend systems for Zscaler's internal product operations platform, integrating enterprise data sources and enabling roadmap tracking, analytics, and customer-impact reporting at scale.",
     description: [
@@ -59,10 +59,25 @@ export const experience = [
       "Data Pipelines",
       "System Design"
     ],
-    project: "Z-POP (Zscaler Product Operations Platform)"
+    project: "Maestro (Zscaler Product Operations Platform)"
   },
   {
     id: 2,
+    company: "Code for GovTech",
+    position: "Full Stack Developer",
+    duration: "June - August 2025",
+    summary:
+      "Built a digital platform for ADC Mahendragarh to log, track, and visualize plot-wise land demarcation.",
+    description: [
+      "Developed a digital platform for ADC Mahendragarh to log, track, and visualize plot-wise land demarcation.",
+      "Integrated timestamped officer logs, duplicate detection, and a data-driven dashboard to improve transparency."
+    ],
+    technologies: ["Node.js", "PostgreSQL", "React.js"],
+    project: "Land Demarcation Tracker",
+    githubUrl: "https://github.com/sidgureja7803/Land_Demarcation.git"
+  },
+  {
+    id: 3,
     company: "Thapar Innovate",
     position: "Full Stack Developer",
     duration: "Oct 2024 – Jan 2025",
@@ -75,33 +90,6 @@ export const experience = [
     technologies: ["React.js", "Node.js", "Express.js", "MongoDB"],
     liveUrl: "http://139.59.46.75/",
     githubUrl: "https://github.com/sidgureja7803/Incubator-CRM.git"
-  }
-];
-
-export const openSource = [
-  {
-    id: 1,
-    title: "Code for GovTech ’25",
-    project: "Land Demarcation Tracker",
-    duration: "June 2025 – Present",
-    description: [
-      "Developing a digital platform for ADC Mahendragarh to log, track, and visualize plot-wise land demarcation.",
-      "Integrated timestamped officer logs, duplicate detection, and a data-driven dashboard to improve transparency."
-    ],
-    technologies: ["Node.js", "PostgreSQL", "React.js"],
-    githubUrl: "https://github.com/sidgureja7803/Land_Demarcation.git"
-  },
-  {
-    id: 2,
-    title: "Hacktoberfest 2024",
-    project: "Open Source Contributor",
-    duration: "Oct 2024",
-    description: [
-      "Contributed to 5+ repositories resolving issues, enhancing UI/UX, and adding new features.",
-      "Earned verified contribution badges and community recognition."
-    ],
-    technologies: ["JavaScript", "TypeScript", "Git"],
-    githubUrl: "https://www.holopin.io/@sidgureja7803"
   }
 ];
 
@@ -205,7 +193,7 @@ export const education = [
     id: 1,
     institution: "Thapar Institute of Engineering and Technology",
     degree: "B.E. in Computer and Electronics Engineering",
-    duration: "Sep 2022 – Present",
+    duration: "Sep 2022 – June 2026",
     description: "Patiala"
   }
 ];

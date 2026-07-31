@@ -1,267 +1,231 @@
-import React, { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { Card } from './ui/card';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Textarea } from './ui/textarea';
-import { useToast } from '../hooks/use-toast';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { personalInfo, socialLinks } from '../mock';
-import { Mail, Phone, MapPin, Send, MessageCircle, Calendar } from 'lucide-react';
-import emailjs from '@emailjs/browser';
-import ScrollRevealText from './ScrollRevealText';
+import { ArrowDownLeft, Mail, Phone } from 'lucide-react';
+import ContactScene from './ContactScene';
 
-const Contact = () => {
-  const form = useRef();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
 
-  const sendEmail = (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+};
 
-    emailjs.sendForm(
-      process.env.REACT_APP_EMAILJS_SERVICE_ID || 'service_xxxxxx',
-      process.env.REACT_APP_EMAILJS_TEMPLATE_ID || 'template_abcd123',
-      form.current,
-      process.env.REACT_APP_EMAILJS_PUBLIC_KEY || '9aBcDeFGHIJKLMN'
-    )
-      .then(() => {
-        toast({
-          title: "✉️ Message Sent Successfully!",
-          description: "Thank you for reaching out! I'll get back to you soon.",
-        });
-        form.current.reset();
-      })
-      .catch((error) => {
-        console.error('EmailJS Error:', error);
-        toast({
-          title: "❌ Failed to send message",
-          description: "Please try again or email me directly at " + personalInfo.email,
-          variant: "destructive"
-        });
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+const wordVariant = {
+  hidden: { opacity: 0, y: '100%' },
+  visible: { opacity: 1, y: '0%', transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+};
+
+const useLocalTime = () => {
+  const [time, setTime] = useState('');
+
+  useEffect(() => {
+    const update = () => {
+      setTime(
+        new Intl.DateTimeFormat('en-IN', {
+          timeZone: 'Asia/Kolkata',
+          hour: '2-digit',
+          minute: '2-digit',
+        }).format(new Date())
+      );
+    };
+    update();
+    const id = setInterval(update, 30000);
+    return () => clearInterval(id);
+  }, []);
+
+  return time;
+};
+
+const initials = personalInfo.name
+  .split(' ')
+  .map((w) => w[0])
+  .join('')
+  .slice(0, 2);
+
+// Cursor-following "magnetic" button — the circle nudges toward the pointer
+// while it's inside a radius around it, and springs back to center on leave.
+const MagneticButton = ({ children, ...props }) => {
+  const ref = useRef(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 150, damping: 12 });
+  const springY = useSpring(y, { stiffness: 150, damping: 12 });
+
+  const handleMouseMove = (e) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const relX = e.clientX - (rect.left + rect.width / 2);
+    const relY = e.clientY - (rect.top + rect.height / 2);
+    x.set(relX * 0.35);
+    y.set(relY * 0.35);
   };
 
-  const getSocialIcon = (iconName) => {
-    switch (iconName) {
-      case 'linkedin':
-        return (
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z" clipRule="evenodd" />
-          </svg>
-        );
-      case 'github':
-        return (
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clipRule="evenodd" />
-          </svg>
-        );
-      default:
-        return <MessageCircle className="w-5 h-5" />;
-    }
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
   };
 
   return (
-    <section id="contact" className="relative overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-accent/20 to-background"></div>
+    <motion.a
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ x: springX, y: springY }}
+      {...props}
+    >
+      {children}
+    </motion.a>
+  );
+};
 
-      <div className="relative max-w-6xl mx-auto">
-        {/* Section Header */}
+// Deliberately fixed dark colors (not the `background`/`foreground` theme
+// tokens) — this section is meant to stay a dark, high-contrast close to the
+// page regardless of whether the rest of the site is in light or dark mode.
+const Contact = () => {
+  const localTime = useLocalTime();
+  const socialByName = (name) => socialLinks.find((l) => l.name.toLowerCase() === name.toLowerCase());
+  const github = socialByName('GitHub');
+  const linkedin = socialByName('LinkedIn');
+
+  return (
+    <footer id="contact" className="relative bg-neutral-950 text-white px-6 md:px-10 pt-20 pb-10 overflow-hidden">
+      <ContactScene />
+      <div className="relative z-10 max-w-5xl mx-auto">
         <motion.div
-          className="text-center mb-16 space-y-4"
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          className="flex items-start gap-5 mb-14 md:mb-20"
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          variants={staggerContainer}
         >
-          <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight">
-            Get In <span className="text-gradient">Touch</span>
+          <motion.div
+            variants={fadeUp}
+            animate={{ scale: [1, 1.06, 1] }}
+            transition={{ scale: { duration: 3.5, repeat: Infinity, ease: 'easeInOut' } }}
+            className="w-14 h-14 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-sm font-semibold flex-shrink-0"
+          >
+            {initials}
+          </motion.div>
+          <h2 className="font-display text-5xl sm:text-6xl md:text-7xl font-medium tracking-tight leading-[0.95] overflow-hidden">
+            <motion.span className="block overflow-hidden">
+              <motion.span variants={wordVariant} className="inline-block">
+                Let&rsquo;s work
+              </motion.span>
+            </motion.span>
+            <motion.span className="block overflow-hidden">
+              <motion.span variants={wordVariant} className="inline-block">
+                together
+              </motion.span>
+            </motion.span>
           </h2>
-          <ScrollRevealText
-            text="Ready to start your next project? Let's discuss how we can work together to bring your ideas to life."
-            className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed justify-center"
-          />
         </motion.div>
 
         <motion.div
-          className="grid md:grid-cols-2 gap-12"
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="relative flex items-center border-t border-white/20 pt-8 md:pt-10"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={fadeUp}
         >
-          {/* Contact Info */}
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-2xl font-semibold mb-4 flex items-center">
-                <MessageCircle className="w-6 h-6 mr-3 text-primary" />
-                Let's Connect
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                I'm always interested in hearing about new opportunities and exciting projects.
-                Whether you have a question or just want to say hi, feel free to reach out!
-              </p>
-            </div>
+          <MagneticButton
+            href={`mailto:${personalInfo.email}`}
+            className="ml-auto relative w-32 h-32 md:w-40 md:h-40 rounded-full bg-indigo-500 text-white flex items-center justify-center text-center text-sm md:text-base font-medium flex-shrink-0"
+          >
+            <motion.span
+              className="absolute inset-0 rounded-full border border-indigo-400/60"
+              animate={{ scale: [1, 1.25, 1], opacity: [0.6, 0, 0.6] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
+              aria-hidden="true"
+            />
+            Get in touch
+          </MagneticButton>
+          <motion.div
+            className="hidden md:block absolute right-40 top-4 text-white/40"
+            animate={{ y: [0, -6, 0], x: [0, -3, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <ArrowDownLeft className="w-6 h-6" aria-hidden="true" />
+          </motion.div>
+        </motion.div>
 
-            {/* Contact Methods */}
-            <div className="space-y-4">
-              <Card className="p-6 glass border border-border/50 hover:border-primary/50 transition-all duration-300 group">
-                <div className="flex items-center">
-                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                    <Mail className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground mb-1">Email</h4>
-                    <a href={`mailto:${personalInfo.email}`} className="text-muted-foreground hover:text-primary transition-colors">
-                      {personalInfo.email}
-                    </a>
-                  </div>
-                </div>
-              </Card>
+        <motion.div
+          className="flex flex-wrap gap-4 mt-10 md:mt-14"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={staggerContainer}
+        >
+          <motion.a
+            variants={fadeUp}
+            whileHover={{ y: -3 }}
+            href={`mailto:${personalInfo.email}`}
+            className="group inline-flex items-center gap-2 px-5 py-3 rounded-full border border-white/25 text-sm hover:bg-white/5 hover:border-white/50 transition-colors"
+          >
+            <Mail className="w-4 h-4 transition-transform duration-200 group-hover:-rotate-12 group-hover:scale-110" />
+            {personalInfo.email}
+          </motion.a>
+          <motion.a
+            variants={fadeUp}
+            whileHover={{ y: -3 }}
+            href={`tel:${personalInfo.phone}`}
+            className="group inline-flex items-center gap-2 px-5 py-3 rounded-full border border-white/25 text-sm hover:bg-white/5 hover:border-white/50 transition-colors"
+          >
+            <Phone className="w-4 h-4 transition-transform duration-200 group-hover:rotate-12 group-hover:scale-110" />
+            {personalInfo.phone}
+          </motion.a>
+        </motion.div>
 
-              <Card className="p-6 glass border border-border/50 hover:border-green-500/50 transition-all duration-300 group">
-                <div className="flex items-center">
-                  <div className="w-14 h-14 bg-gradient-to-br from-green-500/20 to-green-500/10 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                    <Phone className="w-6 h-6 text-green-500" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground mb-1">Phone</h4>
-                    <a href={`tel:${personalInfo.phone}`} className="text-muted-foreground hover:text-green-500 transition-colors">
-                      {personalInfo.phone}
-                    </a>
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="p-6 glass border border-border/50 hover:border-accent/50 transition-all duration-300 group">
-                <div className="flex items-center">
-                  <div className="w-14 h-14 bg-gradient-to-br from-accent/20 to-accent/10 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                    <MapPin className="w-6 h-6 text-accent" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground mb-1">Location</h4>
-                    <p className="text-muted-foreground">{personalInfo.location}</p>
-                  </div>
-                </div>
-              </Card>
-            </div>
-
-            {/* Social Links */}
-            <div>
-              <h4 className="font-semibold mb-4 text-foreground text-lg">Follow Me</h4>
-              <div className="flex flex-wrap gap-3">
-                {socialLinks.map((link, index) => (
-                  <a
-                    key={index}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-12 h-12 glass border border-border/50 rounded-xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300 hover:scale-110 hover:-translate-y-1"
-                  >
-                    {getSocialIcon(link.icon)}
-                  </a>
-                ))}
-              </div>
-            </div>
+        <motion.div
+          className="mt-16 md:mt-24 pt-8 border-t border-white/10 flex flex-wrap items-end justify-between gap-8 text-xs"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={staggerContainer}
+        >
+          <div className="flex gap-10">
+            <motion.div variants={fadeUp}>
+              <p className="text-white/40 uppercase tracking-wide mb-1">Version</p>
+              <p className="text-white/80">{new Date().getFullYear()} © Edition</p>
+            </motion.div>
+            <motion.div variants={fadeUp}>
+              <p className="text-white/40 uppercase tracking-wide mb-1">Local Time</p>
+              <p className="text-white/80">{localTime} IST</p>
+            </motion.div>
           </div>
 
-          {/* Contact Form */}
-          <Card className="p-8 glass-strong border border-border/50 shadow-2xl">
-            <h3 className="text-2xl font-semibold mb-6 flex items-center">
-              <Send className="w-6 h-6 mr-3 text-primary" />
-              Send Message
-            </h3>
-
-            <form ref={form} onSubmit={sendEmail} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name" className="text-foreground font-medium">Name</Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    placeholder="Your full name"
-                    required
-                    className="border-border/50 focus:border-primary focus:ring-primary bg-background/50"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-foreground font-medium">Email</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="your.email@example.com"
-                    required
-                    className="border-border/50 focus:border-primary focus:ring-primary bg-background/50"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="title" className="text-foreground font-medium">Subject</Label>
-                <Input
-                  id="title"
-                  name="title"
-                  placeholder="What's this about?"
-                  required
-                  className="border-border/50 focus:border-primary focus:ring-primary bg-background/50"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="message" className="text-foreground font-medium">Message</Label>
-                <Textarea
-                  id="message"
-                  name="message"
-                  placeholder="Tell me about your project..."
-                  rows={5}
-                  required
-                  className="border-border/50 focus:border-primary focus:ring-primary resize-none bg-background/50"
-                />
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full group text-base font-semibold py-6 shadow-lg hover:shadow-xl"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="w-5 h-5 mr-2 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin"></div>
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
-                    Send Message
-                  </>
-                )}
-              </Button>
-            </form>
-
-            {/* Quick Actions */}
-            <div className="mt-8 pt-6 border-t border-border/50">
-              <p className="text-sm text-muted-foreground mb-4 font-medium">Prefer a quick chat?</p>
-              <div className="flex gap-3">
-                <Button size="sm" variant="outline" className="flex-1 group glass border-border/50">
-                  <Calendar className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                  Schedule Call
-                </Button>
-                <Button size="sm" variant="outline" className="flex-1 group glass border-border/50">
-                  <MessageCircle className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                  WhatsApp
-                </Button>
-              </div>
+          <motion.div variants={fadeUp}>
+            <p className="text-white/40 uppercase tracking-wide mb-1 text-right">Socials</p>
+            <div className="flex gap-4 justify-end">
+              {github && (
+                <a
+                  href={github.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative text-white/80 hover:text-white transition-colors after:absolute after:left-0 after:-bottom-1 after:h-px after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                >
+                  Github
+                </a>
+              )}
+              {linkedin && (
+                <a
+                  href={linkedin.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative text-white/80 hover:text-white transition-colors after:absolute after:left-0 after:-bottom-1 after:h-px after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                >
+                  LinkedIn
+                </a>
+              )}
             </div>
-          </Card>
+          </motion.div>
         </motion.div>
       </div>
-    </section>
+    </footer>
   );
 };
 

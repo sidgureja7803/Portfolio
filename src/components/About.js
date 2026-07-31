@@ -1,10 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Card } from './ui/card';
-import { Badge } from './ui/badge';
 import { personalInfo, education } from '../mock';
-import { GraduationCap, MapPin, Mail, Phone } from 'lucide-react';
-import ScrollRevealText from './ScrollRevealText';
+import { GraduationCap, Mail, MapPin, Phone } from 'lucide-react';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -13,75 +10,68 @@ const fadeUp = {
 
 const About = () => {
   return (
-    <section id="about" className="px-6">
-      <div className="max-w-4xl mx-auto">
-        {/* Section Header */}
-        <motion.div
-          className="mb-16"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={fadeUp}
-        >
-          <h2 className="font-display text-4xl md:text-5xl font-semibold tracking-tight mb-4">
-            About
-          </h2>
-          <ScrollRevealText
-            text={personalInfo.bio}
-            className="text-muted-foreground max-w-2xl text-lg leading-relaxed"
-          />
-        </motion.div>
+    <section id="about" className="px-6 md:px-10">
+      <div className="max-w-5xl mx-auto">
+        <p className="text-xs md:text-sm font-medium tracking-[0.2em] uppercase text-muted-foreground mb-10 md:mb-16">
+          About
+        </p>
 
         <motion.div
-          className="grid md:grid-cols-2 gap-12 items-start"
+          className="grid md:grid-cols-[1fr_auto] gap-10 md:gap-16 items-start mb-16 md:mb-20"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeUp}
         >
-          {/* Contact Info */}
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold mb-6">Contact</h3>
-            <div className="space-y-4">
-              <div className="flex items-center text-muted-foreground">
-                <Mail className="w-5 h-5 mr-3" />
-                <a href={`mailto:${personalInfo.email}`} className="hover:text-foreground transition-colors">
-                  {personalInfo.email}
-                </a>
-              </div>
-              <div className="flex items-center text-muted-foreground">
-                <Phone className="w-5 h-5 mr-3" />
-                <a href={`tel:${personalInfo.phone}`} className="hover:text-foreground transition-colors">
-                  {personalInfo.phone}
-                </a>
-              </div>
-              <div className="flex items-center text-muted-foreground">
-                <MapPin className="w-5 h-5 mr-3" />
-                <span>{personalInfo.location}</span>
-              </div>
+          <p className="font-display text-2xl md:text-4xl font-medium tracking-tight leading-snug max-w-3xl">
+            {personalInfo.bio}
+          </p>
+          <div className="hidden md:flex flex-col text-sm text-muted-foreground text-right space-y-1 pt-2">
+            <span>My passion for programming, design, and</span>
+            <span>problem solving uniquely positions me within</span>
+            <span>the software development landscape.</span>
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="grid sm:grid-cols-2 gap-10 md:gap-16 border-t border-border pt-10 md:pt-14"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={fadeUp}
+        >
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-2">Contact</h3>
+            <div className="flex items-center text-foreground/90">
+              <Mail className="w-4 h-4 mr-3 text-muted-foreground" />
+              <a href={`mailto:${personalInfo.email}`} className="hover:text-primary transition-colors">
+                {personalInfo.email}
+              </a>
+            </div>
+            <div className="flex items-center text-foreground/90">
+              <Phone className="w-4 h-4 mr-3 text-muted-foreground" />
+              <a href={`tel:${personalInfo.phone}`} className="hover:text-primary transition-colors">
+                {personalInfo.phone}
+              </a>
+            </div>
+            <div className="flex items-center text-foreground/90">
+              <MapPin className="w-4 h-4 mr-3 text-muted-foreground" />
+              <span>{personalInfo.location}</span>
             </div>
           </div>
 
-          {/* Education */}
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold mb-6 flex items-center">
-              <GraduationCap className="w-5 h-5 mr-3" />
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-2 flex items-center gap-2">
+              <GraduationCap className="w-4 h-4" />
               Education
             </h3>
-
-            <div className="space-y-6">
-              {education.map((edu) => (
-                <div key={edu.id} className="space-y-2">
-                  <h4 className="font-semibold text-foreground">
-                    {edu.degree}
-                  </h4>
-                  <p className="text-muted-foreground">{edu.institution}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {edu.duration}
-                  </p>
-                </div>
-              ))}
-            </div>
+            {education.map((edu) => (
+              <div key={edu.id}>
+                <p className="font-medium text-foreground">{edu.degree}</p>
+                <p className="text-muted-foreground">{edu.institution}</p>
+                <p className="text-sm text-muted-foreground">{edu.duration}</p>
+              </div>
+            ))}
           </div>
         </motion.div>
       </div>

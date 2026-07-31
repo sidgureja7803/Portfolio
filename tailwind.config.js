@@ -8,7 +8,7 @@ module.exports = {
   theme: {
   	extend: {
   		fontFamily: {
-  			display: ['"Clash Display"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+  			display: ['"Space Grotesk"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
   			sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
   			mono: ['"JetBrains Mono"', 'monospace'],
   		},

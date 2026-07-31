@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { skills } from '../mock';
 import { getSkillIcon } from '../lib/skillIcons';
-import ScrollRevealText from './ScrollRevealText';
-import { Code, Palette, Database, Cpu, Wrench, Brain, Layers } from 'lucide-react';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+const CATEGORY_LABELS = {
+  programming: 'Programming',
+  frontend: 'Frontend',
+  styling: 'UI / Styling',
+  backend: 'Backend & Data',
+  devops: 'Cloud & DevOps',
+  tools: 'Tooling',
+  ai: 'AI',
+  core: 'Fundamentals',
 };
 
 const staggerContainer = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.04 } },
+  visible: { transition: { staggerChildren: 0.03 } },
 };
 
 const tileVariants = {
@@ -20,118 +24,109 @@ const tileVariants = {
   visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
 };
 
-const CATEGORIES = [
-  { key: 'frontend', label: 'Frontend', icon: Code, skills: skills.frontend },
-  { key: 'styling', label: 'UI / Styling', icon: Palette, skills: skills.styling },
-  { key: 'backend', label: 'Backend & Data', icon: Database, skills: skills.backend },
-  { key: 'devops', label: 'Cloud & DevOps', icon: Cpu, skills: skills.devops },
-  { key: 'tools', label: 'Tooling', icon: Wrench, skills: skills.tools },
-  { key: 'ai', label: 'AI', icon: Brain, skills: skills.ai },
-  { key: 'core', label: 'Fundamentals', icon: Layers, skills: skills.core },
-];
+const MAX_TILT = 14;
 
-const SkillTile = ({ label }) => {
+const SkillTile = ({ label, category }) => {
   const { icon: Icon, color } = getSkillIcon(label);
+  const tileRef = useRef(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
+
+  const handleMouseMove = useCallback((e) => {
+    const tile = tileRef.current;
+    if (!tile) return;
+    const rect = tile.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ x: py * -MAX_TILT, y: px * MAX_TILT });
+  }, []);
+
+  const handleLeave = useCallback(() => {
+    setHovered(false);
+    setTilt({ x: 0, y: 0 });
+  }, []);
+
   return (
     <motion.div
+      ref={tileRef}
       variants={tileVariants}
-      whileHover={{ y: -6, transition: { duration: 0.15 } }}
-      className="group flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border border-border/60 bg-card/60 backdrop-blur-sm hover:border-primary/40 hover:bg-card hover:shadow-lg transition-colors text-center"
+      onMouseEnter={() => setHovered(true)}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleLeave}
+      onFocus={() => setHovered(true)}
+      onBlur={handleLeave}
+      tabIndex={0}
+      style={{
+        transform: `perspective(600px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.06 : 1})`,
+        transition: 'transform 0.2s ease-out',
+      }}
+      className="relative aspect-square flex items-center justify-center rounded-2xl bg-accent/60 hover:bg-accent outline-none"
     >
-      <div
-        className="w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
-        style={{ backgroundColor: `${color}1a` }}
-      >
-        <Icon className="w-6 h-6" style={{ color }} aria-hidden="true" />
-      </div>
-      <span className="text-sm font-medium text-foreground leading-snug">{label}</span>
+      <Icon
+        className="w-8 h-8 md:w-10 md:h-10 transition-transform duration-200"
+        style={{ color, transform: hovered ? 'scale(1.1)' : 'scale(1)' }}
+        aria-hidden="true"
+      />
+      <span className="sr-only">{label}</span>
+
+      <AnimatePresence>
+        {hovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.9 }}
+            transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 z-30 pointer-events-none"
+            style={{ transform: 'translateX(-50%) translateZ(40px)' }}
+          >
+            <div className="flex items-center gap-2.5 whitespace-nowrap rounded-xl bg-neutral-950 text-white border border-white/10 shadow-2xl px-4 py-2.5">
+              <Icon className="w-4 h-4 flex-shrink-0" style={{ color }} aria-hidden="true" />
+              <div className="flex flex-col items-start leading-tight">
+                <span className="text-sm font-medium">{label}</span>
+                <span className="text-[10px] text-white/45 uppercase tracking-wide">{category}</span>
+              </div>
+            </div>
+            <div className="w-2.5 h-2.5 bg-neutral-950 border-r border-b border-white/10 rotate-45 mx-auto -mt-1.5" />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };
 
 const Skills = () => {
-  const [activeKey, setActiveKey] = useState(CATEGORIES[0].key);
-  const active = CATEGORIES.find((c) => c.key === activeKey);
+  const allSkills = useMemo(() => {
+    const seen = new Set();
+    const result = [];
+    Object.entries(skills).forEach(([categoryKey, list]) => {
+      list.forEach((label) => {
+        if (seen.has(label)) return;
+        seen.add(label);
+        result.push({ label, category: CATEGORY_LABELS[categoryKey] || categoryKey });
+      });
+    });
+    return result;
+  }, []);
 
   return (
-    <section id="skills" className="py-24 px-6 relative">
-      <div className="max-w-6xl mx-auto">
-        {/* Section Header */}
+    <section id="skills" className="px-6 md:px-10">
+      <div className="max-w-5xl mx-auto">
+        <p className="text-xs md:text-sm font-medium tracking-[0.2em] uppercase text-muted-foreground mb-10 md:mb-16">
+          Skills &amp; Technology Experience
+        </p>
+
         <motion.div
-          className="text-center mb-14 space-y-4"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={fadeUp}
+          viewport={{ once: true, amount: 0.1 }}
+          variants={staggerContainer}
+          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 md:gap-5"
+          style={{ perspective: 800 }}
         >
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
-            <Code className="w-4 h-4 mr-2 text-primary" />
-            <span className="text-sm font-medium text-foreground">Expertise</span>
-          </div>
-          <h2 className="font-display text-3xl md:text-4xl font-light tracking-tight">
-            Technical <span className="font-normal text-primary">Skills</span>
-          </h2>
-          <ScrollRevealText
-            text="Technologies and tools I use to design, build, and ship production systems"
-            className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed justify-center"
-          />
+          {allSkills.map(({ label, category }) => (
+            <SkillTile key={label} label={label} category={category} />
+          ))}
         </motion.div>
-
-        {/* Category Switcher */}
-        <motion.div
-          className="flex flex-wrap justify-center gap-2 mb-10"
-          role="tablist"
-          aria-label="Skill categories"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={fadeUp}
-        >
-          {CATEGORIES.map((cat) => {
-            const CatIcon = cat.icon;
-            const isActive = cat.key === activeKey;
-            return (
-              <button
-                key={cat.key}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => setActiveKey(cat.key)}
-                className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-colors ${
-                  isActive
-                    ? 'text-primary-foreground'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-accent/60'
-                }`}
-              >
-                {isActive && (
-                  <motion.span
-                    layoutId="skills-tab-pill"
-                    className="absolute inset-0 bg-primary rounded-full"
-                    transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
-                  />
-                )}
-                <CatIcon className="w-4 h-4 relative z-10" />
-                <span className="relative z-10">{cat.label}</span>
-              </button>
-            );
-          })}
-        </motion.div>
-
-        {/* Active category tiles */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeKey}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            variants={staggerContainer}
-            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4"
-          >
-            {active.skills.map((skill) => (
-              <SkillTile key={skill} label={skill} />
-            ))}
-          </motion.div>
-        </AnimatePresence>
       </div>
     </section>
   );

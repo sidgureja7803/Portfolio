@@ -1,11 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from './ui/button';
-import { Card } from './ui/card';
 import ProjectCard from './ProjectCard';
-import ScrollRevealText from './ScrollRevealText';
 import { projects } from '../mock';
-import { Github, Code } from 'lucide-react';
+import { Github } from 'lucide-react';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -35,26 +33,18 @@ const Projects = () => {
   const rest = filtered.filter((p) => !p.featured);
 
   return (
-    <section id="projects" className="py-24 px-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Section Header */}
-        <div className="mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 mb-4">
-            <Code className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">Projects</span>
-          </div>
-          <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">Projects</h2>
-          <ScrollRevealText
-            text="Real-time systems, AI-integrated products, and full-stack platforms — built end-to-end"
-            className="text-muted-foreground text-lg max-w-2xl"
-          />
-        </div>
+    <section id="projects" className="px-6 md:px-10">
+      <div className="max-w-5xl mx-auto">
+        <p className="text-xs md:text-sm font-medium tracking-[0.2em] uppercase text-muted-foreground mb-10 md:mb-16">
+          Projects
+        </p>
 
         {/* Tag Filters */}
         <div className="flex flex-wrap gap-2 mb-12" role="group" aria-label="Filter projects by technology">
           <Button
             size="sm"
             variant={activeTag === 'All' ? 'default' : 'outline'}
+            className="rounded-full"
             onClick={() => setActiveTag('All')}
             aria-pressed={activeTag === 'All'}
           >
@@ -65,6 +55,7 @@ const Projects = () => {
               key={tag}
               size="sm"
               variant={activeTag === tag ? 'default' : 'outline'}
+              className="rounded-full"
               onClick={() => setActiveTag(tag)}
               aria-pressed={activeTag === tag}
             >
@@ -105,10 +96,10 @@ const Projects = () => {
               viewport={{ once: true, amount: 0.15 }}
               variants={staggerContainer}
             >
-            {rest.map((project) => (
-              <motion.div key={project.id} variants={fadeUp}>
-                <ProjectCard project={project} />
-              </motion.div>
+              {rest.map((project) => (
+                <motion.div key={project.id} variants={fadeUp}>
+                  <ProjectCard project={project} />
+                </motion.div>
               ))}
             </motion.div>
           </>
@@ -119,17 +110,18 @@ const Projects = () => {
         )}
 
         {/* More Projects CTA */}
-        <div className="mt-16 text-center">
-          <Card className="p-8 bg-muted/50">
-            <h3 className="text-xl font-semibold mb-3">Want to See More?</h3>
-            <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-              Check out my GitHub for more projects and open-source contributions
-            </p>
-            <Button onClick={() => window.open('https://github.com/sidgureja7803', '_blank', 'noopener,noreferrer')}>
-              <Github className="w-4 h-4 mr-2" />
-              View GitHub Profile
-            </Button>
-          </Card>
+        <div className="mt-16 border-t border-border pt-10 flex flex-col items-center text-center gap-4">
+          <p className="text-muted-foreground max-w-xl">
+            Check out my GitHub for more projects and open-source contributions.
+          </p>
+          <Button
+            variant="outline"
+            className="rounded-full"
+            onClick={() => window.open('https://github.com/sidgureja7803', '_blank', 'noopener,noreferrer')}
+          >
+            <Github className="w-4 h-4 mr-2" />
+            View GitHub Profile
+          </Button>
         </div>
       </div>
     </section>

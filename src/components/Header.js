@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from './ui/button';
-import { Menu, X, Palette, Check } from 'lucide-react';
-import { useTheme, themes } from '../contexts/ThemeContext';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Menu, X, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../contexts/ThemeContext';
 
 const Header = () => {
-  const { theme, changeTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,22 +18,13 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (isThemeMenuOpen && !e.target.closest('.theme-selector')) {
-        setIsThemeMenuOpen(false);
-      }
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [isThemeMenuOpen]);
-
   const navItems = [
-    { href: '#about', label: 'About' },
-    { href: '#skills', label: 'Skills' },
-    { href: '#experience', label: 'Experience' },
-    { href: '#projects', label: 'Projects' },
-    { href: '#contact', label: 'Contact' }
+    { href: '#about', label: 'About', type: 'section' },
+    { href: '#skills', label: 'Skills', type: 'section' },
+    { href: '#experience', label: 'Experience', type: 'section' },
+    { href: '#projects', label: 'Projects', type: 'section' },
+    { href: '/blogs', label: 'Blog', type: 'route' },
+    { href: '#contact', label: 'Contact', type: 'section' },
   ];
 
   const scrollToSection = (href) => {
@@ -43,98 +35,81 @@ const Header = () => {
     setIsMobileMenuOpen(false);
   };
 
-  const handleThemeChange = (newTheme) => {
-    changeTheme(newTheme);
-    setIsThemeMenuOpen(false);
+  const goToNavItem = (item) => {
+    if (item.type === 'route') {
+      navigate(item.href);
+      setIsMobileMenuOpen(false);
+      return;
+    }
+    if (location.pathname === '/') {
+      scrollToSection(item.href);
+    } else {
+      navigate(`/${item.href}`);
+      setIsMobileMenuOpen(false);
+    }
   };
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-200 ${isScrolled
-        ? 'glass-strong shadow-sm'
-        : 'bg-transparent'
-      }`}>
-      <div className="max-w-7xl mx-auto px-6 py-4">
+    <header
+      className={`fixed top-0 w-full z-50 transition-colors duration-300 ${
+        isScrolled ? 'bg-background/80 backdrop-blur-md border-b border-border' : 'bg-transparent'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 md:py-7">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center">
-            <span className="font-bold text-2xl tracking-tight">SG</span>
-          </div>
+          <button
+            onClick={() => (location.pathname === '/' ? scrollToSection('#hero') : navigate('/'))}
+            className="font-display text-sm font-semibold tracking-[0.2em] uppercase"
+          >
+            SG
+          </button>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
+          <nav className="hidden md:flex items-center gap-10">
             {navItems.map((item) => (
               <button
                 key={item.href}
-                onClick={() => scrollToSection(item.href)}
-                className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors font-medium"
+                onClick={() => goToNavItem(item)}
+                className="text-sm font-medium tracking-wide text-muted-foreground hover:text-foreground transition-colors"
               >
                 {item.label}
               </button>
             ))}
           </nav>
 
-          {/* Theme Selector & Mobile Menu */}
-          <div className="flex items-center space-x-2">
-            {/* Theme Selector */}
-            <div className="relative theme-selector">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsThemeMenuOpen(!isThemeMenuOpen)}
-                className="hover:bg-accent transition-colors"
-              >
-                <Palette className="h-4 w-4" />
-              </Button>
-
-              {/* Theme Dropdown */}
-              {isThemeMenuOpen && (
-                <div className="absolute right-0 mt-2 w-56 glass-strong rounded-lg shadow-lg overflow-hidden border border-border">
-                  <div className="p-2">
-                    {Object.entries(themes).map(([key, themeData]) => (
-                      <button
-                        key={key}
-                        onClick={() => handleThemeChange(key)}
-                        className={`w-full flex items-center justify-between px-3 py-2 rounded-md transition-colors text-sm ${theme === key
-                            ? 'bg-accent text-foreground'
-                            : 'hover:bg-accent/50 text-muted-foreground'
-                          }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span>{themeData.icon}</span>
-                          <span className="font-medium">{themeData.name}</span>
-                        </div>
-                        {theme === key && <Check className="h-4 w-4" />}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+          {/* Theme Toggle & Mobile Menu */}
+          <div className="flex items-center gap-3">
+            {/* Theme Toggle */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+              className="w-11 h-11 rounded-full border border-foreground/15 flex items-center justify-center text-foreground hover:bg-foreground/5 transition-colors"
+            >
+              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
 
             {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="md:hidden hover:bg-accent"
+            <button
+              type="button"
+              className="md:hidden w-11 h-11 rounded-full border border-foreground/15 flex items-center justify-center text-foreground hover:bg-foreground/5 transition-colors"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
             >
-              {isMobileMenuOpen ? (
-                <X className="h-4 w-4" />
-              ) : (
-                <Menu className="h-4 w-4" />
-              )}
-            </Button>
+              {isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <nav className="md:hidden mt-4 pb-4 border-t border-border pt-4 space-y-1">
+          <nav className="md:hidden mt-4 pb-2 border-t border-border pt-4 space-y-1">
             {navItems.map((item) => (
               <button
                 key={item.href}
-                onClick={() => scrollToSection(item.href)}
-                className="block w-full text-left px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors font-medium rounded-md"
+                onClick={() => goToNavItem(item)}
+                className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors font-medium rounded-xl"
               >
                 {item.label}
               </button>
