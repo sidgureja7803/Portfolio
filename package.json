@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
     "@hookform/resolvers": "^5.0.1",
     "@radix-ui/react-accordion": "^1.2.8",
     "@radix-ui/react-alert-dialog": "^1.1.11",
@@ -32,6 +34,9 @@
     "@radix-ui/react-toggle": "^1.1.6",
     "@radix-ui/react-toggle-group": "^1.1.7",
     "@radix-ui/react-tooltip": "^1.2.4",
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
+    "@react-three/postprocessing": "^2.19.1",
     "@studio-freight/lenis": "^1.0.42",
     "axios": "^1.8.4",
     "class-variance-authority": "^0.7.1",
@@ -40,19 +45,25 @@
     "cra-template": "1.2.0",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^12.43.0",
+    "gsap": "^3.15.0",
     "input-otp": "^1.4.2",
+    "leva": "^0.10.1",
     "lucide-react": "^0.507.0",
     "next-themes": "^0.4.6",
+    "postprocessing": "^6.39.4",
     "react": "^18.3.1",
     "react-day-picker": "8.10.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.56.2",
+    "react-icons": "^5.7.0",
     "react-resizable-panels": "^3.0.1",
     "react-router-dom": "^7.5.1",
     "react-scripts": "5.0.1",
     "sonner": "^2.0.3",
     "tailwind-merge": "^3.2.0",
     "tailwindcss-animate": "^1.0.7",
+    "three": "0.169.0",
     "vaul": "^1.1.2",
     "zod": "^3.24.4"
   },
@@ -60,6 +71,9 @@
     "dev": "craco start",
     "build": "craco build",
     "test": "craco test"
+  },
+  "overrides": {
+    "three": "0.169.0"
   },
   "browserslist": {
     "production": [

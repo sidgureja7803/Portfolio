@@ -1,13 +1,74 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Button } from './ui/button';
 import { ArrowRight, Download } from 'lucide-react';
 import { personalInfo, socialLinks } from '../mock';
-import ResumePDF from '../assets/Sidgureja.pdf';
+import ResumePDF from '../assets/siddhant_tiet.pdf';
+import HeroScene from './HeroScene';
+import AnimatedName from './AnimatedName';
+import { useReducedMotion } from '../hooks/useReducedMotion';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    // Delay kept short even for later elements — the subtitle (custom={1})
+    // is the page's LCP element, and any animation delay on it directly
+    // inflates measured LCP under throttled/low-end conditions.
+    transition: { duration: 0.4, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] },
+  }),
+};
 
 const Hero = () => {
+  const sectionRef = useRef(null);
+  const contentRef = useRef(null);
+  const sceneWrapperRef = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
+
   const scrollToContact = () => {
     document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // Scroll-linked parallax: hero content fades/lifts and the 3D layer scales
+  // slightly as the user scrolls past the hero, tied directly to scroll position
+  // (not a viewport-enter reveal) — this is GSAP's job, kept separate from the
+  // Framer Motion whileInView reveals used for section entrances elsewhere.
+  useEffect(() => {
+    if (prefersReducedMotion || !sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(contentRef.current, {
+        yPercent: 20,
+        opacity: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      });
+
+      gsap.to(sceneWrapperRef.current, {
+        scale: 1.15,
+        opacity: 0.55,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [prefersReducedMotion]);
 
   const getSocialIcon = (iconName) => {
     switch (iconName) {
@@ -35,28 +96,52 @@ const Hero = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center pt-32 pb-24 px-6">
-      <div className="max-w-4xl mx-auto w-full">
+    <section
+      ref={sectionRef}
+      className="relative min-h-screen flex items-center justify-center pt-32 pb-24 px-6 overflow-hidden"
+    >
+      <div ref={sceneWrapperRef} className="absolute inset-0 z-0">
+        <HeroScene />
+      </div>
+      <div ref={contentRef} className="relative z-10 max-w-4xl mx-auto w-full">
         {/* Main Content */}
         <div className="space-y-12">
           {/* Name & Title */}
           <div className="space-y-6">
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight">
-              {personalInfo.name}
+            <h1 className="font-display text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight">
+              <AnimatedName text={personalInfo.name} />
             </h1>
 
             <div className="space-y-4">
-              <p className="text-xl md:text-2xl text-muted-foreground font-medium">
+              <motion.p
+                className="text-xl md:text-2xl text-muted-foreground font-medium"
+                initial="hidden"
+                animate="visible"
+                custom={1}
+                variants={fadeUp}
+              >
                 {personalInfo.title}
-              </p>
-              <p className="text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed">
+              </motion.p>
+              <motion.p
+                className="text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed"
+                initial="hidden"
+                animate="visible"
+                custom={2}
+                variants={fadeUp}
+              >
                 {personalInfo.tagline}
-              </p>
+              </motion.p>
             </div>
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center gap-4">
+          <motion.div
+            className="flex flex-wrap items-center gap-4"
+            initial="hidden"
+            animate="visible"
+            custom={3}
+            variants={fadeUp}
+          >
             <Button
               size="lg"
               className="group px-6 py-3 font-medium"
@@ -76,23 +161,29 @@ const Hero = () => {
                 <Download className="ml-2 h-4 w-4" />
               </a>
             </Button>
-          </div>
+          </motion.div>
 
           {/* Social Links */}
-          <div className="flex items-center gap-4 pt-4">
+          <motion.div
+            className="flex items-center gap-4 pt-4"
+            initial="hidden"
+            animate="visible"
+            custom={4}
+            variants={fadeUp}
+          >
             {socialLinks.map((link, index) => (
               <a
                 key={index}
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-110 hover:-translate-y-0.5 inline-block"
                 aria-label={link.name}
               >
                 {getSocialIcon(link.icon)}
               </a>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

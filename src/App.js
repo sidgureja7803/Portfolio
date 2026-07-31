@@ -1,20 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Lenis from '@studio-freight/lenis';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { Toaster } from './components/ui/toaster';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import About from './components/About';
-import Skills from './components/Skills';
-import Experience from './components/Experience';
-import Projects from './components/Projects';
-import OpenSource from './components/OpenSource';
-import LeetCodeStats from './components/LeetCodeStats';
-import Achievements from './components/Achievements';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
 import './App.css';
+
+// Only Header + Hero are needed for first paint. Everything below the fold
+// is code-split so it doesn't compete with the hero for parse/execute time
+// on the main thread — this was the actual bottleneck behind a slow LCP
+// (measured via Lighthouse: ~1.2s of main-bundle script execution before
+// first paint could even happen).
+const About = lazy(() => import('./components/About'));
+const Skills = lazy(() => import('./components/Skills'));
+const Experience = lazy(() => import('./components/Experience'));
+const Projects = lazy(() => import('./components/Projects'));
+const OpenSource = lazy(() => import('./components/OpenSource'));
+const LeetCodeStats = lazy(() => import('./components/LeetCodeStats'));
+const Achievements = lazy(() => import('./components/Achievements'));
+const Contact = lazy(() => import('./components/Contact'));
+const Footer = lazy(() => import('./components/Footer'));
+const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
 
 const HomePage = () => {
   return (
@@ -22,16 +29,20 @@ const HomePage = () => {
       <Header />
       <main>
         <Hero />
-        <About />
-        <Skills />
-        <Experience />
-        <Projects />
-        <OpenSource />
-        <LeetCodeStats />
-        <Achievements />
-        <Contact />
+        <Suspense fallback={null}>
+          <About />
+          <Skills />
+          <Experience />
+          <Projects />
+          <OpenSource />
+          <LeetCodeStats />
+          <Achievements />
+          <Contact />
+        </Suspense>
       </main>
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
     </div>
   );
 };
@@ -70,6 +81,14 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route
+              path="/projects/:slug"
+              element={
+                <Suspense fallback={null}>
+                  <ProjectDetail />
+                </Suspense>
+              }
+            />
           </Routes>
         </BrowserRouter>
         <Toaster />

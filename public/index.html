@@ -6,9 +6,40 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Siddhant Gureja - Full Stack Developer" />
+    <meta name="description" content="Siddhant Gureja - Full Stack Developer specializing in backend systems, data integration, and AI-driven web applications." />
     <meta name="author" content="Siddhant Gureja" />
-    <title>Siddhant Gureja | Portfolio</title>
+    <link rel="canonical" href="https://sidgureja.dev/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sidgureja.dev/" />
+    <meta property="og:title" content="Siddhant Gureja | Full Stack Developer" />
+    <meta property="og:description" content="Full Stack Developer specializing in backend systems, data integration, and AI-driven web applications." />
+    <meta property="og:image" content="https://sidgureja.dev/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Siddhant Gureja | Full Stack Developer" />
+    <meta name="twitter:description" content="Full Stack Developer specializing in backend systems, data integration, and AI-driven web applications." />
+    <meta name="twitter:image" content="https://sidgureja.dev/og-image.png" />
+
+    <title>Siddhant Gureja | Software Engineer</title>
+    <script>
+      // Runs before first paint to avoid a light-mode flash: applies the saved
+      // theme, or 'dark' as the site default, ahead of React hydration.
+      (function () {
+        try {
+          var validThemes = ['light', 'dark', 'ocean', 'sunset', 'forest'];
+          var saved = localStorage.getItem('theme');
+          var theme = validThemes.indexOf(saved) !== -1 ? saved : 'dark';
+          document.documentElement.classList.add(theme);
+        } catch (e) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
 </head>
 
 <body>

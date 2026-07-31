@@ -6,7 +6,7 @@ import IdeaHubImg from './assets/IdeaHub.png';
 
 export const personalInfo = {
   name: "SIDDHANT GUREJA",
-  title: "Full Stack Developer",
+  title: "Software Engineer | Full Stack Developer | AI Enthusiast",
   tagline: "Building scalable web applications and AI-driven products",
   email: "siddhantgureja39@gmail.com",
   phone: "+91 8193006167",
@@ -35,11 +35,42 @@ export const skills = {
 export const experience = [
   {
     id: 1,
+    company: "Zscaler",
+    position: "Software Engineer Intern",
+    duration: "2025",
+    summary:
+      "Built backend systems for Zscaler's internal product operations platform, integrating enterprise data sources and enabling roadmap tracking, analytics, and customer-impact reporting at scale.",
+    description: [
+      "Developed backend services that integrated and synchronized data across Jira (engineering tasks/milestones), Salesforce (customer/sales data), Snowflake (analytics warehouse), PostgreSQL (application DB), and internal enrichment services — ensuring consistency and freshness across systems.",
+      "Built the Product Initiative (PI) module, enabling teams to track roadmaps, milestones, feature progress, customer impact, KPIs, and generate stakeholder reports.",
+      "Designed and shipped scalable APIs for filtering, search, pagination, KPI rollups, milestone tracking, activity feeds, customer-impact reporting, and caching — supporting thousands of product initiatives efficiently.",
+      "Deployed and maintained production services on AWS using ECS (container orchestration), ECR (container registry), and RDS (managed databases)."
+    ],
+    technologies: [
+      "Node.js",
+      "REST APIs",
+      "PostgreSQL",
+      "Snowflake",
+      "AWS ECS",
+      "AWS ECR",
+      "AWS RDS",
+      "Salesforce Integration",
+      "Jira API",
+      "Data Pipelines",
+      "System Design"
+    ],
+    project: "Z-POP (Zscaler Product Operations Platform)"
+  },
+  {
+    id: 2,
     company: "Thapar Innovate",
     position: "Full Stack Developer",
     duration: "Oct 2024 – Jan 2025",
+    summary:
+      "Built a CRM-style web platform for TIET Venture Labs to run startup incubation programs end-to-end.",
     description: [
-      "Developed a comprehensive web platform for TIET Venture Labs to manage startup applications, multiple incubation programs, and cohort-specific workflows."
+      "Developed a comprehensive web platform for TIET Venture Labs to manage startup applications, multiple incubation programs, and cohort-specific workflows.",
+      "Designed application forms, review pipelines, and cohort dashboards used by the incubation team to track startups from application through onboarding."
     ],
     technologies: ["React.js", "Node.js", "Express.js", "MongoDB"],
     liveUrl: "http://139.59.46.75/",
@@ -77,10 +108,22 @@ export const openSource = [
 export const projects = [
   {
     id: 1,
+    slug: "codefusion",
     title: "CodeFusion",
+    category: ["Full-Stack", "Real-Time", "AI"],
     description: "A real-time collaborative coding platform for solving DSA problems together.",
     longDescription:
       "Built using React, Docker, Liveblocks, and Judge0 for multi-language execution. Integrated LLaMA API for AI-driven debugging and scaled to 100+ concurrent sessions.",
+    problem:
+      "Developers practicing DSA and pair-programming lacked a lightweight, real-time collaborative environment that could execute code in multiple languages and offer AI-assisted debugging without heavyweight IDE setup.",
+    role: "Sole full-stack developer — designed the architecture, built the frontend and backend, and handled deployment.",
+    architecture:
+      "React frontend with Liveblocks for real-time cursor/document sync (CRDT-based), a Node.js backend orchestrating Judge0 in Docker containers for sandboxed multi-language code execution, and the LLaMA API integrated for on-demand AI debugging suggestions.",
+    metrics: [
+      "Scaled to 100+ concurrent collaborative sessions",
+      "Multi-language execution via isolated Docker/Judge0 sandboxes",
+      "Real-time sync latency low enough for live pair-programming"
+    ],
     image: CodeFusionImg,
     technologies: ["React.js", "Docker", "Liveblocks", "Judge0", "LLaMA API"],
     liveUrl: "https://www.code-fusion.live/",
@@ -89,10 +132,22 @@ export const projects = [
   },
   {
     id: 2,
+    slug: "mergemates",
     title: "MergeMates",
+    category: ["Full-Stack", "Real-Time", "AWS"],
     description: "A 'Tinder for Developers' that matches collaborators based on GitHub data and tech interests.",
     longDescription:
       "Implemented real-time matching and chat using WebSockets with event-driven architecture. Deployed on AWS EC2 + Route 53 with automated workflows using Cron Jobs.",
+    problem:
+      "Developers looking for side-project collaborators had no way to discover people with complementary skills based on real GitHub activity rather than static profiles.",
+    role: "Sole full-stack developer — designed the matching logic, real-time chat system, and AWS deployment pipeline.",
+    architecture:
+      "React client with a Node.js/WebSocket backend for real-time matching and chat using an event-driven architecture; GitHub API data feeds the matching algorithm; deployed on AWS EC2 behind Route 53 DNS, with Cron Jobs automating periodic profile re-syncing.",
+    metrics: [
+      "Real-time matching and chat over WebSockets",
+      "Automated GitHub data refresh via scheduled Cron Jobs",
+      "Deployed and load-tested on AWS EC2 + Route 53"
+    ],
     image: MergeMatesImg,
     technologies: ["React.js", "MongoDB", "WebSockets", "AWS", "Cron Jobs"],
     liveUrl: "https://www.mergemates.site/",
@@ -101,10 +156,22 @@ export const projects = [
   },
   {
     id: 3,
+    slug: "livecv",
     title: "LiveCV",
+    category: ["Full-Stack", "AI"],
     description: "An AI-powered resume builder that dynamically updates resumes in real time.",
     longDescription:
       "Developed with React.js, Node.js, and Appwrite for secure authentication and data handling. Supports real-time editing, PDF export, and template switching.",
+    problem:
+      "Job seekers needed a fast way to maintain multiple resume versions and export polished PDFs without wrestling with design tools or static templates.",
+    role: "Sole full-stack developer — built the editor, auth/data layer, and export pipeline.",
+    architecture:
+      "React front end with a live-editing document model, Appwrite handling authentication and data persistence, and a Node.js service generating PDF exports on demand with template switching.",
+    metrics: [
+      "Real-time editing with instant preview updates",
+      "Multi-template switching with PDF export",
+      "Secure auth and data handling via Appwrite"
+    ],
     image: LiveCVImg,
     technologies: ["React.js", "Appwrite", "Node.js", "MongoDB", "Tailwind CSS"],
     liveUrl: "https://livecv.online/",
@@ -112,10 +179,21 @@ export const projects = [
   },
   {
     id: 4,
+    slug: "ideahub",
     title: "IdeaHub",
+    category: ["Full-Stack", "AI"],
     description: "A collaborative GenAI-powered platform to share and enhance project ideas.",
     longDescription:
       "Implemented AI-powered idea suggestions, scalable backend, and interactive UX for idea submission, refinement, and collaboration.",
+    problem:
+      "Builders often have raw project ideas but no structured way to refine, validate, or get feedback on them collaboratively before committing time to build.",
+    role: "Full-stack developer — built the idea submission/refinement flow and GenAI integration.",
+    architecture:
+      "Next.js frontend with a Node.js/Express backend, MongoDB for idea and comment storage, and GenAI APIs integrated to generate refinement suggestions on submitted ideas.",
+    metrics: [
+      "AI-generated refinement suggestions on every submitted idea",
+      "Collaborative comment/refinement flow for shared ideas"
+    ],
     image: IdeaHubImg,
     technologies: ["Next.js", "Node.js", "Express.js", "MongoDB", "GenAI APIs"],
     githubUrl: "https://github.com/sidgureja7803/FutureStack_GenAI.git"

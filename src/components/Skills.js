@@ -1,138 +1,137 @@
-import React from 'react';
-import { Card } from './ui/card';
-import { Badge } from './ui/badge';
-import { Progress } from './ui/progress';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { skills } from '../mock';
-import { Code, Palette, Database, Wrench, Brain } from 'lucide-react';
+import { getSkillIcon } from '../lib/skillIcons';
+import ScrollRevealText from './ScrollRevealText';
+import { Code, Palette, Database, Cpu, Wrench, Brain, Layers } from 'lucide-react';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.04 } },
+};
+
+const tileVariants = {
+  hidden: { opacity: 0, y: 14, scale: 0.96 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const CATEGORIES = [
+  { key: 'frontend', label: 'Frontend', icon: Code, skills: skills.frontend },
+  { key: 'styling', label: 'UI / Styling', icon: Palette, skills: skills.styling },
+  { key: 'backend', label: 'Backend & Data', icon: Database, skills: skills.backend },
+  { key: 'devops', label: 'Cloud & DevOps', icon: Cpu, skills: skills.devops },
+  { key: 'tools', label: 'Tooling', icon: Wrench, skills: skills.tools },
+  { key: 'ai', label: 'AI', icon: Brain, skills: skills.ai },
+  { key: 'core', label: 'Fundamentals', icon: Layers, skills: skills.core },
+];
+
+const SkillTile = ({ label }) => {
+  const { icon: Icon, color } = getSkillIcon(label);
+  return (
+    <motion.div
+      variants={tileVariants}
+      whileHover={{ y: -6, transition: { duration: 0.15 } }}
+      className="group flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border border-border/60 bg-card/60 backdrop-blur-sm hover:border-primary/40 hover:bg-card hover:shadow-lg transition-colors text-center"
+    >
+      <div
+        className="w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
+        style={{ backgroundColor: `${color}1a` }}
+      >
+        <Icon className="w-6 h-6" style={{ color }} aria-hidden="true" />
+      </div>
+      <span className="text-sm font-medium text-foreground leading-snug">{label}</span>
+    </motion.div>
+  );
+};
 
 const Skills = () => {
-  const skillCategories = [
-    {
-      title: "Frontend Development",
-      icon: Code,
-      skills: skills.frontend,
-      color: "text-blue-500",
-      bgColor: "bg-blue-500/10"
-    },
-    {
-      title: "UI/UX & Styling", 
-      icon: Palette,
-      skills: skills.styling,
-      color: "text-purple-500",
-      bgColor: "bg-purple-500/10"
-    },
-    {
-      title: "Backend & Database",
-      icon: Database, 
-      skills: skills.backend,
-      color: "text-green-500",
-      bgColor: "bg-green-500/10"
-    },
-    {
-      title: "Tools & Platforms",
-      icon: Wrench,
-      skills: skills.tools,
-      color: "text-orange-500", 
-      bgColor: "bg-orange-500/10"
-    },
-    {
-      title: "AI & Modern Tools",
-      icon: Brain,
-      skills: skills.ai,
-      color: "text-pink-500",
-      bgColor: "bg-pink-500/10"
-    }
-  ];
-
-  const topSkills = [
-    { name: "React.js", level: 95 },
-    { name: "JavaScript", level: 90 },
-    { name: "TypeScript", level: 85 },
-    { name: "Node.js", level: 80 },
-    { name: "Tailwind CSS", level: 95 },
-    { name: "MongoDB", level: 75 }
-  ];
+  const [activeKey, setActiveKey] = useState(CATEGORIES[0].key);
+  const active = CATEGORIES.find((c) => c.key === activeKey);
 
   return (
-    <section id="skills" className="py-24 px-6 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-10 w-64 h-64 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-10 w-80 h-80 bg-gradient-to-br from-purple-500/10 to-transparent rounded-full blur-3xl"></div>
-      </div>
-      
-      <div className="max-w-6xl mx-auto relative z-10">
+    <section id="skills" className="py-24 px-6 relative">
+      <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-16 space-y-4">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20">
-            <Code className="w-4 h-4 mr-2 text-blue-500" />
+        <motion.div
+          className="text-center mb-14 space-y-4"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={fadeUp}
+        >
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
+            <Code className="w-4 h-4 mr-2 text-primary" />
             <span className="text-sm font-medium text-foreground">Expertise</span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-light tracking-tight">
-            Technical <span className="font-normal bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">Skills</span>
+          <h2 className="font-display text-3xl md:text-4xl font-light tracking-tight">
+            Technical <span className="font-normal text-primary">Skills</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            Proficient in modern technologies and frameworks for building scalable web applications
-          </p>
-        </div>
+          <ScrollRevealText
+            text="Technologies and tools I use to design, build, and ship production systems"
+            className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed justify-center"
+          />
+        </motion.div>
 
-        {/* Skills Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {skillCategories.map((category, index) => {
-            const IconComponent = category.icon;
+        {/* Category Switcher */}
+        <motion.div
+          className="flex flex-wrap justify-center gap-2 mb-10"
+          role="tablist"
+          aria-label="Skill categories"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={fadeUp}
+        >
+          {CATEGORIES.map((cat) => {
+            const CatIcon = cat.icon;
+            const isActive = cat.key === activeKey;
             return (
-              <Card 
-                key={index} 
-                className="p-6 border-0 shadow-lg hover:shadow-2xl transition-all duration-300 group bg-card/50 backdrop-blur-sm hover:-translate-y-1 relative overflow-hidden"
-                style={{ animationDelay: `${index * 100}ms` }}
+              <button
+                key={cat.key}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => setActiveKey(cat.key)}
+                className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-colors ${
+                  isActive
+                    ? 'text-primary-foreground'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-accent/60'
+                }`}
               >
-                {/* Decorative corner */}
-                <div className={`absolute top-0 right-0 w-20 h-20 ${category.bgColor} rounded-bl-full transform translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform opacity-50`}></div>
-                
-                <div className="flex items-center mb-4 relative z-10">
-                  <div className={`w-10 h-10 rounded-lg ${category.bgColor} flex items-center justify-center mr-3 group-hover:scale-110 transition-transform`}>
-                    <IconComponent className={`w-5 h-5 ${category.color}`} />
-                  </div>
-                  <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                    {category.title}
-                  </h3>
-                </div>
-                
-                <div className="flex flex-wrap gap-2">
-                  {category.skills.map((skill, skillIndex) => (
-                    <Badge 
-                      key={skillIndex} 
-                      variant="secondary" 
-                      className="text-xs hover:bg-accent/80 transition-colors cursor-default"
-                    >
-                      {skill}
-                    </Badge>
-                  ))}
-                </div>
-              </Card>
+                {isActive && (
+                  <motion.span
+                    layoutId="skills-tab-pill"
+                    className="absolute inset-0 bg-primary rounded-full"
+                    transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
+                  />
+                )}
+                <CatIcon className="w-4 h-4 relative z-10" />
+                <span className="relative z-10">{cat.label}</span>
+              </button>
             );
           })}
-        </div>
+        </motion.div>
 
-        {/* Top Skills Progress */}
-        <Card className="p-8 border-0 shadow-lg bg-gradient-to-br from-accent/20 to-primary/5 backdrop-blur-sm">
-          <h3 className="text-xl font-semibold mb-8 text-center">Proficiency Levels</h3>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            {topSkills.map((skill, index) => (
-              <div key={index} className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="font-medium text-foreground">{skill.name}</span>
-                  <span className="text-sm text-muted-foreground">{skill.level}%</span>
-                </div>
-                <Progress 
-                  value={skill.level} 
-                  className="h-2 bg-background/50"
-                />
-              </div>
+        {/* Active category tiles */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeKey}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={staggerContainer}
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4"
+          >
+            {active.skills.map((skill) => (
+              <SkillTile key={skill} label={skill} />
             ))}
-          </div>
-        </Card>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );

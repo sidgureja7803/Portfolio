@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Card } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -8,6 +9,7 @@ import { useToast } from '../hooks/use-toast';
 import { personalInfo, socialLinks } from '../mock';
 import { Mail, Phone, MapPin, Send, MessageCircle, Calendar } from 'lucide-react';
 import emailjs from '@emailjs/browser';
+import ScrollRevealText from './ScrollRevealText';
 
 const Contact = () => {
   const form = useRef();
@@ -70,16 +72,29 @@ const Contact = () => {
 
       <div className="relative max-w-6xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-16 space-y-4">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+        <motion.div
+          className="text-center mb-16 space-y-4"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight">
             Get In <span className="text-gradient">Touch</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            Ready to start your next project? Let's discuss how we can work together to bring your ideas to life.
-          </p>
-        </div>
+          <ScrollRevealText
+            text="Ready to start your next project? Let's discuss how we can work together to bring your ideas to life."
+            className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed justify-center"
+          />
+        </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12">
+        <motion.div
+          className="grid md:grid-cols-2 gap-12"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
           {/* Contact Info */}
           <div className="space-y-8">
             <div>
@@ -244,7 +259,7 @@ const Contact = () => {
               </div>
             </div>
           </Card>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

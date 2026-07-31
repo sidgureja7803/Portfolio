@@ -7,6 +7,11 @@ module.exports = {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			display: ['"Clash Display"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+  			sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+  			mono: ['"JetBrains Mono"', 'monospace'],
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
