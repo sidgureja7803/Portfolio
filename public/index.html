@@ -27,18 +27,11 @@
 
     <title>Siddhant Gureja | Software Engineer</title>
     <script>
-      // Runs before first paint to avoid a light-mode flash: applies the saved
-      // theme, or 'dark' as the site default, ahead of React hydration.
-      (function () {
-        try {
-          var validThemes = ['light', 'dark', 'ocean', 'sunset', 'forest'];
-          var saved = localStorage.getItem('theme');
-          var theme = validThemes.indexOf(saved) !== -1 ? saved : 'dark';
-          document.documentElement.classList.add(theme);
-        } catch (e) {
-          document.documentElement.classList.add('dark');
-        }
-      })();
+      // Dark is the site's only theme now — applied unconditionally, ahead
+      // of React hydration, so there's never a light-mode flash or a stale
+      // localStorage value from an earlier build putting a visitor back into
+      // a light mode that no longer exists.
+      document.documentElement.classList.add('dark');
     </script>
 </head>
 

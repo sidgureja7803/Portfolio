@@ -1,7 +1,6 @@
 import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Lenis from '@studio-freight/lenis';
-import { ThemeProvider } from './contexts/ThemeContext';
 import { Toaster } from './components/ui/toaster';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -99,40 +98,38 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider>
-      <div className="App">
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route
-              path="/projects/:slug"
-              element={
-                <Suspense fallback={null}>
-                  <ProjectDetail />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/blogs"
-              element={
-                <Suspense fallback={null}>
-                  <Blog />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/blogs/:slug"
-              element={
-                <Suspense fallback={null}>
-                  <BlogPost />
-                </Suspense>
-              }
-            />
-          </Routes>
-        </BrowserRouter>
-        <Toaster />
-      </div>
-    </ThemeProvider>
+    <div className="App">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/projects/:slug"
+            element={
+              <Suspense fallback={null}>
+                <ProjectDetail />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blogs"
+            element={
+              <Suspense fallback={null}>
+                <Blog />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blogs/:slug"
+            element={
+              <Suspense fallback={null}>
+                <BlogPost />
+              </Suspense>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+      <Toaster />
+    </div>
   );
 }
 
