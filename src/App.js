@@ -1,5 +1,5 @@
 import React, { useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Lenis from '@studio-freight/lenis';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { Toaster } from './components/ui/toaster';
@@ -16,14 +16,41 @@ const About = lazy(() => import('./components/About'));
 const Skills = lazy(() => import('./components/Skills'));
 const Experience = lazy(() => import('./components/Experience'));
 const Projects = lazy(() => import('./components/Projects'));
-const OpenSource = lazy(() => import('./components/OpenSource'));
 const LeetCodeStats = lazy(() => import('./components/LeetCodeStats'));
 const Achievements = lazy(() => import('./components/Achievements'));
 const Contact = lazy(() => import('./components/Contact'));
-const Footer = lazy(() => import('./components/Footer'));
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
+const Blog = lazy(() => import('./pages/Blog'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
+
+// Sections below the fold are lazy-loaded, so an incoming #hash (e.g. from
+// navigating "/blogs" -> "/#about") can't scroll to its target until that
+// section has actually mounted — poll briefly instead of scrolling immediately.
+const useScrollToHash = () => {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) return;
+
+    let attempts = 0;
+    const id = setInterval(() => {
+      const el = document.querySelector(hash);
+      attempts += 1;
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        clearInterval(id);
+      } else if (attempts > 20) {
+        clearInterval(id);
+      }
+    }, 100);
+
+    return () => clearInterval(id);
+  }, [hash]);
+};
 
 const HomePage = () => {
+  useScrollToHash();
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -34,15 +61,11 @@ const HomePage = () => {
           <Skills />
           <Experience />
           <Projects />
-          <OpenSource />
           <LeetCodeStats />
           <Achievements />
           <Contact />
         </Suspense>
       </main>
-      <Suspense fallback={null}>
-        <Footer />
-      </Suspense>
     </div>
   );
 };
@@ -86,6 +109,22 @@ function App() {
               element={
                 <Suspense fallback={null}>
                   <ProjectDetail />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/blogs"
+              element={
+                <Suspense fallback={null}>
+                  <Blog />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/blogs/:slug"
+              element={
+                <Suspense fallback={null}>
+                  <BlogPost />
                 </Suspense>
               }
             />
