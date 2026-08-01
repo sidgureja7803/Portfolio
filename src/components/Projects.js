@@ -4,7 +4,6 @@ import { Button } from './ui/button';
 import ProjectCard from './ProjectCard';
 import { projects } from '../mock';
 import { Github } from 'lucide-react';
-import SectionCanvas from './SectionCanvas';
 import SectionEyebrow from './SectionEyebrow';
 
 const fadeUp = {
@@ -35,12 +34,7 @@ const Projects = () => {
   const rest = filtered.filter((p) => !p.featured);
 
   return (
-    <section id="projects" className="relative px-6 md:px-10 overflow-hidden">
-      <SectionCanvas
-        variant="wire"
-        color="#22d3ee"
-        className="absolute -top-10 -left-10 w-64 h-64 md:w-80 md:h-80 z-0 pointer-events-none opacity-45"
-      />
+    <section id="projects" className="relative px-6 md:px-10">
       <div className="relative z-10 max-w-5xl mx-auto">
         <SectionEyebrow>Projects</SectionEyebrow>
 

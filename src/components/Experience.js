@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { experience } from '../mock';
 import { getSkillIcon } from '../lib/skillIcons';
 import { Calendar } from 'lucide-react';
-import SectionCanvas from './SectionCanvas';
 import SectionEyebrow from './SectionEyebrow';
 
 const fadeUp = {
@@ -137,14 +136,7 @@ const ExperienceRow = ({ exp, isLast }) => {
 
 const Experience = () => {
   return (
-    <section id="experience" className="relative px-6 md:px-10 overflow-hidden">
-      <SectionCanvas
-        variant="points"
-        count={120}
-        spread={3}
-        color="#d946ef"
-        className="absolute top-0 right-0 w-64 h-64 md:w-80 md:h-80 z-0 pointer-events-none opacity-45"
-      />
+    <section id="experience" className="relative px-6 md:px-10">
       <div className="relative z-10 max-w-5xl mx-auto">
         <SectionEyebrow>Work Experience</SectionEyebrow>
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { personalInfo, education } from '../mock';
 import { GraduationCap, Mail, MapPin, Phone } from 'lucide-react';
-import SectionCanvas from './SectionCanvas';
 import SectionEyebrow from './SectionEyebrow';
 import ScrollRevealText from './ScrollRevealText';
 import thaparImg from '../assets/thapar.png';
@@ -14,12 +13,7 @@ const fadeUp = {
 
 const About = () => {
   return (
-    <section id="about" className="relative px-6 md:px-10 overflow-hidden">
-      <SectionCanvas
-        variant="wire"
-        color="#6366f1"
-        className="absolute -top-16 -right-16 w-64 h-64 md:w-80 md:h-80 z-0 pointer-events-none opacity-45"
-      />
+    <section id="about" className="relative px-6 md:px-10">
       <div className="relative z-10 max-w-5xl mx-auto">
         <SectionEyebrow>About</SectionEyebrow>
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { achievements } from '../mock';
 import { Award, ExternalLink, FileText, Star } from 'lucide-react';
-import SectionCanvas from './SectionCanvas';
 import SectionEyebrow from './SectionEyebrow';
 import ScrollRevealText from './ScrollRevealText';
 
@@ -19,12 +18,7 @@ const LINK_CONFIG = [
 
 const Achievements = () => {
   return (
-    <section id="achievements" className="relative px-6 md:px-10 overflow-hidden">
-      <SectionCanvas
-        variant="wire"
-        color="#6366f1"
-        className="absolute -bottom-16 -right-16 w-64 h-64 md:w-80 md:h-80 z-0 pointer-events-none opacity-45"
-      />
+    <section id="achievements" className="relative px-6 md:px-10">
       <div className="relative z-10 max-w-5xl mx-auto">
         <SectionEyebrow>Awards &amp; Achievements</SectionEyebrow>
 

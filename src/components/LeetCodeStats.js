@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Code2, ExternalLink, Trophy } from 'lucide-react';
-import SectionCanvas from './SectionCanvas';
 import SectionEyebrow from './SectionEyebrow';
 
 const LEETCODE_USERNAME = 'siddhant_gureja_07';
@@ -154,14 +153,7 @@ const CompetitiveProgramming = () => {
   const { stats: cfStats, status: cfStatus } = useCodeforcesStats();
 
   return (
-    <section id="leetcode" className="relative px-6 md:px-10 overflow-hidden">
-      <SectionCanvas
-        variant="points"
-        count={150}
-        spread={3}
-        color="#d946ef"
-        className="absolute -top-16 -left-16 w-64 h-64 md:w-80 md:h-80 z-0 pointer-events-none opacity-45"
-      />
+    <section id="leetcode" className="relative px-6 md:px-10">
       <div className="relative z-10 max-w-5xl mx-auto">
         <SectionEyebrow>Competitive Programming</SectionEyebrow>
 

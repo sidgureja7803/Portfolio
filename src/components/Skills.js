@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { skills } from '../mock';
 import { getSkillIcon } from '../lib/skillIcons';
-import SectionCanvas from './SectionCanvas';
 import SectionEyebrow from './SectionEyebrow';
 
 const CATEGORY_LABELS = {
@@ -111,14 +110,7 @@ const Skills = () => {
   }, []);
 
   return (
-    <section id="skills" className="relative px-6 md:px-10 overflow-hidden">
-      <SectionCanvas
-        variant="points"
-        count={150}
-        spread={3}
-        color="#22d3ee"
-        className="absolute -bottom-20 -left-20 w-64 h-64 md:w-80 md:h-80 z-0 pointer-events-none opacity-45"
-      />
+    <section id="skills" className="relative px-6 md:px-10">
       <div className="relative z-10 max-w-5xl mx-auto">
         <SectionEyebrow>Skills &amp; Technology Experience</SectionEyebrow>
 

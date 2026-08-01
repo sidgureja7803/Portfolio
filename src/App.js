@@ -4,6 +4,7 @@ import Lenis from '@studio-freight/lenis';
 import { Toaster } from './components/ui/toaster';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import GlobalStarfield from './components/GlobalStarfield';
 import './App.css';
 
 // Only Header + Hero are needed for first paint. Everything below the fold
@@ -99,6 +100,7 @@ function App() {
 
   return (
     <div className="App">
+      <GlobalStarfield />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
