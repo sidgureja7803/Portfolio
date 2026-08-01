@@ -1,28 +1,27 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
 
-// Real, always-on motion: N spheres bouncing off invisible walls and off
-// each other (naive O(n^2) elastic collision — fine at these counts), not a
-// drifting/idle accent. This is deliberately the opposite design choice from
-// NetworkScene (which is a static, faint texture) — the brief here was
-// specifically "something should always be visibly happening."
+// Real, always-on motion, kept deliberately quiet: a handful of small,
+// dim spheres drifting and occasionally colliding — ambient texture, not a
+// physics demo. (An earlier pass here used 20+ larger spheres plus bloom
+// post-processing; that read as "too much" rather than "next level," so
+// this trades scale/glow for restraint while keeping genuine motion.)
 const PALETTE = ['#6366f1', '#818cf8', '#d946ef', '#22d3ee'];
 
 const TIER_CONFIG = {
-  high: { count: 22, bloom: true },
-  medium: { count: 14, bloom: false },
-  low: { count: 8, bloom: false },
+  high: { count: 9 },
+  medium: { count: 6 },
+  low: { count: 4 },
 };
 
 const BOUNDS = { x: 6.5, y: 3.4, z: 2.2 };
-const Z_OFFSET = -1.5; // sits slightly behind the text plane
+const Z_OFFSET = -2.2; // further behind the text plane than before — kept out of the way, not competing with it
 
 function makeBalls(count) {
   const balls = [];
   for (let i = 0; i < count; i++) {
-    const radius = 0.22 + Math.random() * 0.32;
+    const radius = 0.1 + Math.random() * 0.14;
     balls.push({
       position: new THREE.Vector3(
         (Math.random() * 2 - 1) * (BOUNDS.x - radius),
@@ -30,9 +29,9 @@ function makeBalls(count) {
         Z_OFFSET + (Math.random() * 2 - 1) * (BOUNDS.z - radius)
       ),
       velocity: new THREE.Vector3(
-        (Math.random() * 2 - 1) * 1.4,
-        (Math.random() * 2 - 1) * 1.4,
-        (Math.random() * 2 - 1) * 0.7
+        (Math.random() * 2 - 1) * 0.35,
+        (Math.random() * 2 - 1) * 0.35,
+        (Math.random() * 2 - 1) * 0.2
       ),
       radius,
       color: PALETTE[i % PALETTE.length],
@@ -124,18 +123,19 @@ function Scene({ count, isTouchDevice }) {
 
   return (
     <group ref={groupRef}>
-      <ambientLight intensity={0.5} />
-      <pointLight position={[4, 4, 4]} intensity={1.4} color="#ffffff" />
-      <pointLight position={[-4, -3, 2]} intensity={0.8} color="#818cf8" />
+      <ambientLight intensity={0.4} />
+      <pointLight position={[4, 4, 4]} intensity={0.6} color="#ffffff" />
       {balls.map((b, i) => (
         <mesh key={i} ref={(el) => (meshRefs.current[i] = el)} position={b.position}>
-          <sphereGeometry args={[b.radius, 32, 32]} />
+          <sphereGeometry args={[b.radius, 16, 16]} />
           <meshStandardMaterial
             color={b.color}
             emissive={b.color}
-            emissiveIntensity={0.55}
-            roughness={0.25}
-            metalness={0.3}
+            emissiveIntensity={0.25}
+            roughness={0.6}
+            metalness={0.1}
+            transparent
+            opacity={0.55}
           />
         </mesh>
       ))}
@@ -144,7 +144,7 @@ function Scene({ count, isTouchDevice }) {
 }
 
 export default function BouncingSpheres({ tier = 'high', isTouchDevice = false }) {
-  const { count, bloom } = TIER_CONFIG[tier] || TIER_CONFIG.medium;
+  const { count } = TIER_CONFIG[tier] || TIER_CONFIG.medium;
   const dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1, 2);
 
   return (
@@ -155,11 +155,6 @@ export default function BouncingSpheres({ tier = 'high', isTouchDevice = false }
       onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
     >
       <Scene count={count} isTouchDevice={isTouchDevice} />
-      {bloom && (
-        <EffectComposer>
-          <Bloom intensity={0.9} luminanceThreshold={0.2} luminanceSmoothing={0.4} mipmapBlur />
-        </EffectComposer>
-      )}
     </Canvas>
   );
 }

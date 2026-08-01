@@ -15,7 +15,7 @@ const About = () => {
       <SectionCanvas
         variant="wire"
         color="#6366f1"
-        className="absolute -top-16 -right-16 w-96 h-96 md:w-[32rem] md:h-[32rem] z-0 pointer-events-none opacity-80"
+        className="absolute -top-16 -right-16 w-64 h-64 md:w-80 md:h-80 z-0 pointer-events-none opacity-30"
       />
       <div className="relative z-10 max-w-5xl mx-auto">
         <p className="text-xs md:text-sm font-medium tracking-[0.2em] uppercase text-muted-foreground mb-10 md:mb-16">

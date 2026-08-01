@@ -54,10 +54,10 @@ function PointsVariant({ count, spread }) {
   return (
     <points ref={ref} geometry={geometry}>
       <pointsMaterial
-        size={0.09}
+        size={0.045}
         vertexColors
         transparent
-        opacity={1}
+        opacity={0.5}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
         depthWrite={false}
@@ -95,15 +95,11 @@ function WireVariant({ color }) {
         <lineBasicMaterial
           color={threeColor}
           transparent
-          opacity={0.9}
+          opacity={0.35}
           blending={THREE.AdditiveBlending}
           depthWrite={false}
         />
       </lineSegments>
-      <mesh>
-        <icosahedronGeometry args={[0.35, 0]} />
-        <meshBasicMaterial color={threeColor} transparent opacity={0.8} blending={THREE.AdditiveBlending} depthWrite={false} />
-      </mesh>
     </group>
   );
 }
