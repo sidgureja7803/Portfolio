@@ -5,6 +5,7 @@ import { GraduationCap, Mail, MapPin, Phone } from 'lucide-react';
 import SectionCanvas from './SectionCanvas';
 import SectionEyebrow from './SectionEyebrow';
 import ScrollRevealText from './ScrollRevealText';
+import thaparImg from '../assets/thapar.png';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -73,10 +74,22 @@ const About = () => {
               Education
             </h3>
             {education.map((edu) => (
-              <div key={edu.id}>
-                <p className="font-medium text-foreground">{edu.degree}</p>
-                <p className="text-muted-foreground">{edu.institution}</p>
-                <p className="text-sm text-muted-foreground">{edu.duration}</p>
+              <div
+                key={edu.id}
+                className="group relative overflow-hidden rounded-2xl border border-border"
+              >
+                <img
+                  src={thaparImg}
+                  alt={edu.institution}
+                  loading="lazy"
+                  className="w-full h-44 md:h-48 object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
+                  <p className="font-medium text-foreground leading-snug">{edu.degree}</p>
+                  <p className="text-sm text-muted-foreground mt-0.5">{edu.institution}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{edu.duration}</p>
+                </div>
               </div>
             ))}
           </div>
