@@ -22,11 +22,13 @@ import {
   SiWebpack,
   SiSnowflake,
   SiJira,
+  SiMetaai,
 } from 'react-icons/si';
-import { FaAws, FaJava, FaCode, FaBrain, FaSalesforce, FaCss3Alt } from 'react-icons/fa';
+import { FaAws, FaJava, FaCode, FaSalesforce, FaCss3Alt } from 'react-icons/fa';
 import { VscVscode } from 'react-icons/vsc';
 import { TbApi, TbNetwork } from 'react-icons/tb';
 import { BsDatabaseFill } from 'react-icons/bs';
+import { Sparkles, Wand2, ListTree, Component, Bot } from 'lucide-react';
 
 // Maps a skill label (as authored in mock.js) to a real brand icon + brand color.
 // Falls back to a neutral generic icon when no accurate brand mark exists —
@@ -61,13 +63,13 @@ export const SKILL_ICON_MAP = {
   'VS Code': { icon: VscVscode, color: '#007ACC' },
   Postman: { icon: SiPostman, color: '#FF6C37' },
   Webpack: { icon: SiWebpack, color: '#8DD6F9' },
-  'LLaMA API': { icon: FaBrain, color: '#8B5CF6' },
-  OpenAI: { icon: FaBrain, color: '#8B5CF6' },
-  'GenAI Integration': { icon: FaBrain, color: '#8B5CF6' },
-  'Prompt Engineering': { icon: FaBrain, color: '#8B5CF6' },
-  'Data Structures & Algorithms': { icon: FaCode, color: '#F59E0B' },
-  OOPS: { icon: FaCode, color: '#F59E0B' },
-  'Computer Networks': { icon: TbNetwork, color: '#F59E0B' },
+  'LLaMA API': { icon: SiMetaai, color: '#0668E1' },
+  OpenAI: { icon: Bot, color: '#94A3B8' },
+  'GenAI Integration': { icon: Sparkles, color: '#A78BFA' },
+  'Prompt Engineering': { icon: Wand2, color: '#F472B6' },
+  'Data Structures & Algorithms': { icon: ListTree, color: '#F59E0B' },
+  OOPS: { icon: Component, color: '#F59E0B' },
+  'Computer Networks': { icon: TbNetwork, color: '#38BDF8' },
   DBMS: { icon: BsDatabaseFill, color: '#F59E0B' },
   Snowflake: { icon: SiSnowflake, color: '#29B5E8' },
   'Jira API': { icon: SiJira, color: '#0052CC' },
