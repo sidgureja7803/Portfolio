@@ -1,211 +1,348 @@
-# 🚀 Siddhant Gureja - Portfolio
+# Siddhant Gureja — Developer Portfolio
 
-A modern, responsive, and beautifully designed portfolio showcasing my work as a Full Stack Developer. Built with React.js and featuring cutting-edge UI/UX design with smooth animations, multiple theme options, and an elegant glassmorphic aesthetic.
+<p align="center">
+  <a href="https://sidgureja.dev">
+    <img src="https://img.shields.io/badge/Portfolio-Live-blue?style=for-the-badge&logo=vercel" />
+  </a>
+  <a href="https://github.com/sidgureja7803">
+    <img src="https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github" />
+  </a>
+  <a href="https://linkedin.com/in/sidgureja">
+    <img src="https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin" />
+  </a>
+</p>
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge)](https://sidgureja.dev/)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/sidgureja7803)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/sidgureja)
+<h3 align="center">
+Building scalable products, AI-powered experiences, and elegant user interfaces.
+</h3>
 
-## ✨ Features
-
-- **🎨 Multiple Theme Support**: Choose from Light, Dark, Ocean, Sunset, and Forest themes
-- **🚀 Lenis Smooth Scrolling**: Buttery-smooth, professional scrolling experience
-- **📝 Professional Typography**: IBM Plex Sans for clean, corporate-quality text
-- **📱 Fully Responsive**: Optimized for all devices - desktop, tablet, and mobile
-- **🎭 Modern UI/UX**: Glassmorphism, smooth gradients, and refined animations
-- **⚡ Performance Optimized**: Fast loading with optimized animations and code
-- **🌟 Interactive Components**: Hover effects, transitions, and smooth interactions
-- **📊 LeetCode Integration**: Real-time LeetCode stats and contest ratings
-- **📧 Contact Form**: EmailJS integration for receiving messages directly
-- **🎯 SEO Optimized**: Proper meta tags, semantic HTML, and optimized content
-- **♿ Accessibility**: WCAG compliant with keyboard navigation support
-
-## 🛠️ Tech Stack
-
-### Frontend
-- **Framework**: React.js 18.3.1
-- **Styling**: Tailwind CSS 3.4.17 + Custom CSS
-- **UI Components**: Radix UI + Shadcn/ui
-- **Routing**: React Router DOM 7.5.1
-- **Icons**: Lucide React 0.507.0
-- **Animations**: Lenis smooth scrolling + CSS transitions
-- **Email**: EmailJS (@emailjs/browser)
-- **Typography**: IBM Plex Sans (Google Fonts)
-
-### Development Tools
-- **Build Tool**: Create React App with CRACO
-- **Package Manager**: Yarn 1.22.22
-- **Code Quality**: ESLint 9.23.0
-- **Version Control**: Git
-
-## 📦 Installation & Setup
-
-### Prerequisites
-- Node.js (v16 or higher)
-- Yarn or npm
-
-### Quick Start
-
-```bash
-# Clone the repository
-git clone https://github.com/sidgureja7803/Portfolio.git
-
-# Navigate to project directory
-cd Portfolio
-
-# Install dependencies
-yarn install
-# or
-npm install
-
-# Start development server
-yarn dev
-# or
-npm run dev
-```
-
-The application will open at `http://localhost:3000`
-
-### Build for Production
-
-```bash
-# Create production build
-yarn build
-# or
-npm run build
-```
-
-The optimized build will be in the `build/` directory.
-
-## 📁 Project Structure
-
-```
-Portfolio/
-├── public/                 # Static assets
-├── src/
-│   ├── assets/            # Images and media files
-│   ├── components/        # React components
-│   │   ├── ui/           # Reusable UI components (Shadcn)
-│   │   ├── About.js
-│   │   ├── Achievements.js
-│   │   ├── Contact.js
-│   │   ├── Experience.js
-│   │   ├── Footer.js
-│   │   ├── Header.js
-│   │   ├── Hero.js
-│   │   ├── LeetCodeStats.js
-│   │   ├── OpenSource.js
-│   │   ├── Projects.js
-│   │   └── Skills.js
-│   ├── contexts/          # React contexts
-│   │   └── ThemeContext.js
-│   ├── App.js            # Main app component
-│   ├── App.css           # App-specific styles
-│   ├── index.css         # Global styles & theme variables
-│   ├── mock.js           # Portfolio data
-│   └── index.js          # Entry point
-├── tailwind.config.js    # Tailwind configuration
-├── craco.config.js       # CRACO configuration
-└── package.json          # Dependencies
-
-```
-
-## 🎨 Available Themes
-
-The portfolio includes **5 beautiful themes**:
-
-1. **🌞 Light** - Clean and professional
-2. **🌙 Dark** - Easy on the eyes
-3. **🌊 Ocean** - Deep blue vibes
-4. **🌅 Sunset** - Warm and inviting
-5. **🌲 Forest** - Natural greens
-
-Switch themes using the theme selector in the header!
-
-## 📝 Customization Guide
-
-### Update Personal Information
-
-Edit `src/mock.js` to update:
-- Personal info (name, email, bio)
-- Social links
-- Skills and technologies
-- Work experience
-- Projects
-- Achievements
-
-### Modify Theme Colors
-
-Edit `src/index.css` to customize theme variables:
-```css
-:root {
-  --background: ...;
-  --foreground: ...;
-  --primary: ...;
-  /* etc */
-}
-```
-
-### Add New Sections
-
-1. Create component in `src/components/`
-2. Import in `src/App.js`
-3. Add to the main layout
-4. Update navigation in `Header.js`
-
-## 🚀 Featured Projects
-
-### CodeFusion
-🔗 [Live Demo](https://www.code-fusion.live/) | [GitHub](https://github.com/sidgureja7803/CollabCode.git)
-
-Real-time collaborative coding platform with AI-powered debugging using LLaMA API.
-
-### MergeMates
-🔗 [Live Demo](https://www.mergemates.site/) | [GitHub](https://github.com/sidgureja7803/MergeMates_client.git)
-
-A "Tinder for Developers" matching collaborators based on GitHub data.
-
-### LiveCV
-🔗 [Live Demo](https://livecv.online/) | [GitHub](https://github.com/sidgureja7803/LiveCV)
-
-AI-powered resume builder with real-time editing and PDF export.
-
-## 🏆 Achievements
-
-- 🥉 **3rd Prize** - IBM TechXchange AI & Automation Hackathon
-- 🥉 **3rd Place** - CodeSprint 2024, ACM TIET
-- 🏅 **LeetCode Guardian Badge** - 2213 contest rating
-- ☁️ **AWS Certified Cloud Practitioner**
-
-## 📊 LeetCode Stats
-
-- **Contest Rating**: 2213
-- **Problems Solved**: 300+
-- **Contests Participated**: 20+
-- **Global Rank**: Top percentile
-
-## 📬 Contact
-
-- **Email**: siddhantgureja39@gmail.com
-- **Phone**: +91 8193006167
-- **Location**: India
-- **LinkedIn**: [linkedin.com/in/sidgureja](https://linkedin.com/in/sidgureja)
-- **GitHub**: [github.com/sidgureja7803](https://github.com/sidgureja7803)
-- **Portfolio**: [sidgureja.dev](https://sidgureja.dev/)
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 🙏 Acknowledgments
-
-- UI Components: [Shadcn/ui](https://ui.shadcn.com/)
-- Icons: [Lucide React](https://lucide.dev/)
-- Styling: [Tailwind CSS](https://tailwindcss.com/)
-- Framework: [React.js](https://react.dev/)
+<p align="center">
+A modern portfolio showcasing my journey as a Full-Stack Developer, Open-Source Contributor, and competitive programmer. Built with React and designed with a strong focus on performance, accessibility, smooth interactions, and developer experience.
+</p>
 
 ---
 
-**Made with ❤️ by Siddhant Gureja**
+## About
 
-⭐ Star this repo if you found it helpful!
+I'm **Siddhant Gureja**, a full-stack engineer passionate about building products that combine beautiful interfaces with scalable backend systems.
+
+My interests include:
+
+* Full-stack web development
+* AI-powered applications
+* Cloud-native systems
+* Developer tools
+* Open-source software
+* Real-time collaborative platforms
+
+This portfolio serves as a central hub for my projects, achievements, technical blogs, and engineering journey.
+
+---
+
+## Highlights
+
+✨ Multiple dynamic themes
+
+⚡ Ultra-smooth scrolling powered by Lenis
+
+🎨 Glassmorphism-inspired modern design
+
+📱 Fully responsive across all devices
+
+📊 Live LeetCode statistics integration
+
+📬 Integrated contact system using EmailJS
+
+♿ Accessibility-first user experience
+
+🚀 Production-grade performance optimization
+
+🔍 SEO-friendly architecture
+
+🎭 Advanced animations and micro-interactions
+
+---
+
+# Tech Stack
+
+## Frontend
+
+| Technology   | Usage                 |
+| ------------ | --------------------- |
+| React 18     | UI framework          |
+| Tailwind CSS | Styling               |
+| Radix UI     | Accessible components |
+| Shadcn/ui    | Component library     |
+| React Router | Routing               |
+| Lucide React | Icons                 |
+| Lenis        | Smooth scrolling      |
+| EmailJS      | Contact integration   |
+
+---
+
+## Development
+
+| Tool       | Purpose             |
+| ---------- | ------------------- |
+| CRACO      | Build configuration |
+| ESLint     | Code quality        |
+| Git        | Version control     |
+| Yarn / npm | Package management  |
+
+---
+
+# Core Features
+
+### Dynamic Theme Engine
+
+Switch instantly between five handcrafted themes:
+
+* Light
+* Dark
+* Ocean
+* Sunset
+* Forest
+
+---
+
+### Modern User Experience
+
+* Glassmorphic design language
+* Smooth transitions
+* Interactive animations
+* Professional typography
+* Responsive layouts
+
+---
+
+### Performance Optimizations
+
+* Optimized asset loading
+* Lightweight animations
+* Efficient component rendering
+* SEO optimization
+* Semantic HTML
+
+---
+
+### Developer-Friendly Architecture
+
+* Modular component structure
+* Context-based theme management
+* Reusable UI system
+* Clean code organization
+* Scalable folder structure
+
+---
+
+# Project Structure
+
+```txt
+Portfolio/
+
+├── public/
+├── src/
+│
+├── assets/
+├── components/
+│   ├── ui/
+│   ├── Hero.js
+│   ├── About.js
+│   ├── Experience.js
+│   ├── Projects.js
+│   ├── Skills.js
+│   ├── OpenSource.js
+│   ├── Achievements.js
+│   ├── Contact.js
+│   └── Footer.js
+│
+├── contexts/
+│   └── ThemeContext.js
+│
+├── App.js
+├── App.css
+├── index.css
+├── mock.js
+└── index.js
+```
+
+---
+
+# Local Development
+
+## Clone the repository
+
+```bash
+git clone https://github.com/sidgureja7803/Portfolio.git
+```
+
+## Install dependencies
+
+```bash
+cd Portfolio
+
+npm install
+
+# or
+
+yarn install
+```
+
+## Run locally
+
+```bash
+npm start
+
+# or
+
+yarn start
+```
+
+Open:
+
+```txt
+http://localhost:3000
+```
+
+---
+
+# Production Build
+
+```bash
+npm run build
+
+# or
+
+yarn build
+```
+
+The optimized production build will be generated inside:
+
+```txt
+build/
+```
+
+---
+
+# Featured Projects
+
+## CodeFusion
+
+Real-time collaborative coding platform with AI-assisted debugging, code execution, and multiplayer editing.
+
+**Tech Stack**
+
+* React
+* Firebase
+* Judge0
+* PostgreSQL
+* Tailwind CSS
+* LLaMA API
+
+🔗 Live: https://www.code-fusion.live/
+
+---
+
+## MergeMates
+
+A platform that connects developers based on GitHub profiles and interests.
+
+**Tech Stack**
+
+* MERN Stack
+* Firebase
+* Tailwind CSS
+
+🔗 Live: https://www.mergemates.site/
+
+---
+
+## LiveCV
+
+An AI-powered resume builder with real-time editing and PDF export capabilities.
+
+**Tech Stack**
+
+* React
+* Node.js
+* PostgreSQL
+* PDF Generation
+
+🔗 Live: https://livecv.online/
+
+---
+
+# Achievements
+
+🏆 Google Summer of Code Contributor
+
+🥉 IBM AI & Automation Hackathon Finalist
+
+🥉 CodeSprint 2024 Winner
+
+🏅 LeetCode Guardian Badge
+
+☁️ AWS Certified Cloud Practitioner
+
+🚀 Open-source contributor
+
+---
+
+# Competitive Programming
+
+| Metric          |    Value |
+| --------------- | -------: |
+| Contest Rating  |     2213 |
+| Problems Solved |     600+ |
+| Weekly Contests |      20+ |
+| Badge           | Guardian |
+
+---
+
+# Customization
+
+Update your portfolio content by editing:
+
+```txt
+src/mock.js
+```
+
+Modify theme variables:
+
+```txt
+src/index.css
+```
+
+Add new sections:
+
+```txt
+src/components/
+```
+
+---
+
+# Connect With Me
+
+📧 Email: [siddhantgureja39@gmail.com](mailto:siddhantgureja39@gmail.com)
+
+🌐 Portfolio: https://sidgureja.dev
+
+💼 LinkedIn: https://linkedin.com/in/sidgureja
+
+💻 GitHub: https://github.com/sidgureja7803
+
+📍 India
+
+---
+
+# Support
+
+If you found this project useful, consider giving it a ⭐.
+
+It motivates me to keep building and contributing to the developer community.
+
+---
+
+<p align="center">
+Built with passion by <strong>Siddhant Gureja</strong>
+</p>
