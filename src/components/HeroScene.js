@@ -2,7 +2,7 @@ import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { useDeviceCapability } from '../hooks/useDeviceCapability';
 
-const BouncingSpheres = lazy(() => import('./three/BouncingSpheres.jsx'));
+const GalaxyScene = lazy(() => import('./three/GalaxyScene.jsx'));
 
 // Waits for the browser to be idle (or a short timeout fallback) before even
 // starting the fetch+mount of the 3D scene. WebGL context creation and shader
@@ -54,7 +54,7 @@ const HeroScene = () => {
   return (
     <div className="absolute inset-0 z-0" aria-hidden="true">
       <Suspense fallback={<StaticFallback />}>
-        <BouncingSpheres tier={tier} isTouchDevice={isTouchDevice} />
+        <GalaxyScene tier={tier} isTouchDevice={isTouchDevice} />
       </Suspense>
     </div>
   );
