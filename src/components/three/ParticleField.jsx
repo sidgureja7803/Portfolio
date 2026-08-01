@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import gsap from 'gsap';
+import { createStarTexture } from '../../lib/starTexture';
 
 const TIER_CONFIG = {
   high: { count: 1400 },
@@ -70,11 +71,13 @@ function useNormalizedPointer(enabled) {
 function Particles({ tier, isTouchDevice }) {
   const { count } = TIER_CONFIG[tier];
   const geometry = useMemo(() => buildGeometry(count), [count]);
+  const texture = useMemo(() => createStarTexture(), []);
   const groupRef = useRef();
   const mouse = useNormalizedPointer(!isTouchDevice);
   const introScale = useRef(0);
 
   useEffect(() => () => geometry.dispose(), [geometry]);
+  useEffect(() => () => texture.dispose(), [texture]);
 
   useEffect(() => {
     const obj = { v: 0 };
@@ -105,10 +108,13 @@ function Particles({ tier, isTouchDevice }) {
     <group ref={groupRef}>
       <points geometry={geometry}>
         <pointsMaterial
-          size={0.06}
+          size={0.11}
+          map={texture}
+          alphaMap={texture}
           vertexColors
           transparent
-          opacity={0.85}
+          alphaTest={0.001}
+          opacity={0.9}
           sizeAttenuation
           blending={THREE.AdditiveBlending}
           depthWrite={false}

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
+import { createStarTexture } from '../../lib/starTexture';
 
 // A scattered starfield (not spiral-shaped like the Hero's galaxy — a
 // spiral only reads correctly viewed from roughly one angle/position, which
@@ -45,24 +46,6 @@ function buildStarGeometry(count) {
   return geo;
 }
 
-function useStarTexture() {
-  return useMemo(() => {
-    const size = 64;
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext('2d');
-    const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
-    gradient.addColorStop(0, 'rgba(255,255,255,1)');
-    gradient.addColorStop(0.3, 'rgba(255,255,255,0.7)');
-    gradient.addColorStop(1, 'rgba(255,255,255,0)');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, size, size);
-    const texture = new THREE.CanvasTexture(canvas);
-    texture.needsUpdate = true;
-    return texture;
-  }, []);
-}
 
 // Tracks the pointer across the *whole window*, not just this canvas — the
 // canvas is fixed full-viewport behind everything, so window-level tracking
@@ -86,7 +69,7 @@ function useWindowPointer() {
 
 function Stars({ count, isTouchDevice }) {
   const geometry = useMemo(() => buildStarGeometry(count), [count]);
-  const texture = useStarTexture();
+  const texture = useMemo(() => createStarTexture(), []);
   const groupRef = useRef();
   const mouse = useWindowPointer();
   const { viewport } = useThree();

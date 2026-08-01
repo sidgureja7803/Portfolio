@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
+import { createStarTexture } from '../../lib/starTexture';
 
 // Classic procedural spiral-galaxy particle field: thousands of points seeded
 // along N spiral arms, jittered outward with randomness that grows with
@@ -61,28 +62,6 @@ function buildGalaxyGeometry(count) {
   return geo;
 }
 
-// Soft round point sprite (a plain square point reads as a harsh pixel at
-// these sizes) — drawn once into a small canvas and reused as every star's
-// texture, radial-gradient alpha falling off to fully transparent.
-function useStarTexture() {
-  return useMemo(() => {
-    const size = 64;
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext('2d');
-    const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
-    gradient.addColorStop(0, 'rgba(255,255,255,1)');
-    gradient.addColorStop(0.3, 'rgba(255,255,255,0.7)');
-    gradient.addColorStop(1, 'rgba(255,255,255,0)');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, size, size);
-    const texture = new THREE.CanvasTexture(canvas);
-    texture.needsUpdate = true;
-    return texture;
-  }, []);
-}
-
 function useNormalizedPointer(enabled) {
   const mouse = useRef({ x: 0, y: 0 });
   const { size } = useThree();
@@ -106,7 +85,7 @@ function useNormalizedPointer(enabled) {
 
 function Galaxy({ count, isTouchDevice }) {
   const geometry = useMemo(() => buildGalaxyGeometry(count), [count]);
-  const texture = useStarTexture();
+  const texture = useMemo(() => createStarTexture(), []);
   const groupRef = useRef();
   const mouse = useNormalizedPointer(!isTouchDevice);
 
