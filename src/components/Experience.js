@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { experience } from '../mock';
 import { getSkillIcon } from '../lib/skillIcons';
 import { Calendar } from 'lucide-react';
+import SectionCanvas from './SectionCanvas';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -135,8 +136,15 @@ const ExperienceRow = ({ exp, isLast }) => {
 
 const Experience = () => {
   return (
-    <section id="experience" className="px-6 md:px-10">
-      <div className="max-w-5xl mx-auto">
+    <section id="experience" className="relative px-6 md:px-10 overflow-hidden">
+      <SectionCanvas
+        variant="points"
+        count={120}
+        spread={3}
+        color="#d946ef"
+        className="absolute top-0 right-0 w-96 h-96 md:w-[32rem] md:h-[32rem] z-0 pointer-events-none opacity-80"
+      />
+      <div className="relative z-10 max-w-5xl mx-auto">
         <p className="text-xs md:text-sm font-medium tracking-[0.2em] uppercase text-muted-foreground mb-10 md:mb-16">
           Work Experience
         </p>
