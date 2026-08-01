@@ -5,6 +5,7 @@ import ProjectCard from './ProjectCard';
 import { projects } from '../mock';
 import { Github } from 'lucide-react';
 import SectionCanvas from './SectionCanvas';
+import SectionEyebrow from './SectionEyebrow';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -38,12 +39,10 @@ const Projects = () => {
       <SectionCanvas
         variant="wire"
         color="#22d3ee"
-        className="absolute -top-10 -left-10 w-64 h-64 md:w-80 md:h-80 z-0 pointer-events-none opacity-30"
+        className="absolute -top-10 -left-10 w-64 h-64 md:w-80 md:h-80 z-0 pointer-events-none opacity-45"
       />
       <div className="relative z-10 max-w-5xl mx-auto">
-        <p className="text-xs md:text-sm font-medium tracking-[0.2em] uppercase text-muted-foreground mb-10 md:mb-16">
-          Projects
-        </p>
+        <SectionEyebrow>Projects</SectionEyebrow>
 
         {/* Tag Filters */}
         <div className="flex flex-wrap gap-2 mb-12" role="group" aria-label="Filter projects by technology">

@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { achievements } from '../mock';
 import { Award, ExternalLink, FileText, Star } from 'lucide-react';
 import SectionCanvas from './SectionCanvas';
+import SectionEyebrow from './SectionEyebrow';
+import ScrollRevealText from './ScrollRevealText';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -21,12 +23,10 @@ const Achievements = () => {
       <SectionCanvas
         variant="wire"
         color="#6366f1"
-        className="absolute -bottom-16 -right-16 w-64 h-64 md:w-80 md:h-80 z-0 pointer-events-none opacity-30"
+        className="absolute -bottom-16 -right-16 w-64 h-64 md:w-80 md:h-80 z-0 pointer-events-none opacity-45"
       />
       <div className="relative z-10 max-w-5xl mx-auto">
-        <p className="text-xs md:text-sm font-medium tracking-[0.2em] uppercase text-muted-foreground mb-10 md:mb-16">
-          Awards &amp; Achievements
-        </p>
+        <SectionEyebrow>Awards &amp; Achievements</SectionEyebrow>
 
         <div>
           {achievements.map((achievement, index) => (
@@ -46,7 +46,10 @@ const Achievements = () => {
                   <h3 className="text-lg md:text-xl font-medium tracking-tight text-foreground mb-1.5">
                     {achievement.title}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed mb-4">{achievement.description}</p>
+                  <ScrollRevealText
+                    text={achievement.description}
+                    className="text-muted-foreground leading-relaxed mb-4"
+                  />
 
                   <div className="flex flex-wrap gap-4">
                     {LINK_CONFIG.filter(({ key }) => achievement[key]).map(({ key, label, Icon }) => (

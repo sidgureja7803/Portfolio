@@ -4,6 +4,7 @@ import { experience } from '../mock';
 import { getSkillIcon } from '../lib/skillIcons';
 import { Calendar } from 'lucide-react';
 import SectionCanvas from './SectionCanvas';
+import SectionEyebrow from './SectionEyebrow';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -142,12 +143,10 @@ const Experience = () => {
         count={120}
         spread={3}
         color="#d946ef"
-        className="absolute top-0 right-0 w-64 h-64 md:w-80 md:h-80 z-0 pointer-events-none opacity-30"
+        className="absolute top-0 right-0 w-64 h-64 md:w-80 md:h-80 z-0 pointer-events-none opacity-45"
       />
       <div className="relative z-10 max-w-5xl mx-auto">
-        <p className="text-xs md:text-sm font-medium tracking-[0.2em] uppercase text-muted-foreground mb-10 md:mb-16">
-          Work Experience
-        </p>
+        <SectionEyebrow>Work Experience</SectionEyebrow>
 
         <div>
           {experience.map((exp, index) => (

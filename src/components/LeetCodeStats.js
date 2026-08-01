@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Code2, ExternalLink, Trophy } from 'lucide-react';
 import SectionCanvas from './SectionCanvas';
+import SectionEyebrow from './SectionEyebrow';
 
 const LEETCODE_USERNAME = 'siddhant_gureja_07';
 const LEETCODE_PROFILE_URL = 'https://leetcode.com/u/siddhant_gureja_07/';
@@ -159,12 +160,10 @@ const CompetitiveProgramming = () => {
         count={150}
         spread={3}
         color="#d946ef"
-        className="absolute -top-16 -left-16 w-64 h-64 md:w-80 md:h-80 z-0 pointer-events-none opacity-30"
+        className="absolute -top-16 -left-16 w-64 h-64 md:w-80 md:h-80 z-0 pointer-events-none opacity-45"
       />
       <div className="relative z-10 max-w-5xl mx-auto">
-        <p className="text-xs md:text-sm font-medium tracking-[0.2em] uppercase text-muted-foreground mb-10 md:mb-16">
-          Competitive Programming
-        </p>
+        <SectionEyebrow>Competitive Programming</SectionEyebrow>
 
         <div className="space-y-14">
           <PlatformCard
